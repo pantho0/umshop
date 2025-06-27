@@ -100,7 +100,7 @@ const NewArraivals: React.FC = () => {
           {gridProducts.map((product, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg  overflow-hidden flex items-center p-4 transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
+              className="bg-white rounded-lg shadow-sm  overflow-hidden flex items-center p-4 transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
             >
               <img
                 src={

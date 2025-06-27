@@ -3,6 +3,9 @@ import Banner from "./_components/Banner";
 import BannerBottom from "./_components/BannerBottom";
 import ContainerLayout from "./_components/layouts/ContainerLayout";
 import NewArraivals from "./_components/new arraivals/NewArraivals";
+import TrandingProducts from "./_components/trandingProduct/TrandingProducts";
+
+import DiscountBanner from "./_components/discountedSection/DiscountBanner";
 
 const HomePage = () => {
   return (
@@ -11,6 +14,8 @@ const HomePage = () => {
       <ContainerLayout>
         <BannerBottom />
         <NewArraivals />
+        <TrandingProducts />
+        <DiscountBanner />
       </ContainerLayout>
     </>
   );
