@@ -1,10 +1,43 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 import React from "react";
+import Image from "next/image";
+import BannerImg from "../../../../../../public/assets/banner.png";
+import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
 
 const Banner: React.FC = () => {
+  const plugin = React.useRef(Autoplay({ delay: 2000 }));
+
   return (
-    <section className="relative bg-gradient-to-r from-blue-50 to-purple-50 py-12 md:py-20 overflow-hidden"></section>
+    <Carousel
+      plugins={[plugin.current]}
+      className="w-full mx-auto"
+      onMouseEnter={plugin.current.stop}
+      onMouseLeave={plugin.current.reset}
+    >
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+            <Image
+              src={BannerImg}
+              className="w-full md:h-[550px] object-cover"
+              alt="Banner Image"
+            />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      {/* <CarouselPrevious />
+      <CarouselNext /> */}
+    </Carousel>
   );
 };
 
