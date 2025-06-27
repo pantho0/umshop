@@ -7,7 +7,6 @@ import TrandingProducts from "./_components/trandingProduct/TrandingProducts";
 
 import DiscountBanner from "./_components/discountedSection/DiscountBanner";
 import SpecialOffersSection from "./_components/SpecialOffers/SpecialOffersSection";
-import NewsletterSection from "./_components/NewsLetter/NewsLetterSection";
 
 const HomePage = () => {
   return (
@@ -20,7 +19,6 @@ const HomePage = () => {
         <DiscountBanner />
         <SpecialOffersSection />
       </ContainerLayout>
-      <NewsletterSection />
     </>
   );
 };
