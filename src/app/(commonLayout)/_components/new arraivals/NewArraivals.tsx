@@ -43,11 +43,11 @@ const NewArraivals: React.FC = () => {
 
   return (
     <section className="container mx-auto px-4 py-8 md:py-10 max-w-7xl">
-      <h2 className="text-lg md:text-4xl font-semibold  text-gray-900 mb-8 md:mb-10">
+      <h2 className="text-lg md:text-4xl font-semibold  text-gray-900 mb-6 md:mb-6">
         New arrivals
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12">
         {/* Featured Product (Left Column - spans 1 or 2 columns on large screens) */}
         {featuredProduct && (
           <div className="lg:col-span-1 bg-gray-900 rounded-lg shadow-xl overflow-hidden flex flex-col justify-end p-6 md:p-12 relative min-h-[300px] md:min-h-[400px] lg:min-h-[450px]">
@@ -96,7 +96,7 @@ const NewArraivals: React.FC = () => {
         )}
 
         {/* Product Grid (Right Columns - spans 2 columns on large screens) */}
-        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-3">
           {gridProducts.map((product, index) => (
             <div
               key={index}
