@@ -19,8 +19,8 @@ const Banner: React.FC = () => {
     <Carousel
       plugins={[plugin.current]}
       className="w-full mx-auto"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
+      // onMouseEnter={plugin.current.stop}
+      // onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (

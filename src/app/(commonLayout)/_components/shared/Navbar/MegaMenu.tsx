@@ -111,7 +111,7 @@ const MegaMenu: React.FC = () => {
 
             {/* Right Panel: Sub-items and Promo */}
             <div
-              className={`w-2/3 p-6 bg-white flex flex-col transition-opacity duration-150 ease-in-out ${
+              className={`w-2/3 p-6 bg-white flex flex-col overflow-y-auto transition-opacity duration-150 ease-in-out ${
                 isContentFlashing ? "opacity-0" : "opacity-100"
               }`}
             >
