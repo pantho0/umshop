@@ -106,7 +106,7 @@ const TrandingProducts: React.FC = () => {
   return (
     <section className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
       <div className="flex justify-between items-center mb-6 md:mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <h2 className="text-lg md:text-4xl font-semibold text-gray-900">
           Trending products
         </h2>
         <a

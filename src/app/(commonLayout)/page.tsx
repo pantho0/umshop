@@ -6,6 +6,7 @@ import NewArraivals from "./_components/new arraivals/NewArraivals";
 import TrandingProducts from "./_components/trandingProduct/TrandingProducts";
 
 import DiscountBanner from "./_components/discountedSection/DiscountBanner";
+import SpecialOffersSection from "./_components/SpecialOffers/SpecialOffersSection";
 
 const HomePage = () => {
   return (
@@ -16,6 +17,7 @@ const HomePage = () => {
         <NewArraivals />
         <TrandingProducts />
         <DiscountBanner />
+        <SpecialOffersSection />
       </ContainerLayout>
     </>
   );
