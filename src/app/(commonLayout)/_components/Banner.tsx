@@ -4,14 +4,12 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 
 import React from "react";
 import Image from "next/image";
-import BannerImg from "../../../../../../public/assets/banner.png";
-import { Card, CardContent } from "@/components/ui/card";
+import BannerImg from "../../../../public/assets/banner.png";
+
 import Autoplay from "embla-carousel-autoplay";
 
 const Banner: React.FC = () => {
@@ -35,8 +33,6 @@ const Banner: React.FC = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      {/* <CarouselPrevious />
-      <CarouselNext /> */}
     </Carousel>
   );
 };
