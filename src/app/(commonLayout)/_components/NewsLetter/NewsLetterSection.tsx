@@ -31,7 +31,7 @@ const NewsletterSection: React.FC = () => {
   };
 
   return (
-    <section className="bg-gray-100 py-12 md:py-16">
+    <section className="bg-[#F5F7FA] py-12 md:py-16">
       <div className="container mx-auto px-4 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         {/* Left Section: Newsletter Sign-up */}
         <div className="flex flex-col justify-center">
