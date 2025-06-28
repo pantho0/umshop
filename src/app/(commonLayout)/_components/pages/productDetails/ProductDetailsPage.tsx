@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import {
   Star,
   Heart,
-  RefreshCw,
   Plus,
   Minus,
   CheckCircle2,
