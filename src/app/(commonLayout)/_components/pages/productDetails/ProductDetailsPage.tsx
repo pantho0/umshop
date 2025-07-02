@@ -20,8 +20,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
-
-import Products from "../../../../../../public/product/product.json"; // Re-use ProductType from CategoriesData
+import { Product } from "@/interface";
 
 // Helper for star ratings
 const renderStars = (
@@ -49,10 +48,7 @@ const renderStars = (
   );
 };
 
-const ProductDetailsPage: React.FC = () => {
-  // For demonstration, let's pick a specific product (e.g., iPhone 14)
-  const product = Products.find((p) => p.title.includes("XPS 15 Laptop"));
-
+const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
   // Initialize all state at the top
   const [selectedModel, setSelectedModel] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
@@ -494,63 +490,29 @@ const ProductDetailsPage: React.FC = () => {
                 </h3>
                 <div className="space-y-2 text-gray-700">
                   <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Model:</span>
+                    <span>Title:</span>
                     <span className="font-medium text-gray-900">
-                      iPhone 14 Plus
+                      {product.title}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Gender:</span>
-                    <span className="font-medium text-gray-900">Unisex</span>
-                  </div>
-                  <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Screen type:</span>
+                    <span>Size:</span>
                     <span className="font-medium text-gray-900">
-                      Super Retina XDR
-                    </span>
-                    <span className="text-gray-500 cursor-pointer">?</span>
-                  </div>
-                  <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Screen refresh rate:</span>
-                    <span className="font-medium text-gray-900">120 Hz</span>
-                    <span className="text-gray-500 cursor-pointer">?</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Display Specs */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                  Display
-                </h3>
-                <div className="space-y-2 text-gray-700">
-                  <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Screen diagonal:</span>
-                    <span className="font-medium text-gray-900">
-                      6.1&rdquo;
+                      {product.size}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Display resolution:</span>
-                    <span className="font-medium text-gray-900">2532x1170</span>
-                  </div>
-                  <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Matrix type:</span>
+                    <span>Variant/color:</span>
                     <span className="font-medium text-gray-900">
-                      OLED (Super Retina XDR)
+                      {product.variant_color}
                     </span>
                     <span className="text-gray-500 cursor-pointer">?</span>
                   </div>
                   <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Number of touch points:</span>
-                    <span className="font-medium text-gray-900">10</span>
-                  </div>
-                  <div className="flex justify-between border-b border-gray-100 pb-1">
-                    <span>Screen material:</span>
+                    <span>Details:</span>
                     <span className="font-medium text-gray-900">
-                      Screen material
+                      {product.details}
                     </span>
-                    <span className="text-gray-500 cursor-pointer">?</span>
                   </div>
                 </div>
               </div>

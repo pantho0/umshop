@@ -8,7 +8,9 @@ interface ApiResponse {
 }
 
 const NewArraivals: React.FC = async () => {
-  const { data } = await nexiosInstance.get<ApiResponse>("/products");
+  const { data } = await nexiosInstance.get<ApiResponse>(
+    "/products?limit=7&sortBy=-createdAt"
+  );
   const products = data.data;
 
   return (
