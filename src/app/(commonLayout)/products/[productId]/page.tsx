@@ -1,30 +1,21 @@
 import nexiosInstance from "@/app/config/nexios.config";
 import ContainerLayout from "../../_components/layouts/ContainerLayout";
 import ProductDetailsPage from "../../_components/pages/productDetails/ProductDetailsPage";
-import { Product } from "@/interface";
+import { ApiResponse, Product } from "@/interface";
 
-interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  success: boolean;
-}
+type Params = Promise<{ productId: string }>;
 
-interface Props {
-  params: {
-    productId: string;
-  };
-}
-
-const ProductPage = async ({ params }: Props) => {
+// Dynamic page function with correct props shape
+const ProductPage = async ({ params }: { params: Params }) => {
   const { productId } = await params;
-  const response = await nexiosInstance.get<ApiResponse<{ data: Product }>>(
+
+  const res = await nexiosInstance.get<ApiResponse<Product>>(
     `/products/${productId}`,
     {
       cache: "no-store",
     }
   );
-  const product = response.data.data;
-  console.log(product);
+  const product = res.data.data;
 
   return (
     <ContainerLayout>

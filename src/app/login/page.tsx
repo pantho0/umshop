@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Google, Facebook, Apple } from "lucide-react";
 import LoginImage from "../../../public/assets/login.jpg";
 import Image from "next/image";
 

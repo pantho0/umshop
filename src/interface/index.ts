@@ -13,3 +13,9 @@ export interface Product {
   slug: string;
   __v: number;
 }
+
+export interface ApiResponse<T> {
+  data: T;
+  message?: string;
+  success: boolean;
+}
