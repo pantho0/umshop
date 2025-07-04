@@ -1,0 +1,80 @@
+[
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c0",
+    "name": "Laptops",
+    "slug": "laptops",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c1",
+    "name": "Desktops",
+    "slug": "desktops",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c2",
+    "name": "Monitors",
+    "slug": "monitors",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c3",
+    "name": "Smartphones",
+    "slug": "smartphones",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b1"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c4",
+    "name": "Tablets",
+    "slug": "tablets",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b1"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c5",
+    "name": "Accessories",
+    "slug": "accessories",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b1"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c6",
+    "name": "Televisions",
+    "slug": "televisions",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b2"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c7",
+    "name": "Home Audio",
+    "slug": "home-audio",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b2"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c8",
+    "name": "Over-Ear Headphones",
+    "slug": "over-ear-headphones",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b3"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1c9",
+    "name": "In-Ear Headphones",
+    "slug": "in-ear-headphones",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b3"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1ca",
+    "name": "Smartwatches",
+    "slug": "smartwatches",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b4"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1cb",
+    "name": "Consoles",
+    "slug": "consoles",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b5"
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1cc",
+    "name": "PC Games",
+    "slug": "pc-games",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b5"
+  }
+]

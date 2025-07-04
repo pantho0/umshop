@@ -1,282 +1,146 @@
 [
   {
+    "_id": "6862b1bb58b7d28d1e6688c7",
     "title": "XPS 15 Laptop",
-    "parentCategory": "Computers & Accessories",
-    "subCategory": "Laptops",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c0",
     "variant_color": ["Platinum Silver", "Frost White"],
     "size": ["15.6-inch FHD+", "15.6-inch OLED 3.5K"],
     "details": "A premium performance laptop with a stunning display and powerful processors, ideal for creative professionals.",
     "price": 1899.99,
     "images": [
-      "https://placehold.co/600x400/E0E0E0/333333?text=XPS+15+Laptop+1",
-      "https://placehold.co/600x400/D0D0D0/333333?text=XPS+15+Laptop+2"
+      "https://sm.pcmag.com/pcmag_uk/review/d/dell-xps-1/dell-xps-15-9530-2023_uxjn.jpg",
+      "https://apiv2.exceldisc.com/media/52942/dell-xps-15-9530-laptop-13th.jpg"
     ],
-    "slug": "xps-15-laptop"
+    "createdAt": "2025-06-30T15:48:11.584Z",
+    "updatedAt": "2025-06-30T15:48:11.584Z",
+    "slug": "xps-15-laptop",
+    "__v": 0
   },
   {
+    "_id": "6862b1da58b7d28d1e6688ca",
     "title": "Gaming Desktop PC (Aurora R13)",
-    "parentCategory": "Computers & Accessories",
-    "subCategory": "Desktops",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c1",
     "variant_color": ["Dark Side of the Moon", "Lunar Light"],
     "size": ["Standard"],
     "details": "High-performance gaming desktop with liquid cooling and customizable RGB lighting.",
-    "price": 2499.0,
+    "price": 2499,
     "images": [
-      "https://placehold.co/600x400/C0C0C0/333333?text=Aurora+R13+1",
-      "https://placehold.co/600x400/B0B0B0/333333?text=Aurora+R13+2"
+      "https://slickdeals.net/blog/wp-content/uploads/2021/11/alienware-aurora-r13-gaming-desktop-review-photos-10.jpg",
+      "https://images.hothardware.com/contentimages/article/3157/content/small_window-panel-alienware-aurora-r13.jpg"
     ],
-    "slug": "gaming-desktop-pc-aurora-r13"
+    "createdAt": "2025-06-30T15:48:42.457Z",
+    "updatedAt": "2025-06-30T15:48:42.457Z",
+    "slug": "gaming-desktop-pc-aurora-r13",
+    "__v": 0
   },
   {
+    "_id": "6862b1ea58b7d28d1e6688cd",
     "title": "UltraSharp 27-inch 4K Monitor",
-    "parentCategory": "Computers & Accessories",
-    "subCategory": "Monitors",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b0",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c2",
     "variant_color": ["Black"],
     "size": ["27-inch"],
     "details": "Professional 4K UHD monitor with exceptional color accuracy and wide viewing angles.",
     "price": 699.99,
     "images": [
-      "https://placehold.co/600x400/A0A0A0/333333?text=4K+Monitor+1",
-      "https://placehold.co/600x400/909090/333333?text=4K+Monitor+2"
+      "https://www.ryans.com/storage/products/main/dell-ultrasharp-u2723qe-27-inch-4k-uhd-display-11715776872.webp",
+      "https://www.pchouse.com.bd/image/cache/catalog/000-Casing/0000A/dell-u2720q-27-inch-ultrasharp-4k-monitor-/dell-u2720q-27-inch-ultrasharp-4k-monitor-1-600x500h.jpg.webp"
     ],
-    "slug": "ultrasharp-27-inch-4k-monitor"
+    "createdAt": "2025-06-30T15:48:58.479Z",
+    "updatedAt": "2025-06-30T15:48:58.479Z",
+    "slug": "ultrasharp-27-inch-4k-monitor",
+    "__v": 0
   },
   {
+    "_id": "6862b1f858b7d28d1e6688d0",
     "title": "Galaxy S24 Ultra",
-    "parentCategory": "Smartphones & Tablets",
-    "subCategory": "Smartphones",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b1",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c3",
     "variant_color": ["Titanium Black", "Titanium Gray", "Titanium Violet"],
     "size": ["256GB", "512GB", "1TB"],
     "details": "The latest flagship smartphone with an S Pen, advanced camera system, and powerful AI features.",
-    "price": 1299.0,
+    "price": 1299,
     "images": [
-      "https://placehold.co/600x400/808080/333333?text=S24+Ultra+1",
-      "https://placehold.co/600x400/707070/333333?text=S24+Ultra+2"
+      "https://gadgetbd.com/wp-content/uploads/2024/01/Samsung-S24-Ultra-Titanium-Grey.jpg",
+      "https://images.samsung.com/bd/smartphones/galaxy-s24-ultra/images/galaxy-s24-ultra-highlights-color-titanium-gray-back-mo.jpg?imbypass=true"
     ],
-    "slug": "galaxy-s24-ultra"
+    "createdAt": "2025-06-30T15:49:12.615Z",
+    "updatedAt": "2025-06-30T15:49:12.615Z",
+    "slug": "galaxy-s24-ultra",
+    "__v": 0
   },
   {
+    "_id": "6862b20858b7d28d1e6688d3",
     "title": "iPad Air (M2)",
-    "parentCategory": "Smartphones & Tablets",
-    "subCategory": "Tablets",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b1",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c4",
     "variant_color": ["Space Gray", "Starlight", "Purple", "Blue"],
     "size": ["128GB", "256GB", "512GB", "1TB"],
     "details": "Lightweight and powerful tablet featuring the M2 chip, perfect for productivity and entertainment on the go.",
-    "price": 599.0,
+    "price": 599,
     "images": [
-      "https://placehold.co/600x400/606060/333333?text=iPad+Air+1",
-      "https://placehold.co/600x400/505050/333333?text=iPad+Air+2"
+      "https://cdn.arstechnica.net/wp-content/uploads/2024/05/IMG_1830.jpeg",
+      "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-11-inch-m2.png"
     ],
-    "slug": "ipad-air-m2"
+    "createdAt": "2025-06-30T15:49:28.068Z",
+    "updatedAt": "2025-06-30T15:49:28.068Z",
+    "slug": "ipad-air-m2",
+    "__v": 0
   },
   {
+    "_id": "6862b21558b7d28d1e6688d6",
     "title": "Smart TV 65-inch QLED 4K",
-    "parentCategory": "TV, Video & Audio",
-    "subCategory": "Televisions",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b2",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c6",
     "variant_color": ["Black"],
     "size": ["65-inch"],
     "details": "Immersive 4K QLED TV with vibrant colors, smart features, and a sleek design.",
     "price": 1199.5,
     "images": [
-      "https://placehold.co/600x400/404040/333333?text=QLED+TV+1",
-      "https://placehold.co/600x400/303030/333333?text=QLED+TV+2"
+      "https://hisense.com.bd/media/catalog/product/cache/f331ced856f72ba682dd77485868ac51/q/l/qled_5.jpg",
+      "https://www.startech.com.bd/image/cache/catalog/television/samsung/55q70c/q70c-01-500x500.webp"
     ],
-    "slug": "smart-tv-65-inch-qled-4k"
+    "createdAt": "2025-06-30T15:49:41.414Z",
+    "updatedAt": "2025-06-30T15:49:41.414Z",
+    "slug": "smart-tv-65-inch-qled-4k",
+    "__v": 0
   },
   {
+    "_id": "6862b22558b7d28d1e6688d9",
     "title": "Soundbar 500 Home Theater System",
-    "parentCategory": "TV, Video & Audio",
-    "subCategory": "Home Audio",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b2",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c7",
     "variant_color": ["Black"],
     "size": ["Standard"],
     "details": "Compact and powerful soundbar with virtual surround sound and built-in voice assistants.",
-    "price": 449.0,
+    "price": 449,
     "images": [
-      "https://placehold.co/600x400/202020/333333?text=Soundbar+1",
-      "https://placehold.co/600x400/101010/333333?text=Soundbar+2"
+      "https://cdn.bdstall.com/product-image/giant_114823.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/41tK04wLNCL.jpg"
     ],
-    "slug": "soundbar-500-home-theater-system"
+    "createdAt": "2025-06-30T15:49:57.213Z",
+    "updatedAt": "2025-06-30T15:49:57.213Z",
+    "slug": "soundbar-500-home-theater-system",
+    "__v": 0
   },
   {
+    "_id": "6862b23458b7d28d1e6688dc",
     "title": "WH-1000XM5 Noise-Cancelling Headphones",
-    "parentCategory": "Headphones",
-    "subCategory": "Over-Ear Headphones",
+    "parentCategory": "60f1c3b0e6b3f1b0a3b3f1b3",
+    "sub_Category": "60f1c3b0e6b3f1b0a3b3f1c8",
     "variant_color": ["Black", "Silver"],
     "size": ["One Size"],
     "details": "Industry-leading noise cancellation with exceptional sound quality and comfortable design.",
     "price": 349.99,
     "images": [
-      "https://placehold.co/600x400/E0E0E0/333333?text=Headphones+1",
-      "https://placehold.co/600x400/D0D0D0/333333?text=Headphones+2"
+      "https://www.thesonyshop.ca/cdn/shop/files/WH1000XM5P_1.jpg",
+      "https://wafuu.com/cdn/shop/products/sony-wh-1000xm5-sm-platinum-silver-wireless-headphones-501658_540x.jpg"
     ],
-    "slug": "wh-1000xm5-noise-cancelling-headphones"
-  },
-  {
-    "title": "AirPods Pro (2nd Gen)",
-    "parentCategory": "Headphones",
-    "subCategory": "In-Ear Headphones",
-    "variant_color": ["White"],
-    "size": ["One Size"],
-    "details": "Advanced active noise cancellation and Adaptive Transparency for immersive audio.",
-    "price": 249.0,
-    "images": [
-      "https://placehold.co/600x400/C0C0C0/333333?text=AirPods+Pro+1",
-      "https://placehold.co/600x400/B0B0B0/333333?text=AirPods+Pro+2"
-    ],
-    "slug": "airpods-pro-2nd-gen"
-  },
-  {
-    "title": "Apple Watch Series 9",
-    "parentCategory": "Wearable Electronics",
-    "subCategory": "Smartwatches",
-    "variant_color": ["Midnight", "Starlight", "Silver", "Red"],
-    "size": ["41mm", "45mm"],
-    "details": "Smartwatch with advanced health features, brighter display, and powerful new chip.",
-    "price": 399.0,
-    "images": [
-      "https://placehold.co/600x400/A0A0A0/333333?text=Apple+Watch+1",
-      "https://placehold.co/600x400/909090/333333?text=Apple+Watch+2"
-    ],
-    "slug": "apple-watch-series-9"
-  },
-  {
-    "title": "Fitbit Charge 6 Fitness Tracker",
-    "parentCategory": "Wearable Electronics",
-    "subCategory": "Smartwatches",
-    "variant_color": ["Obsidian", "Coral", "Porcelain"],
-    "size": ["One Size"],
-    "details": "Advanced fitness and health tracker with built-in GPS and heart rate monitoring.",
-    "price": 159.95,
-    "images": [
-      "https://placehold.co/600x400/808080/333333?text=Fitbit+1",
-      "https://placehold.co/600x400/707070/333333?text=Fitbit+2"
-    ],
-    "slug": "fitbit-charge-6-fitness-tracker"
-  },
-  {
-    "title": "Anker PowerCore III Elite 25600mAh",
-    "parentCategory": "Powerbanks",
-    "subCategory": "High Capacity",
-    "variant_color": ["Black"],
-    "size": ["Standard"],
-    "details": "High-capacity portable charger for multiple device recharges on the go.",
-    "price": 79.99,
-    "images": [
-      "https://placehold.co/600x400/606060/333333?text=Powerbank+1",
-      "https://placehold.co/600x400/505050/333333?text=Powerbank+2"
-    ],
-    "slug": "anker-powercore-iii-elite-25600mah"
-  },
-  {
-    "title": "Samsung T7 Portable SSD 1TB",
-    "parentCategory": "HDD/SSD Data Storage",
-    "subCategory": "External Storage",
-    "variant_color": ["Metallic Red", "Indigo Blue", "Titan Gray"],
-    "size": ["1TB"],
-    "details": "Fast and compact external SSD for quick data transfers and reliable storage.",
-    "price": 119.99,
-    "images": [
-      "https://placehold.co/600x400/404040/333333?text=SSD+1",
-      "https://placehold.co/600x400/303030/333333?text=SSD+2"
-    ],
-    "slug": "samsung-t7-portable-ssd-1tb"
-  },
-  {
-    "title": "PlayStation 5 Console (Slim)",
-    "parentCategory": "Video Games",
-    "subCategory": "Consoles",
-    "variant_color": ["White"],
-    "size": ["Standard"],
-    "details": "Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, Adaptive Triggers, and 3D Audio.",
-    "price": 499.99,
-    "images": [
-      "https://placehold.co/600x400/202020/333333?text=PS5+Slim+1",
-      "https://placehold.co/600x400/101010/333333?text=PS5+Slim+2"
-    ],
-    "slug": "playstation-5-console-slim"
-  },
-  {
-    "title": "Nintendo Switch OLED Model",
-    "parentCategory": "Video Games",
-    "subCategory": "Consoles",
-    "variant_color": ["White", "Neon Red/Blue"],
-    "size": ["Standard"],
-    "details": "A new console featuring a vibrant 7-inch OLED screen, a wide adjustable stand, a dock with a wired LAN port, 64 GB of internal storage, and enhanced audio.",
-    "price": 349.99,
-    "images": [
-      "https://placehold.co/600x400/A0B0C0/333333?text=Switch+OLED+1",
-      "https://placehold.co/600x400/B0C0D0/333333?text=Switch+OLED+2"
-    ],
-    "slug": "nintendo-switch-oled-model"
-  },
-  {
-    "title": "Logitech MX Master 3S Mouse",
-    "parentCategory": "Computers & Accessories",
-    "subCategory": "Accessories",
-    "variant_color": ["Graphite", "Pale Gray"],
-    "size": ["One Size"],
-    "details": "An advanced wireless mouse designed for highly demanding users, offering precision, performance, and flow.",
-    "price": 99.99,
-    "images": [
-      "https://placehold.co/600x400/C0A0B0/333333?text=MX+Master+3S+1",
-      "https://placehold.co/600x400/D0B0C0/333333?text=MX+Master+3S+2"
-    ],
-    "slug": "logitech-mx-master-3s-mouse"
-  },
-  {
-    "title": "Bose SoundLink Revolve+ II",
-    "parentCategory": "Speakers & Home Music",
-    "subCategory": "Portable Speakers",
-    "variant_color": ["Triple Black", "Luxe Silver"],
-    "size": ["Standard"],
-    "details": "Portable Bluetooth speaker with 360° sound, durable and water-resistant design, and long-lasting battery life.",
-    "price": 329.0,
-    "images": [
-      "https://placehold.co/600x400/E0C0A0/333333?text=Revolve+II+1",
-      "https://placehold.co/600x400/F0D0B0/333333?text=Revolve+II+2"
-    ],
-    "slug": "bose-soundlink-revolve-ii"
-  },
-  {
-    "title": "Canon EOS R5 Mirrorless Camera",
-    "parentCategory": "Cameras, Photo & Video",
-    "subCategory": "Digital Cameras",
-    "variant_color": ["Black"],
-    "size": ["Body Only"],
-    "details": "High-resolution full-frame mirrorless camera with 8K video recording and advanced autofocus.",
-    "price": 3899.0,
-    "images": [
-      "https://placehold.co/600x400/A0D0E0/333333?text=EOS+R5+1",
-      "https://placehold.co/600x400/B0E0F0/333333?text=EOS+R5+2"
-    ],
-    "slug": "canon-eos-r5-mirrorless-camera"
-  },
-  {
-    "title": "Epson EcoTank ET-4850 All-in-One Printer",
-    "parentCategory": "Printers & Ink",
-    "subCategory": "All-in-One Printers",
-    "variant_color": ["Black"],
-    "size": ["Standard"],
-    "details": "Cartridge-free ink tank printer with auto document feeder and wireless connectivity.",
-    "price": 499.99,
-    "images": [
-      "https://placehold.co/600x400/C0E0A0/333333?text=EcoTank+ET-4850+1",
-      "https://placehold.co/600x400/D0F0B0/333333?text=EcoTank+ET-4850+2"
-    ],
-    "slug": "epson-ecotank-et-4850-all-in-one-printer"
-  },
-  {
-    "title": "Belkin BoostCharge Pro 3-in-1 Wireless Charger",
-    "parentCategory": "Charging Stations",
-    "subCategory": "Wireless Chargers",
-    "variant_color": ["Black", "White"],
-    "size": ["Standard"],
-    "details": "Charge your iPhone, Apple Watch, and AirPods simultaneously with this sleek wireless charging stand.",
-    "price": 149.99,
-    "images": [
-      "https://placehold.co/600x400/E0F0C0/333333?text=Belkin+Charger+1",
-      "https://placehold.co/600x400/F0F0D0/333333?text=Belkin+Charger+2"
-    ],
-    "slug": "belkin-boostcharge-pro-3-in-1-wireless-charger"
+    "createdAt": "2025-06-30T15:50:12.624Z",
+    "updatedAt": "2025-06-30T15:50:12.624Z",
+    "slug": "wh-1000xm5-noise-cancelling-headphones",
+    "__v": 0
   }
 ]

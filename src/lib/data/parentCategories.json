@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b0",
+    "name": "Computers & Accessories",
+    "slug": "computers-accessories",
+    "description": "Desktops, laptops, monitors, components, and all computer peripherals."
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b1",
+    "name": "Smartphones & Tablets",
+    "slug": "smartphones-tablets",
+    "description": "Latest mobile phones, tablets, and their essential accessories."
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b2",
+    "name": "TV, Video & Audio",
+    "slug": "tv-video-audio",
+    "description": "Televisions, home theater systems, soundbars, and audio equipment."
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b3",
+    "name": "Headphones",
+    "slug": "headphones",
+    "description": "Over-ear, in-ear, and wireless headphones for all your audio needs."
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b4",
+    "name": "Wearable Electronics",
+    "slug": "wearable-electronics",
+    "description": "Smartwatches, fitness trackers, and other wearable tech."
+  },
+  {
+    "_id": "60f1c3b0e6b3f1b0a3b3f1b5",
+    "name": "Video Games",
+    "slug": "video-games",
+    "description": "Consoles, PC games, and gaming accessories."
+  }
+]
