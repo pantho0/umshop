@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/products/page.tsx
 import React from "react";
 import { Metadata } from "next";
 import { ProductGridDisplay } from "./_components/ProductGridDisplay";
 import { FilterSidebar } from "./_components/FilterSidebar";
-
-// Import raw data (simulating API fetches)
-import rawProductsData from "@/lib/data/product.json"; // Note: Changed to products.json
-import parentCategoriesData from "@/lib/data/parentCategories.json";
-import subCategoriesData from "@/lib/data/subCategories.json";
 import { getFilterOptions } from "@/lib/product-filters";
 import { X } from "lucide-react";
+import {
+  getParentCategories,
+  getProducts,
+  getSubCategories,
+} from "@/services/product";
+import { IParentCategory, ISubCategory } from "@/interface";
 
 export const metadata: Metadata = {
   title: "Product Listings - Cartzilla",
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     "deals",
   ],
 };
-
 // Define the type for the searchParams object - using desired URL keys
 interface SearchParamsObject {
   parent_category?: string; // Updated key
@@ -35,34 +34,35 @@ interface SearchParamsObject {
   // Other potential search params that might exist but are not used for filtering here:
   [key: string]: string | string[] | undefined;
 }
-
 // Define props for the page component, with searchParams as a Promise
 interface ProductPageProps {
   searchParams: Promise<SearchParamsObject>;
 }
 
-// This is a Server Component
 const ProductListingPage = async ({
   searchParams: searchParamsPromise,
 }: ProductPageProps) => {
   const searchParams = await searchParamsPromise;
 
+  const rawProductsData = await getProducts(searchParams);
+  const parentCategoriesData = await getParentCategories();
+  const subCategoriesData = await getSubCategories();
+
   // --- Simulate API Fetches (In a real app, replace with actual fetch calls) ---
-  const allProducts: any[] = rawProductsData.map((p) => ({
+  const allProducts: any[] = rawProductsData.data.map((p) => ({
     ...p,
     // Map names to _id strings for filtering against product data
-    parentCategory: (parentCategoriesData.find(
-      (pc) => pc._id === p.parentCategory
+    parentCategory: (parentCategoriesData.data.find(
+      (pc) => pc._id === p.parentCategory._id
     )?._id || "") as string,
-    subCategory: (subCategoriesData.find((sc) => sc._id === p.sub_Category)
-      ?._id || "") as string,
+    subCategory: (subCategoriesData.data.find(
+      (sc) => sc._id === p.subCategory._id
+    )?._id || "") as string,
     createdAt: p.createdAt || new Date().toISOString(), // Ensure createdAt exists for sorting
   })) as any[];
 
-
-  const parentCategories: any[] = parentCategoriesData as any[];
-  const subCategories: any[] = subCategoriesData as any[];
-  // --- End Simulate API Fetches ---
+  const parentCategories: IParentCategory[] = parentCategoriesData.data;
+  const subCategories: ISubCategory[] = subCategoriesData.data;
 
   // Get filter options data for the sidebar (processed once on the server)
   const filterOptions: any = getFilterOptions(parentCategories, subCategories);
@@ -72,7 +72,9 @@ const ProductListingPage = async ({
     // Categories Filter (Parent and Sub) - Now uses slugs from searchParams
     if (searchParams.parent_category) {
       // Updated key
-      const selectedParentSlugs = searchParams.parent_category.split(","); // Updated key
+      const selectedParentSlugs = (
+        searchParams.parent_category as string
+      ).split(","); // Updated key
       const productParentCat = parentCategories.find(
         (pc) => pc._id.toString() === product.parentCategory
       );
@@ -84,7 +86,7 @@ const ProductListingPage = async ({
     }
     if (searchParams.sub_category) {
       // Updated key
-      const selectedSubSlugs = searchParams.sub_category.split(","); // Updated key
+      const selectedSubSlugs = (searchParams.sub_category as string).split(","); // Updated key
       const productSubCat = subCategories.find(
         (sc) => sc._id.toString() === product.subCategory
       );
