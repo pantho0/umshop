@@ -160,36 +160,56 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
               className="border-b border-gray-100"
             >
               <AccordionTrigger
-                className="text-base font-medium text-gray-700 hover:no-underline py-2"
-                onClick={(e) => {
-                  if ((e.target as HTMLElement).tagName === "INPUT") {
-                    e.stopPropagation();
-                  }
-                }}
+                className="text-base font-medium text-gray-700 hover:no-underline py-2 w-full text-left"
               >
                 <div className="flex items-center justify-between w-full pr-2">
-                  {/* Re-added Checkbox for Parent Category Name */}
                   <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`parent-${parentCat.slug}`}
-                      checked={
-                        selectedParentCats.includes(parentCat.slug) ||
-                        (parentCat.subCategories.length > 0 &&
-                          parentCat.subCategories.every((sub: any) =>
-                            selectedSubCats.includes(sub.slug)
-                          ))
-                      }
-                      onCheckedChange={(checked: boolean) =>
-                        handleParentCatCheckboxChange(parentCat, checked)
-                      }
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                    <label
-                      htmlFor={`parent-${parentCat.slug}`}
-                      className="cursor-pointer"
+                    <div 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleParentCatCheckboxChange(
+                          parentCat, 
+                          !(selectedParentCats.includes(parentCat.slug) ||
+                          (parentCat.subCategories.length > 0 &&
+                            parentCat.subCategories.every((sub: any) =>
+                              selectedSubCats.includes(sub.slug)
+                            )))
+                        );
+                      }}
+                      className="flex items-center space-x-2"
                     >
-                      {parentCat.name}
-                    </label>
+                      <div 
+                        className={`w-4 h-4 rounded border ${selectedParentCats.includes(parentCat.slug) ||
+                          (parentCat.subCategories.length > 0 &&
+                            parentCat.subCategories.every((sub: any) =>
+                              selectedSubCats.includes(sub.slug)
+                            )) 
+                            ? 'bg-primary border-primary' 
+                            : 'border-gray-300'}`}
+                      >
+                        {(selectedParentCats.includes(parentCat.slug) ||
+                          (parentCat.subCategories.length > 0 &&
+                            parentCat.subCategories.every((sub: any) =>
+                              selectedSubCats.includes(sub.slug)
+                            ))) && (
+                          <svg
+                            className="w-3 h-3 m-0.5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <span>{parentCat.name}</span>
+                    </div>
                   </div>
                   <span className="text-xs text-gray-500">
                     {parentCat.count}
