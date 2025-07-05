@@ -1,6 +1,6 @@
-// app/products/_components/FilterSidebar.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,32 +18,18 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  ProcessedFilterOptions,
-  ParentCategoryFilter,
-  ISubCategoryWithCount,
-} from "@/lib/product-filters";
-
-// Define props for FilterSidebar
-interface FilterSidebarProps {
-  filterOptions: ProcessedFilterOptions;
-  currentSearchParams: {
-    parent_category?: string;
-    sub_category?: string;
-    [key: string]: string | string[] | undefined;
-  };
-}
+import { FilterSidebarProps } from "@/interface";
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   filterOptions,
   currentSearchParams,
+  onFilterChange,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Initialize filter states from currentSearchParams prop
   const [selectedParentCats, setSelectedParentCats] = useState<string[]>(
     currentSearchParams.parent_category?.split(",") || []
   );
@@ -51,17 +37,21 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     currentSearchParams.sub_category?.split(",") || []
   );
 
-  // Sync state with URL changes
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     setSelectedParentCats(
       currentSearchParams.parent_category?.split(",") || []
     );
     setSelectedSubCats(currentSearchParams.sub_category?.split(",") || []);
   }, [currentSearchParams]);
 
-  // Function to update URL search params
-  // This function is now internal and called by the specific handlers below
   const updateUrlParams = (newParentCats: string[], newSubCats: string[]) => {
+    onFilterChange();
     const params = new URLSearchParams(searchParams.toString());
 
     if (newParentCats.length > 0) {
@@ -78,38 +68,36 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  // handleParentCatCheckboxChange to manage parent and all its subcategories
   const handleParentCatCheckboxChange = (
-    parentCat: ParentCategoryFilter,
+    parentCat: any,
     isChecked: boolean
   ) => {
     let newParentCats: string[];
-    const subSlugsInThisParent = parentCat.subCategories.map((sc) => sc.slug);
-    let newSubCats = [...selectedSubCats]; // Start with current subCats
+    const subSlugsInThisParent = parentCat.subCategories.map(
+      (sc: any) => sc.slug
+    );
+    let newSubCats = [...selectedSubCats];
 
     if (isChecked) {
       newParentCats = [...selectedParentCats, parentCat.slug];
-      // When parent is checked, add all its subcategories to selectedSubCats
+
       newSubCats = [...new Set([...newSubCats, ...subSlugsInThisParent])];
     } else {
       newParentCats = selectedParentCats.filter((p) => p !== parentCat.slug);
-      // When parent is unchecked, remove all its subcategories from selectedSubCats
+
       newSubCats = newSubCats.filter(
         (sc) => !subSlugsInThisParent.includes(sc)
       );
     }
 
-    // Update local states immediately
     setSelectedParentCats(newParentCats);
     setSelectedSubCats(newSubCats);
 
-    // Update URL parameters with the new, consistent state
     updateUrlParams(newParentCats, newSubCats);
   };
 
-  // handleSubCatCheckboxChange to manage subcategory and sync with parent
   const handleSubCatCheckboxChange = (
-    parentCat: ParentCategoryFilter,
+    parentCat: any,
     subSlug: string,
     isChecked: boolean
   ) => {
@@ -120,9 +108,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       newSubCats = selectedSubCats.filter((s) => s !== subSlug);
     }
 
-    // Sync parent checkbox state based on newSubCats
-    const allSubSlugsInParent = parentCat.subCategories.map((sc) => sc.slug);
-    const currentlySelectedSubSlugsInParent = newSubCats.filter((sc) =>
+    const allSubSlugsInParent = parentCat.subCategories.map(
+      (sc: any) => sc.slug
+    );
+    const currentlySelectedSubSlugsInParent = newSubCats.filter((sc: any) =>
       allSubSlugsInParent.includes(sc)
     );
 
@@ -131,24 +120,19 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       currentlySelectedSubSlugsInParent.length === allSubSlugsInParent.length &&
       allSubSlugsInParent.length > 0
     ) {
-      // All subcategories are selected, check the parent
       if (!newParentCats.includes(parentCat.slug)) {
         newParentCats.push(parentCat.slug);
       }
     } else {
-      // Not all subcategories are selected, uncheck the parent
       newParentCats = newParentCats.filter((p) => p !== parentCat.slug);
     }
 
-    // Update local states immediately
     setSelectedSubCats(newSubCats);
-    setSelectedParentCats(newParentCats); // Update parent local state
+    setSelectedParentCats(newParentCats);
 
-    // Update URL parameters with the new, consistent state
     updateUrlParams(newParentCats, newSubCats);
   };
 
-  // Helper to render the main categories filter section
   const renderCategoriesFilter = () => (
     <AccordionItem value="categories" className="border-b border-gray-200">
       <AccordionTrigger className="text-lg font-semibold text-gray-800 hover:no-underline">
@@ -157,21 +141,19 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <AccordionContent className="pt-2">
         {/* Nested Accordion for Parent Categories */}
         <Accordion
-          type="multiple" // Keep multiple if you want multiple parent accordions open
+          type="multiple"
           className="w-full"
-          // Set defaultValue to open parent categories that are currently active in the URL
-          // or if any of their subcategories are selected.
           defaultValue={filterOptions.categories
             .filter(
-              (pc: ParentCategoryFilter) =>
+              (pc: any) =>
                 selectedParentCats.includes(pc.slug) ||
-                pc.subCategories.some((sub) =>
+                pc.subCategories.some((sub: any) =>
                   selectedSubCats.includes(sub.slug)
                 )
             )
-            .map((pc: ParentCategoryFilter) => pc.slug)}
+            .map((pc: any) => pc.slug)}
         >
-          {filterOptions.categories.map((parentCat: ParentCategoryFilter) => (
+          {filterOptions.categories.map((parentCat: any) => (
             <AccordionItem
               key={parentCat.slug}
               value={parentCat.slug}
@@ -179,9 +161,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             >
               <AccordionTrigger
                 className="text-base font-medium text-gray-700 hover:no-underline py-2"
-                // No direct filtering action on AccordionTrigger click, only expand/collapse
                 onClick={(e) => {
-                  // Prevent accordion from toggling if clicking directly on a checkbox within the trigger text
                   if ((e.target as HTMLElement).tagName === "INPUT") {
                     e.stopPropagation();
                   }
@@ -192,18 +172,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id={`parent-${parentCat.slug}`}
-                      // Determine if parent is checked (either explicitly or if all subs are checked)
                       checked={
                         selectedParentCats.includes(parentCat.slug) ||
                         (parentCat.subCategories.length > 0 &&
-                          parentCat.subCategories.every((sub) =>
+                          parentCat.subCategories.every((sub: any) =>
                             selectedSubCats.includes(sub.slug)
                           ))
                       }
                       onCheckedChange={(checked: boolean) =>
                         handleParentCatCheckboxChange(parentCat, checked)
                       }
-                      // Stop propagation to prevent accordion from toggling when checkbox is clicked
                       onClick={(e) => e.stopPropagation()}
                     />
                     <label
@@ -219,41 +197,37 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pt-2 pb-2 pl-6">
-                {" "}
-                {/* Indent subcategories */}
                 <div className="space-y-2">
                   {parentCat.subCategories.length > 0 ? (
-                    parentCat.subCategories.map(
-                      (subCat: ISubCategoryWithCount) => (
-                        <div
-                          key={subCat.slug}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`sub-${parentCat.slug}-${subCat.slug}`}
-                              checked={selectedSubCats.includes(subCat.slug)}
-                              onCheckedChange={(checked: boolean) =>
-                                handleSubCatCheckboxChange(
-                                  parentCat,
-                                  subCat.slug,
-                                  checked
-                                )
-                              }
-                            />
-                            <label
-                              htmlFor={`sub-${parentCat.slug}-${subCat.slug}`}
-                              className="text-sm text-gray-600 cursor-pointer"
-                            >
-                              {subCat.name}
-                            </label>
-                          </div>
-                          <span className="text-xs text-gray-500">
-                            {subCat.count}
-                          </span>
+                    parentCat.subCategories.map((subCat: any) => (
+                      <div
+                        key={subCat.slug}
+                        className="flex items-center justify-between"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`sub-${parentCat.slug}-${subCat.slug}`}
+                            checked={selectedSubCats.includes(subCat.slug)}
+                            onCheckedChange={(checked: boolean) =>
+                              handleSubCatCheckboxChange(
+                                parentCat,
+                                subCat.slug,
+                                checked
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`sub-${parentCat.slug}-${subCat.slug}`}
+                            className="text-sm text-gray-600 cursor-pointer"
+                          >
+                            {subCat.name}
+                          </label>
                         </div>
-                      )
-                    )
+                        <span className="text-xs text-gray-500">
+                          {subCat.count}
+                        </span>
+                      </div>
+                    ))
                   ) : (
                     <p className="text-sm text-gray-500">
                       No subcategories found.

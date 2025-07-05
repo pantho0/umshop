@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Metadata } from "next";
-import { ProductGridDisplay } from "./_components/ProductGridDisplay";
-import { FilterSidebar } from "./_components/FilterSidebar";
 import { getFilterOptions } from "@/lib/product-filters";
 import { X } from "lucide-react";
 import {
@@ -12,6 +10,7 @@ import {
   getSubCategories,
 } from "@/services/product";
 import { IParentCategory, ISubCategory } from "@/interface";
+import { ProductListWrapper } from "./_components/ProductListWrapper";
 
 export const metadata: Metadata = {
   title: "Product Listings - Cartzilla",
@@ -26,15 +25,13 @@ export const metadata: Metadata = {
     "deals",
   ],
 };
-// Define the type for the searchParams object - using desired URL keys
 interface SearchParamsObject {
-  parent_category?: string; // Updated key
-  sub_category?: string; // Updated key
+  parent_category?: string;
+  sub_category?: string;
   sortBy?: string;
-  // Other potential search params that might exist but are not used for filtering here:
   [key: string]: string | string[] | undefined;
 }
-// Define props for the page component, with searchParams as a Promise
+
 interface ProductPageProps {
   searchParams: Promise<SearchParamsObject>;
 }
@@ -48,17 +45,15 @@ const ProductListingPage = async ({
   const parentCategoriesData = await getParentCategories();
   const subCategoriesData = await getSubCategories();
 
-  // --- Simulate API Fetches (In a real app, replace with actual fetch calls) ---
   const allProducts: any[] = rawProductsData.data.map((p) => ({
     ...p,
-    // Map names to _id strings for filtering against product data
     parentCategory: (parentCategoriesData.data.find(
       (pc) => pc._id === p.parentCategory._id
     )?._id || "") as string,
     subCategory: (subCategoriesData.data.find(
       (sc) => sc._id === p.subCategory._id
     )?._id || "") as string,
-    createdAt: p.createdAt || new Date().toISOString(), // Ensure createdAt exists for sorting
+    createdAt: p.createdAt || new Date().toISOString(),
   })) as any[];
 
   const parentCategories: IParentCategory[] = parentCategoriesData.data;
@@ -174,20 +169,11 @@ const ProductListingPage = async ({
         </div>
 
         {/* Main Content Area: Sidebar and Product Grid */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filter Sidebar (Client Component) */}
-          {/* Pass the processed filter options and current search params */}
-          <FilterSidebar
-            filterOptions={filterOptions}
-            currentSearchParams={searchParams}
-          />
-
-          {/* Product Grid (Client Component) */}
-          <ProductGridDisplay
-            products={filteredProducts}
-            currentSortBy={searchParams.sortBy || ""}
-          />
-        </div>
+        <ProductListWrapper
+          filterOptions={filterOptions}
+          products={filteredProducts}
+          currentSearchParams={searchParams}
+        />
       </main>
     </div>
   );

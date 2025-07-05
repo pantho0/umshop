@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IParentCategory {
   _id: string;
   name: string;
@@ -38,3 +39,32 @@ export interface ApiResponse<T> {
   message?: string;
   success: boolean;
 }
+
+export interface FilterSidebarProps {
+  filterOptions: any;
+  onFilterChange: () => void;
+  currentSearchParams: {
+    parent_category?: string;
+    sub_category?: string;
+    [key: string]: string | string[] | undefined;
+  };
+}
+
+export interface ProductGridDisplayProps {
+  products: Product[];
+  currentSortBy: string;
+  isLoading: boolean;
+}
+
+
+export interface ProductListWrapperProps {
+  filterOptions: any;
+  products: Product[];
+  currentSearchParams: {
+    parent_category?: string;
+    sub_category?: string;
+    sortBy?: string;
+    [key: string]: string | string[] | undefined;
+  };
+}
+
