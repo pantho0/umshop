@@ -41,57 +41,18 @@ const ProductListingPage = async ({
 }: ProductPageProps) => {
   const searchParams = await searchParamsPromise;
 
-  const rawProductsData = await getProducts(searchParams);
+  const productsResponse = await getProducts(searchParams);
+  const rawProductsData = productsResponse.data;
   const parentCategoriesData = await getParentCategories();
   const subCategoriesData = await getSubCategories();
-
-  const allProducts: any[] = rawProductsData.data.map((p) => ({
-    ...p,
-    parentCategory: (parentCategoriesData.data.find(
-      (pc) => pc._id === p.parentCategory._id
-    )?._id || "") as string,
-    subCategory: (subCategoriesData.data.find(
-      (sc) => sc._id === p.subCategory._id
-    )?._id || "") as string,
-    createdAt: p.createdAt || new Date().toISOString(),
-  })) as any[];
 
   const parentCategories: IParentCategory[] = parentCategoriesData.data;
   const subCategories: ISubCategory[] = subCategoriesData.data;
 
-  // Get filter options data for the sidebar (processed once on the server)
   const filterOptions: any = getFilterOptions(parentCategories, subCategories);
 
-  // Apply filtering based on searchParams (Server-side filtering)
-  const filteredProducts = allProducts.filter((product) => {
-    // Categories Filter (Parent and Sub) - Now uses slugs from searchParams
-    if (searchParams.parent_category) {
-      // Updated key
-      const selectedParentSlugs = (
-        searchParams.parent_category as string
-      ).split(","); // Updated key
-      const productParentCat = parentCategories.find(
-        (pc) => pc._id.toString() === product.parentCategory
-      );
-      if (
-        !productParentCat ||
-        !selectedParentSlugs.includes(productParentCat.slug)
-      )
-        return false;
-    }
-    if (searchParams.sub_category) {
-      // Updated key
-      const selectedSubSlugs = (searchParams.sub_category as string).split(","); // Updated key
-      const productSubCat = subCategories.find(
-        (sc) => sc._id.toString() === product.subCategory
-      );
-      if (!productSubCat || !selectedSubSlugs.includes(productSubCat.slug))
-        return false;
-    }
-    return true; // Product passes all filters
-  });
+  const filteredProducts = rawProductsData;
 
-  // Apply sorting based on searchParams (Server-side sorting)
   if (searchParams.sortBy) {
     switch (searchParams.sortBy) {
       case "newest":
@@ -118,14 +79,11 @@ const ProductListingPage = async ({
   return (
     <div className="font-inter antialiased bg-gray-50 min-h-screen">
       <main className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
-        {/* Top Bar: Found items, filters, sort by */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-0">
             Found {totalFoundItems} items
           </h1>
-          {/* Active Filters (now dynamic based on searchParams) */}
-          <div className="flex items-center space-x-2">
-            {/* Only show active category filters */}
+          {/* <div className="flex items-center space-x-2">
             {searchParams.parent_category?.split(",").map(
               (
                 val // Updated key
@@ -156,7 +114,6 @@ const ProductListingPage = async ({
                 </span>
               )
             )}
-            {/* Clear all button only if any category filter is active */}
             {(searchParams.parent_category || searchParams.sub_category) && ( // Updated keys
               <a
                 href="/products"
@@ -165,10 +122,9 @@ const ProductListingPage = async ({
                 Clear all
               </a>
             )}
-          </div>
+          </div> */}
         </div>
 
-        {/* Main Content Area: Sidebar and Product Grid */}
         <ProductListWrapper
           filterOptions={filterOptions}
           products={filteredProducts}

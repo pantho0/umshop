@@ -3,10 +3,20 @@
 import { Star } from "lucide-react";
 import { Product } from "@/interface";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
+  const [ratings, setRatings] = useState<{ [key: string]: number }>({});
   const featuredProduct = products[0];
   const gridProducts = products.slice(1, 7);
+  useEffect(() => {
+    // This runs only on the client side
+    const newRatings: { [key: string]: number } = {};
+    gridProducts.forEach((product) => {
+      newRatings[product?._id] = Math.floor(Math.random() * 3) + 3;
+    });
+    setRatings(newRatings);
+  }, []);
   const renderStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -97,7 +107,7 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                   {product.title}
                 </h4>
                 <div className="flex items-center  text-gray-500 mb-2 text-sm">
-                  {renderStars(Math.floor(Math.random() * 3) + 3)}{" "}
+                  {renderStars(ratings[product?._id] || 3)}{" "}
                   {/* Random stars 3-5 */}
                   <span className="ml-2">
                     ({Math.floor(Math.random() * 200) + 10})
