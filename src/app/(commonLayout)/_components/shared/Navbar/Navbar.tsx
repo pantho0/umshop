@@ -1,3 +1,4 @@
+// components/Navbar.tsx
 "use client";
 import React from "react";
 import MegaMenu from "./MegaMenu";
@@ -6,13 +7,14 @@ import {
   Search,
   Heart,
   User,
-  ShoppingCart,
   DollarSign,
   ChevronDown,
   Percent,
 } from "lucide-react";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
+
+import CartDrawer from "./cartDrawer";
 
 const Navbar: React.FC = () => {
   return (
@@ -40,12 +42,8 @@ const Navbar: React.FC = () => {
             >
               <User className="h-5 w-5" />
             </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors duration-200"
-            >
-              <ShoppingCart className="h-5 w-5" />
-            </a>
+            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
+            <CartDrawer />
             <div className="flex items-center">
               <span className="mr-1">Eng</span>
               <ChevronDown className="h-4 w-4" />
@@ -76,7 +74,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Search Bar  */}
+          {/* Search Bar */}
           <div className="hidden md:flex flex-grow mx-8 max-w-xl relative">
             <input
               type="text"
@@ -86,13 +84,14 @@ const Navbar: React.FC = () => {
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           </div>
 
-          {/* Mobile menu  */}
+          {/* Mobile menu */}
           <div className="flex items-center space-x-4 md:hidden">
             <Search className="h-6 w-6 text-white" />
             <Heart className="h-6 w-6 text-white" />
             <User className="h-6 w-6 text-white" />
-            <ShoppingCart className="h-6 w-6 text-white" />
-            {/* Mobile Mega Menu  */}
+            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
+            <CartDrawer />
+            {/* Mobile Mega Menu */}
             <MegaMenu />
           </div>
 

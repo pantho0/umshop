@@ -1,9 +1,8 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Metadata } from "next";
 import { getFilterOptions } from "@/lib/product-filters";
-import { X } from "lucide-react";
+
 import {
   getParentCategories,
   getProducts,

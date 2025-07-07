@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:debug": "set DEBUG=* && next build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
@@ -27,7 +28,8 @@
     "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
