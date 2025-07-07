@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Product } from "@/interface";
+import { useAppDispatch } from "@/redux/hook";
+import { addToCart } from "@/redux/features/cartSlice";
 
 // Helper for star ratings
 const renderStars = (
@@ -56,6 +58,7 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
   const [activeTab, setActiveTab] = useState<string>("general-info");
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const dispatch = useAppDispatch();
 
   // Define all callbacks that will be used in effects
   const onSelect = useCallback(() => {
@@ -102,6 +105,18 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
       </div>
     );
   }
+
+  const addToCartHandler = () => {
+    console.log("clicked");
+    const cartItem = {
+      id: product._id,
+      name: product.title,
+      price: product.price,
+      image: product.images[0],
+      quantity: quantity,
+    };
+    dispatch(addToCart(cartItem));
+  };
 
   const handleQuantityChange = (type: "increment" | "decrement") => {
     setQuantity((prev) => {
@@ -358,7 +373,10 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
                         <Plus className="h-4 w-4" />
                       </Button>
                     </div>
-                    <Button className="px-6 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center">
+                    <Button
+                      onClick={addToCartHandler}
+                      className="px-6 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center"
+                    >
                       <ShoppingCart className="h-5 w-5 mr-2" /> Add to cart
                     </Button>
                     <Button

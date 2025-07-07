@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/drawer";
 import { ShoppingCart, X } from "lucide-react"; // Import X for remove item button
 import { Button } from "@/components/ui/button";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { removeFromCart } from "@/redux/features/cartSlice";
 
 interface CartItem {
   id: string;
@@ -23,48 +25,16 @@ interface CartItem {
 
 const CartDrawer: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const cartItems: CartItem[] = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
-  const cartItems: CartItem[] = [
-    {
-      id: "prod1",
-      name: "Apple iPhone 14 128GB",
-      price: 899.0,
-      image: "https://placehold.co/40x40/E0E0E0/333333?text=iPhone",
-      quantity: 1,
-    },
-    {
-      id: "prod2",
-      name: "Tablet Apple iPad Pro M2",
-      price: 989.0,
-      image: "https://placehold.co/40x40/D0D0D0/333333?text=iPad",
-      quantity: 1,
-    },
-    {
-      id: "prod3",
-      name: "WH-1000XM5 Headphones",
-      price: 349.99,
-      image: "https://placehold.co/40x40/C0C0C0/333333?text=Headphones",
-      quantity: 2,
-    },
-    {
-      id: "prod4",
-      name: "Smart Watch Series 7",
-      price: 429.0,
-      image: "https://placehold.co/40x40/B0B0B0/333333?text=Watch",
-      quantity: 1,
-    },
-  ];
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  // Function to handle removing an item (dummy)
-  const handleRemoveItem = (id: string) => {
-    console.log(`Remove item with ID: ${id}`);
-    // In a real app, you'd update your cart state/context here
+  const removeFromCartHandler = (id: string) => {
+    dispatch(removeFromCart(id));
   };
 
   // Common cart trigger button
@@ -74,9 +44,9 @@ const CartDrawer: React.FC = () => {
         onClick={() => setIsDrawerOpen(!isDrawerOpen)}
         className="h-5 w-5 text-white"
       />
-      {totalItems > 0 && (
+      {cartItems.length > 0 && (
         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-          {totalItems}
+          {cartItems.length}
         </span>
       )}
     </button>
@@ -99,7 +69,7 @@ const CartDrawer: React.FC = () => {
         <DrawerHeader className="p-0 pb-4 border-b border-gray-200">
           <div className="w-full flex items-center justify-between">
             <DrawerTitle className="text-xl font-semibold text-gray-800">
-              Shopping Cart ({totalItems} items)
+              Shopping Cart ({cartItems.length} items)
             </DrawerTitle>
             <DrawerClose asChild>
               <X className="text-red-600 size-6 p-1" />
@@ -141,7 +111,7 @@ const CartDrawer: React.FC = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleRemoveItem(item.id)}
+                  onClick={() => removeFromCartHandler(item.id)}
                   className="ml-3 p-1 rounded-full text-gray-400 hover:text-red-500 hover:bg-gray-100 transition-colors duration-200"
                   aria-label={`Remove ${item.name}`}
                 >

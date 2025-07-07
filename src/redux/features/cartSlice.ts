@@ -8,15 +8,7 @@ interface CartItem {
   quantity: number;
 }
 
-const initialState: CartItem[] = [
-  {
-    id: "",
-    name: "",
-    price: 0,
-    image: "",
-    quantity: 0,
-  },
-];
+const initialState: CartItem[] = [];
 
 const cartSlice = createSlice({
   name: "cart",
