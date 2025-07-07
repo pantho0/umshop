@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+
 import "./globals.css";
+import { Providers } from "@/lib/Providers/Providers";
+
 
 export const metadata: Metadata = {
   title: "UmShop",
@@ -12,8 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">{children}</body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body className="antialiased">{children}</body>
+      </html>
+    </Providers>
   );
 }

@@ -5,7 +5,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -13,22 +12,18 @@ import {
 } from "@/components/ui/drawer";
 import { ShoppingCart, X } from "lucide-react"; // Import X for remove item button
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator"; // Import Separator for consistency
 
-// Define a type for a cart item (simplified for display)
 interface CartItem {
   id: string;
   name: string;
   price: number;
   image: string;
-  quantity: number; // Include quantity if you want to show it or calculate total
+  quantity: number;
 }
 
 const CartDrawer: React.FC = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for drawer visibility
-  console.log(isDrawerOpen);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // Dummy cart items for demonstration
   const cartItems: CartItem[] = [
     {
       id: "prod1",
