@@ -27,7 +27,7 @@ const HomePage = async () => {
         <NewArraivals />
         <TrandingProducts products={products} />
         <DiscountBanner />
-        <SpecialOffersSection />
+        <SpecialOffersSection products={products} />  
       </ContainerLayout>
     </>
   );

@@ -3,7 +3,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Star, ShoppingCart, ChevronRight } from "lucide-react";
-import productsData from "../../../../../public/product/product.json"; // Adjust path as needed
 
 // Import Shadcn UI Carousel components
 import {
@@ -13,18 +12,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-// Define interface for Product data (re-using the one from ProductGridSection)
-interface Product {
-  title: string;
-  parentCategory: string;
-  subCategory: string;
-  variant_color: string[];
-  size: string[];
-  details: string;
-  price: number;
-  images: string[];
-}
+import { Product } from "@/interface";
+import Link from "next/link";
 
 // Simple deterministic hash function
 const simpleHash = (str: string) => {
@@ -42,7 +31,7 @@ const renderStars = (title: string) => {
   // Generate consistent rating and review count based on title
   const rating = (simpleHash(title) % 3) + 3; // 3-5 stars
   const reviewCount = (simpleHash(title) % 200) + 10; // 10-209 reviews
-  
+
   return (
     <div className="flex items-center text-sm text-gray-500">
       <div className="flex mr-1" aria-label={`${rating} out of 5 stars`}>
@@ -119,76 +108,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   );
 };
 
-const SpecialOffersSection: React.FC = () => {
-  const products: Product[] = productsData as Product[];
-
-  // Select a subset of products for special offers
-  //   const specialOfferProducts: Product[] = [
-  //     {
-  //       ...products[8],
-  //       title: "Xiaomi Wireless Buds Pro",
-  //       price: 129.99,
-  //       details: "Premium wireless earbuds with ANC.",
-  //       images: ["https://placehold.co/150x150/F0F0F0/333333?text=Xiaomi+Buds"],
-  //     },
-  //     {
-  //       ...products[9],
-  //       title: "Smart Watch Series 7, White",
-  //       price: 429.0,
-  //       details: "Advanced smartwatch with health tracking.",
-  //       images: ["https://placehold.co/150x150/E0E0E0/333333?text=Smart+Watch"],
-  //     },
-  //     {
-  //       ...products[17],
-  //       title: "VRB01 Camera Nikon Max",
-  //       price: 652.0,
-  //       details: "Professional camera for stunning photos.",
-  //       images: ["https://placehold.co/150x150/D0D0D0/333333?text=Nikon+Max"],
-  //     },
-  //     {
-  //       ...products[3],
-  //       title: "Apple iPhone 14 128GB Blue",
-  //       price: 899.0,
-  //       details: "Latest iPhone model in a new color.",
-  //       images: [
-  //         "https://placehold.co/150x150/C0C0C0/333333?text=iPhone+14+Blue",
-  //       ],
-  //     },
-  //     {
-  //       ...products[0],
-  //       title: "Laptop Apple MacBook Pro 13 M2",
-  //       price: 1200.0,
-  //       details: "Powerful and portable MacBook Pro.",
-  //       images: [
-  //         "https://placehold.co/150x150/B0B0B0/333333?text=MacBook+Pro+13",
-  //       ],
-  //     },
-  //     {
-  //       ...products[4],
-  //       title: "Tablet Apple iPad Air M1",
-  //       price: 540.0,
-  //       details: "Lightweight and powerful tablet.",
-  //       images: ["https://placehold.co/150x150/A0A0A0/333333?text=iPad+Air+M1"],
-  //     },
-  //     {
-  //       ...products[7],
-  //       title: "Headphones Apple AirPods 2 Pro",
-  //       price: 224.0,
-  //       details: "Noise-cancelling AirPods for immersive sound.",
-  //       images: ["https://placehold.co/150x150/909090/333333?text=AirPods+Pro+2"],
-  //     },
-  //     {
-  //       ...products[10],
-  //       title: "Wireless Bluetooth Headphones Sony",
-  //       price: 299.0,
-  //       details: "Comfortable over-ear headphones with long battery life.",
-  //       images: [
-  //         "https://placehold.co/150x150/808080/333333?text=Sony+Headphones",
-  //       ],
-  //     },
-  //   ];
-
-  // For countdown timer (e.g., 12 days from now)
+const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
+  products,
+}) => {
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + 12); // Set target 12 days from now
 
@@ -237,42 +159,44 @@ const SpecialOffersSection: React.FC = () => {
                   className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform duration-200 hover:scale-[1.02] relative group h-full" // Ensure full height
                 >
                   {/* Product Image */}
-                  <div className="relative w-full h-48  flex items-center justify-center overflow-hidden">
-                    <img
-                      src={
-                        product.images[0] ||
-                        `https://placehold.co/150x150/E0E0E0/333333?text=Product+${index}`
-                      }
-                      alt={product.title}
-                      className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-300 group-hover:scale-105"
-                      onError={(
-                        e: React.SyntheticEvent<HTMLImageElement, Event>
-                      ) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = `https://placehold.co/150x150/E0E0E0/333333?text=Image+Error`;
-                      }}
-                    />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-4 flex flex-col flex-grow">
-                    {renderStars(product.title)}
-                    <h3 className="text-lg font-semibold text-gray-800 mt-2 mb-2 leading-tight">
-                      {product.title}
-                    </h3>
-                    <div className="flex items-baseline space-x-2 mt-auto">
-                      <span className="text-xl font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
-                      </span>
-                      <span className="text-sm text-gray-500 line-through">
-                        ${oldPrice}
-                      </span>
+                  <Link href={`/products/${product.slug}`}>
+                    <div className="relative w-full h-48  flex items-center justify-center overflow-hidden">
+                      <img
+                        src={
+                          product.images[0] ||
+                          `https://placehold.co/150x150/E0E0E0/333333?text=Product+${index}`
+                        }
+                        alt={product.title}
+                        className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-300 group-hover:scale-105"
+                        onError={(
+                          e: React.SyntheticEvent<HTMLImageElement, Event>
+                        ) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = `https://placehold.co/150x150/E0E0E0/333333?text=Image+Error`;
+                        }}
+                      />
                     </div>
-                    <p className="text-sm text-gray-600 mt-2">
-                      Available:{" "}
-                      <span className="font-semibold">{availableCount}</span>
-                    </p>
-                  </div>
+
+                    {/* Product Info */}
+                    <div className="p-4 flex flex-col flex-grow">
+                      {renderStars(product.title)}
+                      <h3 className="text-lg font-semibold text-gray-800 mt-2 mb-2 leading-tight">
+                        {product.title}
+                      </h3>
+                      <div className="flex items-baseline space-x-2 mt-auto">
+                        <span className="text-xl font-bold text-gray-900">
+                          ${product.price.toFixed(2)}
+                        </span>
+                        <span className="text-sm text-gray-500 line-through">
+                          ${oldPrice}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mt-2">
+                        Available:{" "}
+                        <span className="font-semibold">{availableCount}</span>
+                      </p>
+                    </div>
+                  </Link>
 
                   {/* Add to Cart Button */}
                   <div className="p-4 border-t border-gray-100 flex justify-end">
