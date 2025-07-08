@@ -10,10 +10,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { ShoppingCart, X } from "lucide-react"; // Import X for remove item button
+import { ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { removeFromCart } from "@/redux/features/cartSlice";
+import Link from "next/link";
 
 interface CartItem {
   id: string;
@@ -37,7 +38,6 @@ const CartDrawer: React.FC = () => {
     dispatch(removeFromCart(id));
   };
 
-  // Common cart trigger button
   const CartTriggerButton = () => (
     <button className="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-200">
       <ShoppingCart
@@ -62,9 +62,8 @@ const CartDrawer: React.FC = () => {
         <CartTriggerButton />
       </DrawerTrigger>
       <DrawerContent
-        // Drawer content styles: Always fixed, slide from right, full height, max width
         className="w-full max-w-sm h-full fixed top-0 right-2
-                   p-4 bg-white shadow-lg flex flex-col" // Added flex-col for layout
+                   p-4 bg-white shadow-lg flex flex-col"
       >
         <DrawerHeader className="p-0 pb-4 border-b border-gray-200">
           <div className="w-full flex items-center justify-between">
@@ -76,7 +75,6 @@ const CartDrawer: React.FC = () => {
             </DrawerClose>
           </div>
         </DrawerHeader>
-        {/* Removed DrawerDescription as it's not in the image and title/items count is enough */}
 
         {cartItems.length === 0 ? (
           <p className="text-gray-500 text-center py-8 flex-grow flex items-center justify-center">
@@ -84,10 +82,8 @@ const CartDrawer: React.FC = () => {
           </p>
         ) : (
           <div className="flex-grow overflow-y-auto py-4 space-y-3">
-            {" "}
-            {/* Scrollable area for items */}
             {cartItems.map((item) => (
-              <div // Using a div for cart item content
+              <div
                 key={item.id}
                 className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 cursor-default"
               >
@@ -132,10 +128,18 @@ const CartDrawer: React.FC = () => {
                 ${subtotal.toFixed(2)}
               </span>
             </div>
-            <Button className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors duration-200 text-center">
-              View Cart
-            </Button>
-            <Button className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors duration-200 mt-2 text-center">
+            <Link href="/cart">
+              <Button
+                onClick={() => setIsDrawerOpen(false)}
+                className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors duration-200 text-center"
+              >
+                View Cart
+              </Button>
+            </Link>
+            <Button
+              onClick={() => setIsDrawerOpen(false)}
+              className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors duration-200 mt-2 text-center"
+            >
               Checkout
             </Button>
           </DrawerFooter>

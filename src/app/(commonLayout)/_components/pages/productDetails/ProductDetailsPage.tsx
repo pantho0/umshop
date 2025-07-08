@@ -24,7 +24,6 @@ import { Product } from "@/interface";
 import { useAppDispatch } from "@/redux/hook";
 import { addToCart } from "@/redux/features/cartSlice";
 
-// Helper for star ratings
 const renderStars = (
   rating: number,
   reviewCount: number,
@@ -51,7 +50,6 @@ const renderStars = (
 };
 
 const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
-  // Initialize all state at the top
   const [selectedModel, setSelectedModel] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
@@ -60,7 +58,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const dispatch = useAppDispatch();
 
-  // Define all callbacks that will be used in effects
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
@@ -74,7 +71,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
     [emblaApi]
   );
 
-  // Set up all effects
   useEffect(() => {
     if (product) {
       setSelectedModel(product.size[0]);
@@ -97,7 +93,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
     };
   }, [emblaApi, onSelect]);
 
-  // Early return after all hooks have been called
   if (!product) {
     return (
       <div className="container mx-auto p-8 text-center">
@@ -113,6 +108,8 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
       name: product.title,
       price: product.price,
       image: product.images[0],
+      color: selectedColor,
+      model: selectedModel,
       quantity: quantity,
     };
     dispatch(addToCart(cartItem));
@@ -126,9 +123,8 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
     });
   };
 
-  const currentPrice = product.price; // Simplified for demo
+  const currentPrice = product.price;
 
-  // Dummy data for reviews
   const reviews = [
     {
       id: 1,
@@ -168,7 +164,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
     },
   ];
 
-  // Review statistics (simulated)
   const reviewStats = {
     overallRating: 4.1,
     totalReviews: 68,
@@ -186,7 +181,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
   return (
     <div className="font-inter antialiased min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
-        {/* Tabs for General Info, Product Details, Reviews */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 md:w-fit md:inline-flex bg-gray-100 rounded-md p-1 mb-6">
             <TabsTrigger
@@ -209,7 +203,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
             </TabsTrigger>
           </TabsList>
 
-          {/* General Info Tab Content */}
           <TabsContent
             value="general-info"
             className="bg-white rounded-lg  p-6 md:p-8"
@@ -239,7 +232,7 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
                       ))}
                     </div>
                   </div>
-                  {/* Custom navigation arrows for Embla (can be styled as needed) */}
+
                   {emblaApi && (
                     <>
                       <Button
@@ -461,7 +454,6 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
                     {/* Add rotation on click */}
                   </div>
                   <div className="text-gray-600 text-sm mt-2">
-                    {/* Content for warranty info - hidden/shown with state/animation */}
                     <p>
                       Standard 1-year manufacturer&#39;s warranty included.
                       Extended warranty options available at checkout.

@@ -1,6 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -10,12 +9,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"; // Import Shadcn Table components
 import { Minus, Plus, X, Percent, ChevronRight } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+} from "@/redux/features/cartSlice";
+import Image from "next/image";
 
 // Define a type for a cart item
 interface CartItem {
   id: string;
-  title: string;
+  name: string;
   image: string;
   color: string;
   model: string;
@@ -25,58 +39,22 @@ interface CartItem {
 }
 
 const ShoppingCartPage: React.FC = () => {
-  // Dummy cart data for demonstration
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "iphone14",
-      title: "Apple iPhone 14 128GB",
-      image: "https://placehold.co/80x80/E0E0E0/333333?text=iPhone",
-      color: "White",
-      model: "128 GB",
-      price: 899.0,
-      quantity: 1,
-    },
-    {
-      id: "ipadpro",
-      title: "Tablet Apple iPad Pro M2",
-      image: "https://placehold.co/80x80/D0D0D0/333333?text=iPad",
-      color: "Black",
-      model: "256 GB",
-      price: 989.0,
-      oldPrice: 1099.0, // Example of a discounted item
-      quantity: 1,
-    },
-    {
-      id: "smartwatch",
-      title: "Smart Watch Series 7",
-      image: "https://placehold.co/80x80/C0C0C0/333333?text=Watch",
-      color: "White",
-      model: "44 mm",
-      price: 429.0,
-      quantity: 2,
-    },
-  ]);
+  const cartItems: CartItem[] = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const handleQuantityChange = (
     id: string,
     type: "increment" | "decrement"
   ) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.id === id) {
-          if (type === "increment") {
-            return { ...item, quantity: item.quantity + 1 };
-          } else if (type === "decrement" && item.quantity > 1) {
-            return { ...item, quantity: item.quantity - 1 };
-          }
-        }
-        return item;
-      })
-    );
+    if (type === "increment") {
+      dispatch(increaseQuantity(id));
+    } else {
+      dispatch(decreaseQuantity(id));
+    }
   };
 
   const handleRemoveItem = (id: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    dispatch(removeFromCart(id));
   };
 
   const calculateSubtotal = () => {
@@ -84,103 +62,135 @@ const ShoppingCartPage: React.FC = () => {
   };
 
   const subtotal = calculateSubtotal();
-  const saving = 110.0; // Dummy saving
-  const taxCollected = 73.4; // Dummy tax
-  const shippingCost = "Calculated at checkout"; // As per image
+  const saving = 0.0;
+  const taxCollected = 0.0;
+  const shippingCost = "Calculated at checkout";
 
   const estimatedTotal = subtotal - saving + taxCollected;
 
   return (
-    <div className="font-inter antialiased min-h-screen">
+    <div className="font-inter antialiased bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
         <h1 className="text-2xl md:text-4xl font-semibold text-gray-900 mb-6">
           Shopping cart
         </h1>
-
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column: Cart Items */}
-          <div className="lg:w-2/3 bg-white rounded-lg  overflow-hidden">
-            <div className="p-4 border-b border-gray-200 hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_0.5fr] gap-4 text-gray-600 font-semibold">
-              <span>Product</span>
-              <span>Price</span>
-              <span>Quantity</span>
-              <span>Total</span>
-              <span></span> {/* For clear cart/remove */}
-            </div>
-            {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_0.5fr] gap-4 p-4 border-b border-gray-200 items-center last:border-b-0"
-              >
-                {/* Product Info */}
-                <div className="flex items-center">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-20 h-20 object-contain rounded-md mr-4"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-gray-600">Color: {item.color}</p>
-                    <p className="text-sm text-gray-600">Model: {item.model}</p>
-                  </div>
-                </div>
-
-                {/* Price */}
-                <div className="flex flex-col md:block">
-                  <span className="font-semibold text-gray-900">
-                    ${item.price.toFixed(2)}
-                  </span>
-                  {item.oldPrice && (
-                    <span className="text-sm text-gray-500 line-through ml-2 md:ml-0 block md:inline">
-                      ${item.oldPrice.toFixed(2)}
-                    </span>
-                  )}
-                </div>
-
-                {/* Quantity */}
-                <div className="flex items-center border border-gray-300 rounded-md overflow-hidden w-fit md:w-full">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleQuantityChange(item.id, "decrement")}
-                    className="h-8 w-8 rounded-none"
+          {/* Left Column: Cart Items (using Shadcn Table) */}
+          <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden">
+            <Table>
+              <TableHeader className="hidden md:table-header-group">
+                {" "}
+                {/* Hide header on small screens */}
+                <TableRow className="border-b border-gray-200">
+                  <TableHead className="w-[40%] text-gray-600 font-semibold">
+                    Product
+                  </TableHead>
+                  <TableHead className="w-[15%] text-gray-600 font-semibold">
+                    Unit Price
+                  </TableHead>
+                  <TableHead className="w-[20%] text-gray-600 font-semibold">
+                    Quantity
+                  </TableHead>
+                  <TableHead className="w-[15%] text-gray-600 font-semibold">
+                    Total
+                  </TableHead>
+                  <TableHead className="w-[10%] text-gray-600 font-semibold text-right"></TableHead>{" "}
+                  {/* For remove button */}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {cartItems.map((item) => (
+                  <TableRow
+                    key={item.id}
+                    className="border-b border-gray-200 last:border-b-0"
                   >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span className="flex items-center justify-center w-8 text-sm font-semibold text-gray-800 border-x border-gray-300">
-                    {item.quantity}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleQuantityChange(item.id, "increment")}
-                    className="h-8 w-8 rounded-none"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+                    {/* Product Info */}
+                    <TableCell className="py-4 px-2 md:px-4">
+                      <div className="flex items-center">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 object-contain rounded-md mr-3 md:w-20 md:h-20"
+                        />
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {item.name}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            Color: {item.color}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Model: {item.model}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
 
-                {/* Total */}
-                <span className="font-semibold text-gray-900">
-                  ${(item.price * item.quantity).toFixed(2)}
-                </span>
+                    {/* Unit Price */}
+                    <TableCell className="py-4 px-2 md:px-4">
+                      <div className="flex flex-col md:block">
+                        <span className="font-semibold text-gray-900">
+                          ${item.price.toFixed(2)}
+                        </span>
+                        {item.oldPrice && (
+                          <span className="text-sm text-gray-500 line-through ml-2 md:ml-0 block md:inline">
+                            ${item.oldPrice.toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
 
-                {/* Remove Button */}
-                <div className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleRemoveItem(item.id)}
-                    className="text-gray-500 hover:text-red-500"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))}
+                    {/* Quantity */}
+                    <TableCell className="py-4 px-2 md:px-4">
+                      <div className="flex items-center border border-gray-300 rounded-md overflow-hidden w-fit">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            handleQuantityChange(item.id, "decrement")
+                          }
+                          className="h-8 w-8 rounded-none"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <span className="flex items-center justify-center w-8 text-sm font-semibold text-gray-800 border-x border-gray-300">
+                          {item.quantity}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            handleQuantityChange(item.id, "increment")
+                          }
+                          className="h-8 w-8 rounded-none"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+
+                    {/* Total */}
+                    <TableCell className="py-4 px-2 md:px-4 font-semibold text-gray-900">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </TableCell>
+
+                    {/* Remove Button */}
+                    <TableCell className="py-4 px-2 md:px-4 text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
             <div className="p-4 flex justify-end">
               <Button
                 variant="link"
@@ -192,7 +202,7 @@ const ShoppingCartPage: React.FC = () => {
           </div>
 
           {/* Right Column: Order Summary */}
-          <aside className="lg:w-1/3 bg-[#F5F7FA] rounded-lg  p-6">
+          <aside className="lg:w-1/3 bg-[#F5F7FA] rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
               Order summary
             </h2>
