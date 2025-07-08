@@ -31,7 +31,7 @@ const CartDrawer: React.FC = () => {
 
   const subtotal = React.useMemo(() => {
     return cartItems.reduce(
-      (sum, item) => sum + (item.price * (item.quantity || 0)),
+      (sum, item) => sum + item.price * (item.quantity || 0),
       0
     );
   }, [cartItems]);
@@ -47,13 +47,13 @@ const CartDrawer: React.FC = () => {
   }, []);
 
   const CartTriggerButton = () => (
-    <button 
+    <button
       className="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
       onClick={() => setIsDrawerOpen(!isDrawerOpen)}
     >
       <ShoppingCart className="h-5 w-5 text-white" />
       {isMounted && cartItems.length > 0 && (
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
           {cartItems.length}
         </span>
       )}

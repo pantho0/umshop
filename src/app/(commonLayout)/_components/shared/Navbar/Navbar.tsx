@@ -37,23 +37,14 @@ const Navbar: React.FC = () => {
             >
               <Heart className="h-5 w-5" />
             </a>
-            <a
-              href="#"
+            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
+            <CartDrawer />
+            <Link
+              href="/login"
               className="hover:text-white transition-colors duration-200"
             >
               <User className="h-5 w-5" />
-            </a>
-            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
-            <CartDrawer />
-            <div className="flex items-center">
-              <span className="mr-1">Eng</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-            <div className="flex items-center">
-              <DollarSign className="h-4 w-4 mr-1" />
-              <span className="mr-1">USD ($)</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -92,7 +83,6 @@ const Navbar: React.FC = () => {
             <Search className="h-6 w-6 text-white" />
             <Heart className="h-6 w-6 text-white" />
             <User className="h-6 w-6 text-white" />
-            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
             <CartDrawer />
             {/* Mobile Mega Menu */}
             <MegaMenu />

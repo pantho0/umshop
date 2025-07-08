@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import { Star, ShoppingCart, ChevronRight, EyeIcon } from "lucide-react";
+import { Star, ChevronRight, EyeIcon } from "lucide-react";
 import { Product } from "@/interface";
 import Link from "next/link";
 
@@ -54,13 +54,13 @@ const TrandingProducts: React.FC<{ products: Product[] }> = ({ products }) => {
         <h2 className="text-lg md:text-4xl font-semibold text-gray-900">
           Trending products
         </h2>
-        <a
-          href="#"
+        <Link
+          href="/products"
           className="text-purple-600 hover:text-purple-800 font-semibold flex items-center transition-colors duration-200"
         >
           View all
           <ChevronRight className="ml-1 h-4 w-4" />
-        </a>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">

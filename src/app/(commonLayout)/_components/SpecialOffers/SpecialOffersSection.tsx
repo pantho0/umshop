@@ -123,13 +123,13 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
           </h2>
           <CountdownTimer targetDate={targetDate} />
         </div>
-        <a
-          href="#"
+        <Link
+          href="/products"
           className="text-purple-600 hover:text-purple-800 font-semibold flex items-center transition-colors duration-200"
         >
           View all
           <ChevronRight className="ml-1 h-4 w-4" />
-        </a>
+        </Link>
       </div>
 
       {/* Shadcn UI Carousel Integration */}

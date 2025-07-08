@@ -7,6 +7,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import LoginImage from "../../../public/assets/login.jpg";
 import Image from "next/image";
+import Logo from "../../../public/assets/umshop.jpg";
+import Link from "next/link";
+import Lottie from "lottie-react";
+import loginanime from "../../../public/assets/login-animation.json";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,27 +26,31 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
-      <div className=" rounded-lg flex flex-col lg:flex-row w-full max-w-4xl overflow-hidden">
+      <div className=" rounded-lg flex flex-col lg:flex-row w-full md:items-center max-w-4xl overflow-hidden">
         {/* Left Section: Login Form */}
         <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-between">
           <div>
             <div className="mb-8">
-              <img
-                src="https://placehold.co/40x40/FF0000/FFFFFF?text=C"
-                alt="Cartzilla Logo"
-                className="h-10 w-10 mb-4"
-              />
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="flex items-center justify-center">
+                <Link href="/">
+                  <Image
+                    src={Logo}
+                    alt="Cartzilla Logo"
+                    className="h-13 w-40 mb-4 cursor-pointer"
+                  />
+                </Link>
+              </div>
+              <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
                 Welcome back
               </h1>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-center text-sm">
                 Do not have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  href="/register"
                   className="text-purple-600 hover:underline font-semibold"
                 >
                   Create an account
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -109,9 +117,7 @@ const LoginPage: React.FC = () => {
             </form>
 
             <div className="flex  my-6">
-              <Separator className="flex-grow bg-gray-200" />
-
-              <Separator className="flex-grow bg-gray-200" />
+              <Separator className=" w-1/2 bg-gray-200" />
             </div>
 
             <div className="flex justify-center space-x-4">
@@ -163,16 +169,8 @@ const LoginPage: React.FC = () => {
         </div>
 
         {/* Right Section: Image */}
-        <div className="hidden lg:block lg:w-1/2 bg-blue-100 relative">
-          <Image
-            src={LoginImage} // Placeholder image
-            alt="Smiling woman using phone"
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = `https://placehold.co/600x800/E0E0E0/333333?text=Image+Error`;
-            }}
-          />
+        <div className="hidden lg:block lg:w-1/2relative">
+          <Lottie animationData={loginanime} loop={true} />
         </div>
       </div>
     </div>
