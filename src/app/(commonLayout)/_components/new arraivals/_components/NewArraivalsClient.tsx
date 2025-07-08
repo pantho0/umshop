@@ -4,25 +4,65 @@
 import { Star } from "lucide-react";
 import { Product } from "@/interface";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Simple deterministic hash function
+const simpleHash = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+};
 
 export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
-  const [ratings, setRatings] = useState<{ [key: string]: number }>({});
+  const [isMounted, setIsMounted] = useState(false);
+  const [ratings, setRatings] = useState<{ [key: string]: number }>(() => {
+    // Initialize with deterministic ratings based on product ID
+    return products.reduce((acc, product) => {
+      // Create a deterministic rating between 3-5 based on product ID
+      const hash = simpleHash(product._id);
+      acc[product._id] = (hash % 3) + 3; // Will be 3, 4, or 5
+      return acc;
+    }, {} as { [key: string]: number });
+  });
+
   const featuredProduct = products[0];
   const gridProducts = products.slice(1, 7);
-  const renderStars = (rating: number) => {
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const getRating = (productId: string) => {
+    // This ensures we get the same rating on both server and client
+    const hash = simpleHash(productId);
+    return (hash % 3) + 3; // Will be 3, 4, or 5
+  };
+
+  const renderStars = (productId: string) => {
+    const rating = getRating(productId);
+    
+    // Create stars array with proper keys and consistent rendering
     const stars = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 1; i <= 5; i++) {
+      const isFilled = i <= rating;
       stars.push(
         <Star
           key={i}
-          className={`h-4 w-4 ${
-            i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-          }`}
+          className={`h-4 w-4 ${isFilled ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+          aria-hidden="true"
         />
       );
     }
-    return <div className="flex">{stars}</div>;
+    
+    return (
+      <div className="flex" aria-label={`${rating} out of 5 stars`}>
+        {stars}
+      </div>
+    );
   };
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12">
@@ -99,13 +139,12 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                 <h4 className="text-sm font-semibold text-gray-800 mb-1 leading-tight">
                   {product.title}
                 </h4>
-                <div className="flex items-center  text-gray-500 mb-2 text-sm">
-                  {renderStars(ratings[product?._id] || 3)}{" "}
-                  {/* Random stars 3-5 */}
+                <div className="flex items-center text-gray-500 mb-2 text-sm">
+                  {renderStars(product._id)}
                   <span className="ml-2">
-                    ({Math.floor(Math.random() * 200) + 10})
-                  </span>{" "}
-                  {/* Random review count */}
+                    {/* Deterministic review count based on product ID */}
+                    ({(simpleHash(product._id) % 200) + 10})
+                  </span>
                 </div>
                 <div className="flex items-baseline space-x-2">
                   <span className=" font-bold text-gray-900 text-sm">

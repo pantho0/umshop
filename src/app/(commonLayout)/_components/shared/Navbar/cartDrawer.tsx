@@ -40,13 +40,19 @@ const CartDrawer: React.FC = () => {
     dispatch(removeFromCart(id));
   };
 
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const CartTriggerButton = () => (
-    <button className="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-200">
-      <ShoppingCart
-        onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-        className="h-5 w-5 text-white"
-      />
-      {cartItems.length > 0 && (
+    <button 
+      className="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
+      onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+    >
+      <ShoppingCart className="h-5 w-5 text-white" />
+      {isMounted && cartItems.length > 0 && (
         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
           {cartItems.length}
         </span>

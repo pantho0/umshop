@@ -26,22 +26,36 @@ interface Product {
   images: string[];
 }
 
-// Helper for star ratings
-const renderStars = (rating: number, reviewCount: number) => {
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    stars.push(
-      <Star
-        key={i}
-        className={`h-4 w-4 ${
-          i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-        }`}
-      />
-    );
+// Simple deterministic hash function
+const simpleHash = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
   }
+  return Math.abs(hash);
+};
+
+// Helper for star ratings
+const renderStars = (title: string) => {
+  // Generate consistent rating and review count based on title
+  const rating = (simpleHash(title) % 3) + 3; // 3-5 stars
+  const reviewCount = (simpleHash(title) % 200) + 10; // 10-209 reviews
+  
   return (
     <div className="flex items-center text-sm text-gray-500">
-      <div className="flex mr-1">{stars}</div>
+      <div className="flex mr-1" aria-label={`${rating} out of 5 stars`}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Star
+            key={i}
+            className={`h-4 w-4 ${
+              i <= rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+            }`}
+            aria-hidden="true"
+          />
+        ))}
+      </div>
       <span>({reviewCount})</span>
     </div>
   );
@@ -209,9 +223,8 @@ const SpecialOffersSection: React.FC = () => {
           {/* Adjust margin for gap */}
           {products.slice(0, 8).map((product, index) => {
             const oldPrice = (product.price * 1.2).toFixed(2); // Simulate 20% higher old price
-            const randomRating = Math.floor(Math.random() * 3) + 3; // Random 3-5 stars
-            const randomReviewCount = Math.floor(Math.random() * 200) + 10; // Random 10-209 reviews
-            const availableCount = Math.floor(Math.random() * 100) + 1; // Random available count
+            // Generate consistent available count based on product title
+            const availableCount = (simpleHash(product.title) % 100) + 1; // 1-100 available
 
             return (
               <CarouselItem
@@ -243,7 +256,7 @@ const SpecialOffersSection: React.FC = () => {
 
                   {/* Product Info */}
                   <div className="p-4 flex flex-col flex-grow">
-                    {renderStars(randomRating, randomReviewCount)}
+                    {renderStars(product.title)}
                     <h3 className="text-lg font-semibold text-gray-800 mt-2 mb-2 leading-tight">
                       {product.title}
                     </h3>
