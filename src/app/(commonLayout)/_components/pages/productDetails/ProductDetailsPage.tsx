@@ -23,6 +23,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Product } from "@/interface";
 import { useAppDispatch } from "@/redux/hook";
 import { addToCart } from "@/redux/features/cartSlice";
+import { toast } from "sonner";
 
 const renderStars = (
   rating: number,
@@ -113,6 +114,7 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
       quantity: quantity,
     };
     dispatch(addToCart(cartItem));
+    toast.success("Product added to cart");
   };
 
   const handleQuantityChange = (type: "increment" | "decrement") => {
@@ -368,7 +370,7 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
                     </div>
                     <Button
                       onClick={addToCartHandler}
-                      className="px-6 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center"
+                      className="px-6 py-2 bg-red-500 text-white font-semibold cursor-pointer rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center"
                     >
                       <ShoppingCart className="h-5 w-5 mr-2" /> Add to cart
                     </Button>

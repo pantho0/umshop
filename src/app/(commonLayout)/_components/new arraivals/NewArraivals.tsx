@@ -5,12 +5,12 @@ import { ApiResponse, Product } from "@/interface";
 
 const NewArraivals: React.FC = async () => {
   const { data } = await nexiosInstance.get<ApiResponse<Product[]>>(
-    "/products?limit=7&sortBy=-createdAt",
-    {
-      next: {
-        revalidate: 30,
-      },
-    }
+    "/products?limit=7&sortBy=-createdAt"
+    // {
+    //   next: {
+    //     revalidate: 30,
+    //   },
+    // }
   );
   const products = data.data;
 
