@@ -15,6 +15,7 @@ import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
 
 import CartDrawer from "./cartDrawer";
+import Link from "next/link";
 
 const Navbar: React.FC = () => {
   return (
@@ -61,13 +62,15 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4 max-w-7xl">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={140}
-              height={140}
-              className="rounded"
-            />
+            <Link href="/">
+              <Image
+                src={Logo}
+                alt="Logo"
+                width={140}
+                height={140}
+                className="rounded"
+              />
+            </Link>
             {/* Mega Menu Integration */}
             <div className="hidden md:block">
               <MegaMenu />

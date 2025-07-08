@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartItem {
@@ -11,6 +12,13 @@ interface CartItem {
 }
 
 const initialState: CartItem[] = [];
+
+// Helper function to ensure we always return an array
+export const getCartItems = (state: any): CartItem[] => {
+  if (Array.isArray(state)) return state;
+  if (state?.cart && Array.isArray(state.cart)) return state.cart;
+  return [];
+};
 
 const cartSlice = createSlice({
   name: "cart",

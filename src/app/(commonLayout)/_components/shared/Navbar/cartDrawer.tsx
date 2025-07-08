@@ -13,7 +13,7 @@ import {
 import { ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { removeFromCart } from "@/redux/features/cartSlice";
+import { removeFromCart, getCartItems } from "@/redux/features/cartSlice";
 import Link from "next/link";
 
 interface CartItem {
@@ -26,13 +26,15 @@ interface CartItem {
 
 const CartDrawer: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const cartItems: CartItem[] = useAppSelector((state) => state.cart);
+  const cartItems: CartItem[] = useAppSelector((state) => getCartItems(state));
   const dispatch = useAppDispatch();
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = React.useMemo(() => {
+    return cartItems.reduce(
+      (sum, item) => sum + (item.price * (item.quantity || 0)),
+      0
+    );
+  }, [cartItems]);
 
   const removeFromCartHandler = (id: string) => {
     dispatch(removeFromCart(id));

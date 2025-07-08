@@ -79,8 +79,6 @@ const ShoppingCartPage: React.FC = () => {
           <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden">
             <Table>
               <TableHeader className="hidden md:table-header-group">
-                {" "}
-                {/* Hide header on small screens */}
                 <TableRow className="border-b border-gray-200">
                   <TableHead className="w-[40%] text-gray-600 font-semibold">
                     Product
@@ -94,8 +92,9 @@ const ShoppingCartPage: React.FC = () => {
                   <TableHead className="w-[15%] text-gray-600 font-semibold">
                     Total
                   </TableHead>
-                  <TableHead className="w-[10%] text-gray-600 font-semibold text-right"></TableHead>{" "}
-                  {/* For remove button */}
+                  <TableHead className="w-[10%] text-gray-600 font-semibold text-right">
+                    {/* For remove button */}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
