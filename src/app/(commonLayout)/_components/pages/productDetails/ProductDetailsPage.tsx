@@ -77,6 +77,7 @@ const ProductDetailsPage: React.FC<{ product: Product }> = ({ product }) => {
       setSelectedModel(product.size[0]);
       setSelectedColor(product.variant_color[0]);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [product]);
 
   useEffect(() => {

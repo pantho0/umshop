@@ -6,15 +6,26 @@ import NewArraivals from "./_components/new arraivals/NewArraivals";
 import TrandingProducts from "./_components/trandingProduct/TrandingProducts";
 import DiscountBanner from "./_components/discountedSection/DiscountBanner";
 import SpecialOffersSection from "./_components/SpecialOffers/SpecialOffersSection";
+import nexiosInstance from "@/app/config/nexios.config";
+import { ApiResponse, Product } from "@/interface";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const { data } = await nexiosInstance.get<ApiResponse<Product[]>>(
+    "/products?limit=7&sortBy=-createdAt",
+    {
+      next: {
+        revalidate: 30,
+      },
+    }
+  );
+  const products = data.data;
   return (
     <>
       <Banner />
       <ContainerLayout>
         <BannerBottom />
         <NewArraivals />
-        <TrandingProducts />
+        <TrandingProducts products={products} />
         <DiscountBanner />
         <SpecialOffersSection />
       </ContainerLayout>
