@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from "react";
-import { Star, ShoppingCart, ChevronRight } from "lucide-react";
+import { Star, ChevronRight, EyeIcon } from "lucide-react";
 
 // Import Shadcn UI Carousel components
 import {
@@ -198,11 +198,13 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
                     </div>
                   </Link>
 
-                  {/* Add to Cart Button */}
+                  {/*view product button */}
                   <div className="p-4 border-t border-gray-100 flex justify-end">
-                    <button className="p-2 bg-gray-100 rounded-full hover:bg-purple-100 text-gray-600 hover:text-purple-700 transition-colors duration-200 shadow-sm">
-                      <ShoppingCart className="h-5 w-5" />
-                    </button>
+                    <Link href={`/products/${product.slug}`}>
+                      <button className="p-2 bg-gray-100 cursor-pointer rounded-full hover:bg-purple-100 text-gray-600 hover:text-purple-700 transition-colors duration-200 shadow-sm">
+                        <EyeIcon className="h-5 w-5" />
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </CarouselItem>
