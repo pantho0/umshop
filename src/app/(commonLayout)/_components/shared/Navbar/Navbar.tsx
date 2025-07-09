@@ -3,14 +3,7 @@
 import React from "react";
 import MegaMenu from "./MegaMenu";
 import Logo from "../../../../../../public/assets/umshop.jpg";
-import {
-  Search,
-  Heart,
-  User,
-  DollarSign,
-  ChevronDown,
-  Percent,
-} from "lucide-react";
+import { Search, Heart, User, Percent } from "lucide-react";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
 

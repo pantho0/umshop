@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
@@ -10,17 +10,15 @@ import Logo from "../../../public/assets/umshop.jpg";
 import Link from "next/link";
 import Lottie from "lottie-react";
 import loginanime from "../../../public/assets/login-animation.json";
+import UMForm from "@/components/UMForm/UMForm";
+import { UMInput } from "@/components/UMForm/UMInput";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", { email, password, rememberMe });
-    alert("Login functionality not implemented in this demo.");
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
   };
 
   return (
@@ -53,37 +51,27 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full"
-                />
+            <UMForm onSubmit={onSubmit}>
+              <div className="space-y-2 mb-4">
+                <div className="space-y-1">
+                  <UMInput
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    label="Email"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <UMInput
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    label="Password"
+                  />
+                </div>
               </div>
 
-              <div className="flex justify-between items-center text-sm">
+              <div className="flex justify-between items-center text-sm mb-4">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="remember-me"
@@ -113,7 +101,7 @@ const LoginPage: React.FC = () => {
               >
                 Sign in
               </Button>
-            </form>
+            </UMForm>
 
             <div className="flex  my-6">
               <Separator className=" w-1/2 bg-gray-200" />
