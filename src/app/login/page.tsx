@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import LoginImage from "../../../public/assets/login.jpg";
 import Image from "next/image";
 import Logo from "../../../public/assets/umshop.jpg";
 import Link from "next/link";

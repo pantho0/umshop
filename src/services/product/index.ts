@@ -1,7 +1,12 @@
 "use server";
 
 import nexiosInstance from "@/app/config/nexios.config";
-import { ApiResponse, IParentCategory, ISubCategory, Product } from "@/interface";
+import {
+  ApiResponse,
+  IParentCategory,
+  ISubCategory,
+  Product,
+} from "@/interface";
 
 export const getProducts = async (query?: Record<string, unknown>) => {
   const res = await nexiosInstance.get<ApiResponse<Product[]>>("/products", {
@@ -12,15 +17,24 @@ export const getProducts = async (query?: Record<string, unknown>) => {
 
 export const getParentCategories = async () => {
   const res = await nexiosInstance.get<ApiResponse<IParentCategory[]>>(
-    "/parent-categories"
+    "/parent-categories",
+    {
+      next: {
+        revalidate: 30,
+      },
+    }
   );
   return res.data;
 };
 
 export const getSubCategories = async () => {
   const res = await nexiosInstance.get<ApiResponse<ISubCategory[]>>(
-    "/sub-categories"
+    "/sub-categories",
+    {
+      next: {
+        revalidate: 30,
+      },
+    }
   );
   return res.data;
 };
-

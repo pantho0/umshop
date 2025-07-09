@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Settings, Gift, Percent, Heart, Clock } from "lucide-react"; // Lucide icons for benefits
+import Lottie from "lottie-react";
+import registerAnimation from "../../../public/assets/register-animation.json";
+import Logo from "../../../public/assets/umshop.jpg";
+import Image from "next/image";
+import Link from "next/link";
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -31,31 +35,26 @@ const RegisterPage: React.FC = () => {
     alert("Registration functionality not implemented in this demo.");
   };
 
-  const accountBenefits = [
-    { icon: Mail, title: "Subscribe to your favorite products" },
-    { icon: Settings, title: "View and manage your orders and wishlist" },
-    { icon: Gift, title: "Earn rewards for future purchases" },
-    { icon: Percent, title: "Receive exclusive offers and discounts" },
-    { icon: Heart, title: "Create multiple wishlists" },
-    { icon: Clock, title: "Pay for purchases by installments" },
-  ];
-
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
-      <div className="bg-slate-50 rounded-lg  flex flex-col lg:flex-row w-full max-w-4xl overflow-hidden">
+      <div className="bg-slate-50 rounded-lg  flex flex-col lg:flex-row w-full max-w-4xl items-center  overflow-hidden">
         {/* Left Section: Registration Form */}
         <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-between">
           <div>
             <div className="mb-8">
-              <img
-                src="https://placehold.co/40x40/FF0000/FFFFFF?text=C"
-                alt="Cartzilla Logo"
-                className="h-10 w-10 mb-4"
-              />
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="flex justify-center">
+                <Link href="/">
+                  <Image
+                    src={Logo}
+                    alt="Cartzilla Logo"
+                    className="h-13 w-40 mb-4 cursor-pointer"
+                  />
+                </Link>
+              </div>
+              <h1 className="text-3xl font-bold text-center text-gray-900 mb-2">
                 Create an account
               </h1>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 text-center text-sm">
                 I already have an account?{" "}
                 <a
                   href="#"
@@ -157,8 +156,6 @@ const RegisterPage: React.FC = () => {
 
             <div className="flex items-center my-6">
               <Separator className="flex-grow bg-gray-200" />
-
-              <Separator className="flex-grow bg-gray-200" />
             </div>
 
             <div className="flex justify-center space-x-4">
@@ -210,28 +207,8 @@ const RegisterPage: React.FC = () => {
         </div>
 
         {/* Right Section: Account Benefits */}
-        <div className="hidden lg:block lg:w-1/2 bg-blue-100 p-8 md:p-12  flex-col justify-center items-center text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            Cartzilla account benefits
-          </h2>
-          <div className="grid grid-cols-2 gap-6">
-            {accountBenefits.map((benefit, index) => {
-              const Icon = benefit.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg p-4 shadow-sm flex flex-col items-center justify-center text-center h-32"
-                >
-                  <div className="bg-purple-100 p-3 rounded-full mb-3">
-                    <Icon className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <p className="text-sm font-semibold text-gray-800 leading-tight">
-                    {benefit.title}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+        <div className="hidden lg:block lg:w-1/2  p-8 md:p-12  flex-col justify-center items-center text-center">
+          <Lottie animationData={registerAnimation} loop={true} />
         </div>
       </div>
     </div>
