@@ -1,5 +1,5 @@
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import SidebarContent from "../_components/SidebarContent";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SidebarContent } from "../_components/SidebarContent";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Navbar from "@/app/(commonLayout)/_components/shared/Navbar/Navbar";
@@ -10,40 +10,47 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navbar />
-      <div className="flex">
-        {/* Static Sidebar for Desktop */}
-        <aside className="hidden md:block w-72 h-[calc(100vh-64px)] sticky top-0 border-r bg-white dark:bg-gray-800 overflow-y-auto">
-          <div className="p-4">
-            <SidebarContent />
-          </div>
+    <div className="h-screen flex flex-col">
+      {/* Fixed Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <Navbar />
+      </header>
+
+      <div className="flex flex-1 pt-16 md:pt-24 h-full">
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:block w-72 bg-gray-800 text-white overflow-y-auto fixed left-0 top-24 bottom-0 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500">
+          <SidebarContent />
         </aside>
 
-        {/* Main Content Area */}
-        <div className="flex-1">
-          <div className="md:hidden sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-white px-4">
-            {/* Mobile Drawer Trigger */}
-            <Drawer direction="left">
-              <DrawerTrigger asChild>
-                <Button size="icon" variant="outline">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle Menu</span>
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent className="h-full w-72 p-0">
-                <div className="p-4">
-                  <SidebarContent />
-                </div>
-              </DrawerContent>
-            </Drawer>
-            <h1 className="flex-1 text-lg font-semibold text-center">
-              My Account
-            </h1>
-          </div>
+        {/* Mobile Sidebar Toggle */}
+        <Sheet>
+          <SheetTrigger asChild className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="fixed left-2 top-20 z-40 bg-gray-800 text-white hover:bg-gray-700 border border-gray-600"
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="left"
+            className="w-72 p-0 bg-gray-800 text-white border-r-0 top-0 h-screen pt-0"
+            style={{ "--tw-translate-y": "0" } as React.CSSProperties}
+          >
+            <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500">
+              <SidebarContent />
+            </div>
+          </SheetContent>
+        </Sheet>
 
-          <main className="p-4 sm:p-6">{children}</main>
-        </div>
+        {/* Main Content - Only this area should scroll */}
+        <main className="flex-1 ml-0 md:ml-72 bg-white dark:bg-gray-900 overflow-y-auto">
+          <div className="min-h-[calc(100vh-4rem)]">
+            <div className="p-4 sm:p-6">{children}</div>
+          </div>
+        </main>
       </div>
     </div>
   );

@@ -10,9 +10,15 @@ import Image from "next/image";
 import CartDrawer from "./cartDrawer";
 import Link from "next/link";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  className?: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
   return (
-    <nav className="bg-gray-800 text-white shadow-md z-50 relative">
+    <nav
+      className={`bg-gray-800 text-white shadow-md z-50 relative ${className}`}
+    >
       {/* Top Bar */}
       <div className="bg-gray-900 py-2 text-sm text-gray-300 hidden md:block">
         <div className="container mx-auto flex justify-end items-center px-4 max-w-7xl">
@@ -30,7 +36,7 @@ const Navbar: React.FC = () => {
             >
               <Heart className="h-5 w-5" />
             </a>
-            {/* FIX: CartDropDown should always be rendered for its DrawerTrigger to work */}
+
             <CartDrawer />
             <Link
               href="/login"

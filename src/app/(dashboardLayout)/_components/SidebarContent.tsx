@@ -1,178 +1,108 @@
 "use client";
 
-import {
-  LayoutDashboard,
-  Heart,
-  CreditCard,
-  User,
-  MapPin,
-  Bell,
-  HelpCircle,
-  FileText,
-  LogOut,
-} from "lucide-react";
-
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { sidebarNavItems } from "./config/SidebarItems";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-// You can move this to a separate file, e.g., /config/dashboard.ts
-const sidebarNavItems = {
-  main: [
-    {
-      href: "/dashboard/orders",
-      label: "Orders",
-      icon: LayoutDashboard,
-      badge: "1",
-    },
-    { href: "/dashboard/wishlist", label: "Wishlist", icon: Heart },
-    {
-      href: "/dashboard/payment",
-      label: "Payment methods",
-      icon: CreditCard,
-    },
-    { href: "/dashboard/reviews", label: "My reviews", icon: User },
-  ],
-  account: [
-    { href: "/dashboard/personal-info", label: "Personal info", icon: User },
-    { href: "/dashboard/addresses", label: "Addresses", icon: MapPin },
-    {
-      href: "/dashboard/notifications",
-      label: "Notifications",
-      icon: Bell,
-    },
-  ],
-  service: [
-    { href: "/dashboard/help", label: "Help center", icon: HelpCircle },
-    {
-      href: "/dashboard/terms",
-      label: "Terms and conditions",
-      icon: FileText,
-    },
-  ],
-};
-
-// Reusable NavLink component - Modified to use React state instead of Next.js router
-const NavLink = ({
-  href,
-  label,
-  icon: Icon,
-  badge,
-  isActive,
-  onClick,
-}: {
+interface NavItemProps {
   href: string;
   label: string;
   icon: React.ElementType;
   badge?: string;
-  isActive: boolean;
-  onClick: () => void;
-}) => {
+}
+
+const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   return (
-    // Replaced Next.js Link with a standard anchor tag and an onClick handler
-    <a
-      href={href}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
-      className="block"
+    <Button
+      asChild
+      variant={isActive ? "secondary" : "ghost"}
+      className={`w-full justify-start rounded-lg transition-colors ${
+        isActive
+          ? "bg-gray-700 text-white hover:bg-gray-600"
+          : "text-gray-300 hover:bg-gray-700 hover:text-white"
+      }`}
     >
-      <Button
-        variant={isActive ? "secondary" : "ghost"}
-        className="w-full justify-start items-center"
-      >
+      <Link href={href}>
         <Icon className="mr-3 h-5 w-5" />
         <span className="flex-grow text-left">{label}</span>
         {badge && (
-          <Badge className="ml-auto bg-red-500 text-white rounded-full px-2 py-0.5 text-xs">
+          <Badge className="ml-auto bg-red-500 text-white hover:bg-red-600">
             {badge}
           </Badge>
         )}
-      </Button>
-    </a>
+      </Link>
+    </Button>
   );
 };
 
-// Reusable Sidebar Content component - Modified to manage its own state
-function SidebarContent() {
-  // Use React state to track the active link, removing the dependency on usePathname
-  const [activePath, setActivePath] = useState("/dashboard/orders");
-
+export function SidebarContent() {
   return (
-    <div className="flex h-full flex-col justify-between p-4 bg-white dark:bg-gray-950">
-      <div className="flex-grow">
-        {/* User Profile Section */}
-        <div className="flex items-center space-x-3 mb-8">
-          <Avatar className="h-10 w-10">
+    <div className="flex h-full flex-col p-4 text-gray-300 md:mt-8">
+      <div className="space-y-6">
+        {/* User Profile */}
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30">
+          <Avatar className="border-2 border-gray-600">
             <AvatarImage
               src="https://placehold.co/40x40/E2E8F0/4A5568?text=SG"
-              alt="Susan Gardner"
+              alt="User"
+              className="bg-gray-600"
             />
-            <AvatarFallback>SG</AvatarFallback>
+            <AvatarFallback className="bg-gray-600">SG</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-semibold text-sm">Susan Gardner</p>
-            <p className="text-xs text-gray-500">100 bonuses available</p>
+            <p className="font-semibold text-white">Susan Gardner</p>
+            <p className="text-xs text-gray-400">100 bonuses available</p>
           </div>
         </div>
 
-        {/* Navigation Sections */}
-        <nav className="flex flex-col space-y-4">
+        {/* Navigation */}
+        <nav className="space-y-4">
           <div className="space-y-1">
             {sidebarNavItems.main.map((item) => (
-              <NavLink
-                key={item.href}
-                {...item}
-                isActive={activePath === item.href}
-                onClick={() => setActivePath(item.href)}
-              />
+              <NavItem key={item.href} {...item} />
             ))}
           </div>
 
-          <div className="pt-4">
-            <h3 className="px-4 mb-2 text-xs font-semibold uppercase text-gray-400 tracking-wider">
+          <div className="space-y-1 pt-2">
+            <h3 className="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Manage account
             </h3>
             <div className="space-y-1">
               {sidebarNavItems.account.map((item) => (
-                <NavLink
-                  key={item.href}
-                  {...item}
-                  isActive={activePath === item.href}
-                  onClick={() => setActivePath(item.href)}
-                />
+                <NavItem key={item.href} {...item} />
               ))}
             </div>
           </div>
 
-          <div className="pt-4">
-            <h3 className="px-4 mb-2 text-xs font-semibold uppercase text-gray-400 tracking-wider">
+          <div className="space-y-1 pt-2">
+            <h3 className="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
               Customer service
             </h3>
             <div className="space-y-1">
               {sidebarNavItems.service.map((item) => (
-                <NavLink
-                  key={item.href}
-                  {...item}
-                  isActive={activePath === item.href}
-                  onClick={() => setActivePath(item.href)}
-                />
+                <NavItem key={item.href} {...item} />
               ))}
             </div>
           </div>
         </nav>
       </div>
 
-      {/* Log Out Button at the bottom */}
-      <div className="mt-6">
-        <Button variant="ghost" className="w-full justify-start">
-          <LogOut className="mr-3 h-5 w-5" />
-          Log out
-        </Button>
-      </div>
+      <Button
+        variant="ghost"
+        className="w-full justify-start mt-auto text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg"
+      >
+        <LogOut className="mr-3 h-5 w-5" />
+        Log out
+      </Button>
     </div>
   );
 }
+
 export default SidebarContent;
