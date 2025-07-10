@@ -16,7 +16,8 @@ const initialState: CartItem[] = [];
 // Helper function to ensure we always return an array
 export const getCartItems = (state: any): CartItem[] => {
   if (Array.isArray(state)) return state;
-  if (state?.cart && Array.isArray(state.cart)) return state.cart;
+  if (state?.persisted.cart && Array.isArray(state.persisted.cart))
+    return state.persisted.cart;
   return [];
 };
 

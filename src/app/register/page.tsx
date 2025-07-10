@@ -56,12 +56,12 @@ const RegisterPage: React.FC = () => {
               </h1>
               <p className="text-gray-600 text-center text-sm">
                 I already have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  href="/login"
                   className="text-purple-600 hover:underline font-semibold"
                 >
                   Sign in
-                </a>
+                </Link>
               </p>
             </div>
 

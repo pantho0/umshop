@@ -39,7 +39,7 @@ interface CartItem {
 }
 
 const ShoppingCartPage: React.FC = () => {
-  const cartItems: CartItem[] = useAppSelector((state) => state.cart);
+  const cartItems: CartItem[] = useAppSelector((state) => state.persisted.cart);
   const dispatch = useAppDispatch();
 
   const handleQuantityChange = (
