@@ -105,7 +105,8 @@ export default function OrdersPage() {
 
       {/* Desktop Table View */}
       <div className="hidden md:block">
-        <Card>
+        <div className="overflow-x-auto">
+          <Card className="min-w-[800px]">
           <CardContent className="p-0">
             <Table>
               <TableHeader>
@@ -160,12 +161,13 @@ export default function OrdersPage() {
             </Table>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       {/* Mobile Card View */}
-      <div className="space-y-4 md:hidden">
+      <div className="space-y-4 md:hidden px-4">
         {mockOrders.map((order) => (
-          <Card key={order.orderId} className="overflow-hidden">
+          <Card key={order.orderId} className="overflow-hidden w-full">
             <div className="p-4 border-b">
               <div className="flex justify-between items-start">
                 <div>
