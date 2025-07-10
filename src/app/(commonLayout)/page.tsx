@@ -11,12 +11,7 @@ import { ApiResponse, Product } from "@/interface";
 
 const HomePage = async () => {
   const { data } = await nexiosInstance.get<ApiResponse<Product[]>>(
-    "/products?limit=7&sortBy=-createdAt",
-    {
-      next: {
-        revalidate: 30,
-      },
-    }
+    "/products?limit=7&sortBy=-createdAt"
   );
   const products = data.data;
   return (
@@ -27,7 +22,7 @@ const HomePage = async () => {
         <NewArraivals />
         <TrandingProducts products={products} />
         <DiscountBanner />
-        <SpecialOffersSection products={products} />  
+        <SpecialOffersSection products={products} />
       </ContainerLayout>
     </>
   );
