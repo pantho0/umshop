@@ -13,12 +13,20 @@ import loginanime from "../../../public/assets/login-animation.json";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { useAppDispatch } from "@/redux/hook";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { verifyToken } from "@/utils/verifyToken";
+import { setUser } from "@/redux/features/auth/authSlice";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const res = await login(data).unwrap();
+    const user = verifyToken(res.data.accessToken);
+    dispatch(setUser({ user, token: res.data.accessToken }));
   };
 
   return (

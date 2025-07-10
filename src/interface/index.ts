@@ -56,7 +56,6 @@ export interface ProductGridDisplayProps {
   isLoading: boolean;
 }
 
-
 export interface ProductListWrapperProps {
   filterOptions: any;
   products: Product[];
@@ -68,3 +67,13 @@ export interface ProductListWrapperProps {
   };
 }
 
+export type TOrder = {
+  orderId: string;
+  orderDate: string;
+  status: "In progress" | "Delivered" | "Canceled";
+  total: number;
+  items: {
+    name: string;
+    image: string;
+  }[];
+};
