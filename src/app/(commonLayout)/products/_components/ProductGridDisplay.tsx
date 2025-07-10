@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Star, ShoppingCart } from "lucide-react";
@@ -13,27 +14,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import DiscountBanner from "../../_components/discountedSection/DiscountBanner";
 import { ProductGridDisplayProps } from "@/interface";
 import renderProductCardSkeleton from "@/components/ui/Product/renderProductCardSkeleton";
+import { useState } from "react";
 
-const renderStars = (rating: number, reviewCount: number) => {
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    stars.push(
-      <Star
-        key={i}
-        className={`h-4 w-4 ${
-          i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-        }`}
-      />
-    );
+// Simple deterministic hash function
+const simpleHash = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
   }
-  return (
-    <div className="flex items-center text-sm text-gray-500">
-      <div className="flex mr-1">{stars}</div>
-      {reviewCount > 0 && <span>({reviewCount})</span>}
-    </div>
-  );
+  return Math.abs(hash);
 };
-
 export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
   products,
   currentSortBy,
@@ -41,6 +33,15 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [ratings, setRatings] = useState<{ [key: string]: number }>(() => {
+    // Initialize with deterministic ratings based on product ID
+    return products.reduce((acc, product) => {
+      // Create a deterministic rating between 3-5 based on product ID
+      const hash = simpleHash(product._id);
+      acc[product._id] = (hash % 3) + 3; // Will be 3, 4, or 5
+      return acc;
+    }, {} as { [key: string]: number });
+  });
 
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -48,6 +49,36 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  const getRating = (productId: string) => {
+    // This ensures we get the same rating on both server and client
+    const hash = simpleHash(productId);
+    return (hash % 3) + 3; // Will be 3, 4, or 5
+  };
+
+  const renderStars = (productId: string) => {
+    const rating = getRating(productId);
+
+    // Create stars array with proper keys and consistent rendering
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      const isFilled = i <= rating;
+      stars.push(
+        <Star
+          key={i}
+          className={`h-4 w-4 ${
+            isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+          }`}
+          aria-hidden="true"
+        />
+      );
+    }
+
+    return (
+      <div className="flex" aria-label={`${rating} out of 5 stars`}>
+        {stars}
+      </div>
+    );
+  };
   return (
     <section className="flex-grow">
       <h2 className="sr-only">Product Listings</h2>{" "}
@@ -71,8 +102,6 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
           : // Render actual products when not loading
             products.map((product, index) => {
               const oldPrice = (product.price * 1.2).toFixed(2); // Simulate 20% higher old price
-              const randomRating = Math.floor(Math.random() * 3) + 3; // Random 3-5 stars
-              const randomReviewCount = Math.floor(Math.random() * 200) + 10; // Random 10-209 reviews
 
               // Simulate badges (for demo purposes)
               const hasDiscount = index === 0;
@@ -113,7 +142,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                     </div>
                     {/* Product Info */}
                     <div className="p-4 flex flex-col flex-grow">
-                      {renderStars(randomRating, randomReviewCount)}
+                      {renderStars(product._id)}
                       <h3 className="text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
                         {product.title}
                       </h3>
