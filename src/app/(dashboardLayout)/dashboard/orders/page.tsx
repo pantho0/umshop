@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import {
   Table,
@@ -12,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { TOrder } from "@/interface";
+import { useGetUserQuery } from "@/redux/features/user/userApi";
 
 const mockOrders: TOrder[] = [
   {
@@ -92,6 +94,8 @@ const StatusBadge = ({ status }: { status: TOrder["status"] }) => {
 };
 
 export default function OrdersPage() {
+  const { data: user } = useGetUserQuery("");
+  console.log(user);
   return (
     <div className="space-y-6">
       <Card>
@@ -107,60 +111,69 @@ export default function OrdersPage() {
       <div className="hidden md:block">
         <div className="overflow-x-auto">
           <Card className="min-w-[800px]">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[150px]">Order #</TableHead>
-                  <TableHead>Order date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                  <TableHead className="text-center">Items</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mockOrders.map((order) => (
-                  <TableRow key={order.orderId} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <TableCell className="font-medium">{order.orderId}</TableCell>
-                    <TableCell>{order.orderDate}</TableCell>
-                    <TableCell>
-                      <StatusBadge status={order.status} />
-                    </TableCell>
-                    <TableCell className="text-right font-medium">
-                      ${order.total.toFixed(2)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-end space-x-2">
-                        {order.items.slice(0, 3).map((item, index) => (
-                          <div
-                            key={index}
-                            className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-md p-1 flex items-center justify-center"
-                          >
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              width={24}
-                              height={24}
-                              className="object-contain"
-                            />
-                          </div>
-                        ))}
-                        {order.items.length > 3 && (
-                          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
-                            +{order.items.length - 3}
-                          </div>
-                        )}
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Order #</TableHead>
+                    <TableHead>Order date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Total</TableHead>
+                    <TableHead className="text-center">Items</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                </TableHeader>
+                <TableBody>
+                  {mockOrders.map((order) => (
+                    <TableRow
+                      key={order.orderId}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <TableCell className="font-medium">
+                        {order.orderId}
+                      </TableCell>
+                      <TableCell>{order.orderDate}</TableCell>
+                      <TableCell>
+                        <StatusBadge status={order.status} />
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        ${order.total.toFixed(2)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center justify-end space-x-2">
+                          {order.items.slice(0, 3).map((item, index) => (
+                            <div
+                              key={index}
+                              className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-md p-1 flex items-center justify-center"
+                            >
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                width={24}
+                                height={24}
+                                className="object-contain"
+                              />
+                            </div>
+                          ))}
+                          {order.items.length > 3 && (
+                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
+                              +{order.items.length - 3}
+                            </div>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
