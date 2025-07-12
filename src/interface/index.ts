@@ -18,15 +18,21 @@ export interface ISubCategory {
   __v: number;
 }
 
+export interface Variant {
+  sku: string;
+  color: string;
+  size: string;
+  price: number;
+  stock: number;
+}
+
 export interface Product {
   _id: string;
   title: string;
   parentCategory: IParentCategory;
   subCategory: ISubCategory;
-  variant_color: string[];
-  size: string[];
+  variants: Variant[];
   details: string;
-  price: number;
   images: string[];
   createdAt: string;
   updatedAt: string;

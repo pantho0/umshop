@@ -69,9 +69,9 @@ const TrandingProducts: React.FC<{ products: Product[] }> = ({ products }) => {
           const hasDiscount = index === 0; // First product has discount
           const isNew = index === 3; // Fourth product is 'New'
           const oldPrice = hasDiscount
-            ? (product.price / 0.79).toFixed(2)
+            ? (product.variants[0].price / 0.79).toFixed(2)
             : null; // Simulate -21% discount
-          const displayPrice = product.price.toFixed(2);
+          const displayPrice = product.variants[0].price.toFixed(2);
           // Use deterministic values based on product title
           // const rating = getRating(product.title);
           // const reviewCount = getReviewCount(product.title);

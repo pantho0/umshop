@@ -44,7 +44,7 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
 
   const renderStars = (productId: string) => {
     const rating = getRating(productId);
-    
+
     // Create stars array with proper keys and consistent rendering
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -52,12 +52,14 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
       stars.push(
         <Star
           key={i}
-          className={`h-4 w-4 ${isFilled ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+          className={`h-4 w-4 ${
+            isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+          }`}
           aria-hidden="true"
         />
       );
     }
-    
+
     return (
       <div className="flex" aria-label={`${rating} out of 5 stars`}>
         {stars}
@@ -94,7 +96,7 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                 {featuredProduct.details.split(".")[0]}.
               </p>
               <button className="px-6 py-3 bg-red-500 text-white text-base font-semibold rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center">
-                From ${featuredProduct.price.toFixed(2)}
+                From ${featuredProduct?.variants[0]?.price.toFixed(2)}
                 <svg
                   className="ml-2 w-4 h-4"
                   fill="none"
@@ -142,18 +144,18 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                 <div className="flex items-center text-gray-500 mb-2 text-sm">
                   {renderStars(product._id)}
                   <span className="ml-2">
-                    {/* Deterministic review count based on product ID */}
-                    ({(simpleHash(product._id) % 200) + 10})
+                    {/* Deterministic review count based on product ID */}(
+                    {(simpleHash(product._id) % 200) + 10})
                   </span>
                 </div>
                 <div className="flex items-baseline space-x-2">
                   <span className=" font-bold text-gray-900 text-sm">
-                    ${product.price.toFixed(2)}
+                    ${product.variants[0].price.toFixed(2)}
                   </span>
                   {/* Example of a flash sale price (optional) */}
                   {index % 2 === 0 && ( // Apply flash sale to every other product for demo
                     <span className="text-sm text-gray-500 line-through ">
-                      ${(product.price * 1.2).toFixed(2)}
+                      ${(product.variants[0].price * 1.2).toFixed(2)}
                     </span>
                   )}
                 </div>

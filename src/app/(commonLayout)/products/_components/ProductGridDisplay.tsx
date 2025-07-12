@@ -101,7 +101,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
             [...Array(8)].map((_, i) => renderProductCardSkeleton(i))
           : // Render actual products when not loading
             products.map((product, index) => {
-              const oldPrice = (product.price * 1.2).toFixed(2); // Simulate 20% higher old price
+              const oldPrice = (product.variants[0].price * 1.2).toFixed(2); // Simulate 20% higher old price
 
               // Simulate badges (for demo purposes)
               const hasDiscount = index === 0;
@@ -148,7 +148,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                       </h3>
                       <div className="flex items-baseline space-x-2 mt-auto">
                         <span className="text-sm font-bold text-gray-900">
-                          ${product.price.toFixed(2)}
+                          ${product.variants[0].price.toFixed(2)}
                         </span>
                         <span className="text-sm text-gray-500 line-through">
                           ${oldPrice}
