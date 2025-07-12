@@ -101,11 +101,11 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
             [...Array(8)].map((_, i) => renderProductCardSkeleton(i))
           : // Render actual products when not loading
             products.map((product, index) => {
-              const oldPrice = (product.variants[0].price * 1.2).toFixed(2); // Simulate 20% higher old price
-
               // Simulate badges (for demo purposes)
               const hasDiscount = index === 0;
               const isNew = index === 3;
+              const productPrice = product.variants?.[0]?.price || 0;
+              const oldPrice = (productPrice * 1.2).toFixed(2); // Simulate 20% higher old price
 
               return (
                 <div
@@ -123,11 +123,11 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                     </span>
                   )}
 
-                  <Link href={`/products/${product.slug}`} className="block">
+                  <Link href={`/products/${product.slug || '#'}`} className="block">
                     <div className="relative w-full h-36 flex items-center justify-center overflow-hidden">
                       <img
                         src={
-                          product.images[0] ||
+                          product.images?.[0] ||
                           `https://placehold.co/150x150/E0E0E0/333333?text=Product+${index}`
                         }
                         alt={product.title}
@@ -148,11 +148,13 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                       </h3>
                       <div className="flex items-baseline space-x-2 mt-auto">
                         <span className="text-sm font-bold text-gray-900">
-                          ${product.variants[0].price.toFixed(2)}
+                          ${productPrice.toFixed(2)}
                         </span>
-                        <span className="text-sm text-gray-500 line-through">
-                          ${oldPrice}
-                        </span>
+                        {hasDiscount && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ${oldPrice}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>

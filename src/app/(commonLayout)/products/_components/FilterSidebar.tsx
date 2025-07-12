@@ -30,11 +30,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  const [selectedParentCats, setSelectedParentCats] = useState<string[]>(
-    currentSearchParams.parent_category?.split(",") || []
-  );
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>(
-    currentSearchParams.sub_category?.split(",") || []
+    typeof currentSearchParams.subCategory === 'string'
+      ? currentSearchParams.subCategory.split(",").filter(Boolean)
+      : []
   );
 
   const isInitialMount = useRef(true);
@@ -44,60 +43,27 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       isInitialMount.current = false;
       return;
     }
-    setSelectedParentCats(
-      currentSearchParams.parent_category?.split(",") || []
-    );
-    setSelectedSubCats(currentSearchParams.sub_category?.split(",") || []);
+    
+    const newSubCats = typeof currentSearchParams.subCategory === 'string'
+      ? currentSearchParams.subCategory.split(",").filter(Boolean)
+      : [];
+    
+    setSelectedSubCats(newSubCats);
   }, [currentSearchParams]);
 
-  const updateUrlParams = (newParentCats: string[], newSubCats: string[]) => {
+  const updateUrlParams = (newSubCats: string[]) => {
     onFilterChange();
     const params = new URLSearchParams(searchParams.toString());
 
-    if (newParentCats.length > 0) {
-      params.set("parent_category", newParentCats.join(","));
-    } else {
-      params.delete("parent_category");
-    }
-
     if (newSubCats.length > 0) {
-      params.set("sub_category", newSubCats.join(","));
+      params.set("subCategory", newSubCats.join(","));
     } else {
-      params.delete("sub_category");
+      params.delete("subCategory");
     }
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const handleParentCatCheckboxChange = (
-    parentCat: any,
-    isChecked: boolean
-  ) => {
-    let newParentCats: string[];
-    const subSlugsInThisParent = parentCat.subCategories.map(
-      (sc: any) => sc.slug
-    );
-    let newSubCats = [...selectedSubCats];
-
-    if (isChecked) {
-      newParentCats = [...selectedParentCats, parentCat.slug];
-
-      newSubCats = [...new Set([...newSubCats, ...subSlugsInThisParent])];
-    } else {
-      newParentCats = selectedParentCats.filter((p) => p !== parentCat.slug);
-
-      newSubCats = newSubCats.filter(
-        (sc) => !subSlugsInThisParent.includes(sc)
-      );
-    }
-
-    setSelectedParentCats(newParentCats);
-    setSelectedSubCats(newSubCats);
-
-    updateUrlParams(newParentCats, newSubCats);
-  };
-
   const handleSubCatCheckboxChange = (
-    parentCat: any,
     subSlug: string,
     isChecked: boolean
   ) => {
@@ -108,29 +74,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       newSubCats = selectedSubCats.filter((s) => s !== subSlug);
     }
 
-    const allSubSlugsInParent = parentCat.subCategories.map(
-      (sc: any) => sc.slug
-    );
-    const currentlySelectedSubSlugsInParent = newSubCats.filter((sc: any) =>
-      allSubSlugsInParent.includes(sc)
-    );
-
-    let newParentCats = [...selectedParentCats];
-    if (
-      currentlySelectedSubSlugsInParent.length === allSubSlugsInParent.length &&
-      allSubSlugsInParent.length > 0
-    ) {
-      if (!newParentCats.includes(parentCat.slug)) {
-        newParentCats.push(parentCat.slug);
-      }
-    } else {
-      newParentCats = newParentCats.filter((p) => p !== parentCat.slug);
-    }
-
     setSelectedSubCats(newSubCats);
-    setSelectedParentCats(newParentCats);
-
-    updateUrlParams(newParentCats, newSubCats);
+    updateUrlParams(newSubCats);
   };
 
   const renderCategoriesFilter = () => (
@@ -139,125 +84,49 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         Categories
       </AccordionTrigger>
       <AccordionContent className="pt-2">
-        {/* Nested Accordion for Parent Categories */}
-        <Accordion
-          type="multiple"
-          className="w-full"
-          defaultValue={filterOptions.categories
-            .filter(
-              (pc: any) =>
-                selectedParentCats.includes(pc.slug) ||
-                pc.subCategories.some((sub: any) =>
-                  selectedSubCats.includes(sub.slug)
-                )
-            )
-            .map((pc: any) => pc.slug)}
-        >
+        <div className="space-y-4">
           {filterOptions.categories.map((parentCat: any) => (
-            <AccordionItem
-              key={parentCat.slug}
-              value={parentCat.slug}
-              className="border-b border-gray-100"
-            >
-              <AccordionTrigger
-                className="text-base font-medium text-gray-700 hover:no-underline py-2 w-full text-left"
-              >
-                <div className="flex items-center justify-between w-full pr-2">
-                  <div className="flex items-center space-x-2">
-                    <div 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleParentCatCheckboxChange(
-                          parentCat, 
-                          !(selectedParentCats.includes(parentCat.slug) ||
-                          (parentCat.subCategories.length > 0 &&
-                            parentCat.subCategories.every((sub: any) =>
-                              selectedSubCats.includes(sub.slug)
-                            )))
-                        );
-                      }}
-                      className="flex items-center space-x-2"
+            <div key={parentCat.slug} className="space-y-2">
+              <h3 className="font-medium text-gray-700">{parentCat.name}</h3>
+              <div className="pl-2 space-y-2">
+                {parentCat.subCategories.length > 0 ? (
+                  parentCat.subCategories.map((subCat: any) => (
+                    <div
+                      key={`${parentCat.slug}-${subCat.slug}`}
+                      className="flex items-center justify-between"
                     >
-                      <div 
-                        className={`w-4 h-4 rounded border ${selectedParentCats.includes(parentCat.slug) ||
-                          (parentCat.subCategories.length > 0 &&
-                            parentCat.subCategories.every((sub: any) =>
-                              selectedSubCats.includes(sub.slug)
-                            )) 
-                            ? 'bg-primary border-primary' 
-                            : 'border-gray-300'}`}
-                      >
-                        {(selectedParentCats.includes(parentCat.slug) ||
-                          (parentCat.subCategories.length > 0 &&
-                            parentCat.subCategories.every((sub: any) =>
-                              selectedSubCats.includes(sub.slug)
-                            ))) && (
-                          <svg
-                            className="w-3 h-3 m-0.5 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`sub-${parentCat.slug}-${subCat.slug}`}
+                          checked={selectedSubCats.includes(subCat.slug)}
+                          onCheckedChange={(checked: boolean) =>
+                            handleSubCatCheckboxChange(
+                              subCat.slug,
+                              checked
+                            )
+                          }
+                        />
+                        <label
+                          htmlFor={`sub-${parentCat.slug}-${subCat.slug}`}
+                          className="text-sm text-gray-600 cursor-pointer"
+                        >
+                          {subCat.name}
+                        </label>
                       </div>
-                      <span>{parentCat.name}</span>
+                      <span className="text-xs text-gray-500">
+                        {subCat.count}
+                      </span>
                     </div>
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    {parentCat.count}
-                  </span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="pt-2 pb-2 pl-6">
-                <div className="space-y-2">
-                  {parentCat.subCategories.length > 0 ? (
-                    parentCat.subCategories.map((subCat: any) => (
-                      <div
-                        key={subCat.slug}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`sub-${parentCat.slug}-${subCat.slug}`}
-                            checked={selectedSubCats.includes(subCat.slug)}
-                            onCheckedChange={(checked: boolean) =>
-                              handleSubCatCheckboxChange(
-                                parentCat,
-                                subCat.slug,
-                                checked
-                              )
-                            }
-                          />
-                          <label
-                            htmlFor={`sub-${parentCat.slug}-${subCat.slug}`}
-                            className="text-sm text-gray-600 cursor-pointer"
-                          >
-                            {subCat.name}
-                          </label>
-                        </div>
-                        <span className="text-xs text-gray-500">
-                          {subCat.count}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500">
-                      No subcategories found.
-                    </p>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">
+                    No subcategories found.
+                  </p>
+                )}
+              </div>
+            </div>
           ))}
-        </Accordion>
+        </div>
       </AccordionContent>
     </AccordionItem>
   );
