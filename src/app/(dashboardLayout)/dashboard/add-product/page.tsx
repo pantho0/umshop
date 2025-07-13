@@ -1,23 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import UmSelect from "@/components/UMForm/UmSelect";
+import { uploadSingleImage } from "@/services/product";
+import Image from "next/image";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -49,7 +46,7 @@ interface Category {
 }
 
 export default function AddProduct() {
-  const [imageUrls, setImageUrls] = useState<string[]>([""]);
+  const [images, setImages] = useState<string[]>([]);
   const [parentCategories, setParentCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [selectedParentCategory, setSelectedParentCategory] =
@@ -79,6 +76,47 @@ export default function AddProduct() {
     control: form.control,
     name: "variants",
   });
+
+  const convertBase64 = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  // Ref for file input to clear it after upload
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const image = await convertBase64(file);
+      console.log(image);
+      const res = await uploadSingleImage(image as string);
+      console.log(res);
+      setImages((prev) => [...prev, res]);
+      toast.success("Image uploaded successfully");
+      // Clear the file input after upload
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Error uploading image");
+    }
+  };
+
+  // Remove image by index
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   // Fetch Parent Categories on component mount
   useEffect(() => {
@@ -144,24 +182,6 @@ export default function AddProduct() {
     }
   };
 
-  const addImageUrl = () => {
-    setImageUrls([...imageUrls, ""]);
-  };
-
-  const removeImageUrl = (index: number) => {
-    if (imageUrls.length > 1) {
-      const newImageUrls = [...imageUrls];
-      newImageUrls.splice(index, 1);
-      setImageUrls(newImageUrls);
-      form.setValue(
-        "images",
-        form.getValues("images").filter((_, i) => i !== index)
-      );
-    } else {
-      toast.error("At least one image is required");
-    }
-  };
-
   const handleParentCategoryChange = (value: string) => {
     setSelectedParentCategory(value);
     form.setValue("parentCategory", value);
@@ -200,7 +220,10 @@ export default function AddProduct() {
                     name="parentCategory"
                     defaultValue="__placeholder__"
                     options={[
-                      { value: "__placeholder__", label: "Select Parent Category" },
+                      {
+                        value: "__placeholder__",
+                        label: "Select Parent Category",
+                      },
                       ...parentCategories.map((cat) => ({
                         value: cat._id,
                         label: cat.name,
@@ -215,7 +238,10 @@ export default function AddProduct() {
                     name="subCategory"
                     defaultValue="__placeholder__"
                     options={[
-                      { value: "__placeholder__", label: "Select Sub Category" },
+                      {
+                        value: "__placeholder__",
+                        label: "Select Sub Category",
+                      },
                       ...subCategories.map((cat) => ({
                         value: cat._id,
                         label: cat.name,
@@ -225,16 +251,9 @@ export default function AddProduct() {
                   />
                 </div>
               </div>
-              <div>
-                <UmSelect
-                  label="Sub Category"
-                  name="subCategory"
-                  defaultValue=""
-                />
-              </div>
             </div>
 
-            <div>
+            <div className="my-4">
               <UMInput
                 label="Details"
                 name="details"
@@ -242,46 +261,68 @@ export default function AddProduct() {
                 placeholder="Product Details"
               />
             </div>
-
-            {/* Product Images */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium">Product Images</h3>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={addImageUrl}
+            <div>
+              {/* Uploaded Images Preview */}
+              {images.length > 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 16,
+                    flexWrap: "wrap",
+                    marginTop: 16,
+                  }}
                 >
-                  <Plus className="h-4 w-4 mr-2" /> Add Image
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {imageUrls.map((_, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <FormField
-                      control={form.control}
-                      name={`images.${index}`}
-                      render={({ field }) => (
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <Input placeholder="Enter image URL" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeImageUrl(index)}
-                      className="text-destructive"
+                  {images.map((img, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        position: "relative",
+                        display: "inline-block",
+                      }}
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
+                      <Image
+                        src={
+                          typeof img === "string"
+                            ? img
+                            : img.secure_url || img.url || img
+                        }
+                        alt={`uploaded-${idx}`}
+                        width={100}
+                        height={100}
+                        style={{
+                          width: 100,
+                          height: 100,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          border: "1px solid #eee",
+                        }}
+                      />
+                      <button
+                        type="button"
+                        style={{
+                          position: "absolute",
+                          top: 2,
+                          right: 2,
+                          background: "rgba(255,255,255,0.8)",
+                          border: "none",
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                          padding: 4,
+                        }}
+                        onClick={() => removeImage(idx)}
+                        aria-label="Remove image"
+                      >
+                        <Trash2 size={16} color="#d32f2f" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Product Images */}
+            <div className="my-4">
+              <div className="">
+                <Input type="file" onChange={uploadImage} ref={fileInputRef} />
               </div>
             </div>
 
