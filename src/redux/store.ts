@@ -13,7 +13,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { baseApi } from "./api/basApi";
 
 const rootReducer = combineReducers({
   cart: cartReducer,
@@ -33,7 +32,6 @@ const allPersistedReducer = persistReducer(
 
 export const store = configureStore({
   reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
     persisted: allPersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -41,7 +39,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware),
+    }).concat(),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

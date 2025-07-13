@@ -13,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { TOrder } from "@/interface";
-import { useGetUserQuery } from "@/redux/features/user/userApi";
 
 const mockOrders: TOrder[] = [
   {
@@ -94,8 +93,6 @@ const StatusBadge = ({ status }: { status: TOrder["status"] }) => {
 };
 
 export default function OrdersPage() {
-  const { data: user } = useGetUserQuery("");
-  console.log(user);
   return (
     <div className="space-y-6">
       <Card>

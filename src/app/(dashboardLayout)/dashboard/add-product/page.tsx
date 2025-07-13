@@ -16,7 +16,6 @@ import UmSelect from "@/components/UMForm/UmSelect";
 import { uploadSingleImage } from "@/services/product";
 import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
-import { useAddProductMutation } from "@/redux/features/product/productApi";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -53,8 +52,6 @@ export default function AddProduct() {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [selectedParentCategory, setSelectedParentCategory] =
     useState<string>("");
-  const [addProduct, { data, isLoading, isError, isSuccess, error }] =
-    useAddProductMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -180,14 +177,14 @@ export default function AddProduct() {
       const productData = { ...values, images };
       if (productData) {
         const toastId = toast.loading("Adding product");
-        const res = await addProduct(productData).unwrap();
-        if (res.data) {
-          toast.success("Product added successfully", {
-            id: toastId,
-            duration: 2000,
-          });
-          setImages([]);
-        }
+        // const res = await addProduct(productData).unwrap();
+        // if (res.data) {
+        //   toast.success("Product added successfully", {
+        //     id: toastId,
+        //     duration: 2000,
+        //   });
+        //   setImages([]);
+        // }
       }
     } catch (error: any) {
       toast.error(error?.message || "Failed to add product");
