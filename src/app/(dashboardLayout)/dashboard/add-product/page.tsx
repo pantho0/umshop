@@ -16,6 +16,8 @@ import UmSelect from "@/components/UMForm/UmSelect";
 import { uploadSingleImage } from "@/services/product";
 import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
+import { useAddProduct } from "@/hooks/product.hooks";
+import { Product } from "@/interface";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -52,6 +54,7 @@ export default function AddProduct() {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [selectedParentCategory, setSelectedParentCategory] =
     useState<string>("");
+  const { mutate: addProduct } = useAddProduct();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -173,24 +176,11 @@ export default function AddProduct() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const productData = { ...values, images };
-      if (productData) {
-        const toastId = toast.loading("Adding product");
-        // const res = await addProduct(productData).unwrap();
-        // if (res.data) {
-        //   toast.success("Product added successfully", {
-        //     id: toastId,
-        //     duration: 2000,
-        //   });
-        //   setImages([]);
-        // }
-      }
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to add product");
+    const productData = { ...values, images };
+    if (productData) {
+      addProduct(productData as any);
+      setImages([]);
     }
-
-    // Here you would typically make an API call to save the product
   };
 
   return (

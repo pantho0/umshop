@@ -18,6 +18,18 @@ export const getProducts = async (query?: Record<string, unknown>) => {
   return res.data;
 };
 
+export const addProduct = async (productData: Product) => {
+  try {
+    const res = await nexiosInstance.post<ApiResponse<Product>>(
+      "/products/create-product",
+      productData
+    );
+    return res.data;
+  } catch (error: any) {
+    throw Error(error);
+  }
+};
+
 export const getParentCategories = async () => {
   const res = await nexiosInstance.get<ApiResponse<IParentCategory[]>>(
     "/parent-categories",
