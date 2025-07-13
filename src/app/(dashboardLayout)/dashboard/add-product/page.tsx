@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,13 +11,13 @@ import {
   FormControl,
   FormField,
   FormItem,
-    
   FormMessage,
 } from "@/components/ui/form";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
+import UmSelect from "@/components/UMForm/UmSelect";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -42,8 +42,18 @@ const formSchema = z.object({
 
 type Variant = z.infer<typeof variantSchema>;
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export default function AddProduct() {
   const [imageUrls, setImageUrls] = useState<string[]>([""]);
+  const [parentCategories, setParentCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<Category[]>([]);
+  const [selectedParentCategory, setSelectedParentCategory] =
+    useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,6 +79,52 @@ export default function AddProduct() {
     control: form.control,
     name: "variants",
   });
+
+  // Fetch Parent Categories on component mount
+  useEffect(() => {
+    const fetchParentCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/parent-categories/`
+        );
+        const data = await response.json();
+        if (data.success) {
+          setParentCategories(data.data);
+        } else {
+          toast.error(data.message || "Failed to fetch parent categories");
+        }
+      } catch (error) {
+        console.error("Error fetching parent categories:", error);
+        toast.error("Error fetching parent categories");
+      }
+    };
+    fetchParentCategories();
+  }, []);
+
+  // Fetch Subcategories when selectedParentCategory changes
+  useEffect(() => {
+    if (selectedParentCategory) {
+      const fetchSubCategories = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/sub-categories/${selectedParentCategory}`
+          );
+          const data = await response.json();
+          if (data.success) {
+            setSubCategories(data.data);
+          } else {
+            toast.error(data.message || "Failed to fetch subcategories");
+          }
+        } catch (error) {
+          console.error("Error fetching subcategories:", error);
+          toast.error("Error fetching subcategories");
+        }
+      };
+      fetchSubCategories();
+    } else {
+      setSubCategories([]); // Clear subcategories if no parent is selected
+    }
+  }, [selectedParentCategory]);
 
   const addVariant = () => {
     append({
@@ -106,6 +162,12 @@ export default function AddProduct() {
     }
   };
 
+  const handleParentCategoryChange = (value: string) => {
+    setSelectedParentCategory(value);
+    form.setValue("parentCategory", value);
+    form.setValue("subCategory", ""); // Reset subcategory when parent changes
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log("Form submitted:", values);
     toast.success("Product added successfully!");
@@ -133,31 +195,52 @@ export default function AddProduct() {
                   />
                 </div>
                 <div>
-                  <UMInput
-                    label="Parent Category ID"
+                  <UmSelect
+                    label="Parent Category"
                     name="parentCategory"
-                    type="text"
-                    placeholder="Parent Category ID"
+                    defaultValue="__placeholder__"
+                    options={[
+                      { value: "__placeholder__", label: "Select Parent Category" },
+                      ...parentCategories.map((cat) => ({
+                        value: cat._id,
+                        label: cat.name,
+                      })),
+                    ]}
+                    onValueChange={handleParentCategoryChange}
                   />
                 </div>
                 <div>
-                  <UMInput
+                  <UmSelect
                     label="Sub Category"
                     name="subCategory"
-                    type="text"
-                    placeholder="Sub Category ID"
+                    defaultValue="__placeholder__"
+                    options={[
+                      { value: "__placeholder__", label: "Select Sub Category" },
+                      ...subCategories.map((cat) => ({
+                        value: cat._id,
+                        label: cat.name,
+                      })),
+                    ]}
+                    disabled={!selectedParentCategory}
                   />
                 </div>
               </div>
-
               <div>
-                <UMInput
-                  label="Details"
-                  name="details"
-                  type="text"
-                  placeholder="Product Details"
+                <UmSelect
+                  label="Sub Category"
+                  name="subCategory"
+                  defaultValue=""
                 />
               </div>
+            </div>
+
+            <div>
+              <UMInput
+                label="Details"
+                name="details"
+                type="text"
+                placeholder="Product Details"
+              />
             </div>
 
             {/* Product Images */}
@@ -285,4 +368,4 @@ export default function AddProduct() {
       </Card>
     </div>
   );
-};
+}
