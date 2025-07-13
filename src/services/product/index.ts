@@ -11,6 +11,9 @@ import {
 export const getProducts = async (query?: Record<string, unknown>) => {
   const res = await nexiosInstance.get<ApiResponse<Product[]>>("/products", {
     params: query,
+    next: {
+      tags: ["products"],
+    },
   });
   return res.data;
 };
@@ -20,7 +23,7 @@ export const getParentCategories = async () => {
     "/parent-categories",
     {
       next: {
-        revalidate: 30,
+        tags: ["parentcategory"],
       },
     }
   );
@@ -32,7 +35,7 @@ export const getSubCategories = async () => {
     "/sub-categories",
     {
       next: {
-        revalidate: 30,
+        tags: ["subcategory"],
       },
     }
   );

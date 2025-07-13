@@ -15,6 +15,8 @@ import { UMInput } from "@/components/UMForm/UMInput";
 import UmSelect from "@/components/UMForm/UmSelect";
 import { uploadSingleImage } from "@/services/product";
 import Image from "next/image";
+import { convertBase64 } from "@/utils/helperFunctions";
+import { useAddProductMutation } from "@/redux/features/product/productApi";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -37,7 +39,7 @@ const formSchema = z.object({
   variants: z.array(variantSchema).min(1, "At least one variant is required"),
 });
 
-type Variant = z.infer<typeof variantSchema>;
+// type Variant = z.infer<typeof variantSchema>;
 
 interface Category {
   _id: string;
@@ -51,6 +53,8 @@ export default function AddProduct() {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [selectedParentCategory, setSelectedParentCategory] =
     useState<string>("");
+  const [addProduct, { data, isLoading, isError, isSuccess, error }] =
+    useAddProductMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,21 +81,6 @@ export default function AddProduct() {
     name: "variants",
   });
 
-  const convertBase64 = (file: any) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
   // Ref for file input to clear it after upload
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -100,9 +89,7 @@ export default function AddProduct() {
     if (!file) return;
     try {
       const image = await convertBase64(file);
-      console.log(image);
       const res = await uploadSingleImage(image as string);
-      console.log(res);
       setImages((prev) => [...prev, res]);
       toast.success("Image uploaded successfully");
       // Clear the file input after upload
@@ -188,9 +175,24 @@ export default function AddProduct() {
     form.setValue("subCategory", ""); // Reset subcategory when parent changes
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted:", values);
-    toast.success("Product added successfully!");
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const productData = { ...values, images };
+      if (productData) {
+        const toastId = toast.loading("Adding product");
+        const res = await addProduct(productData).unwrap();
+        if (res.data) {
+          toast.success("Product added successfully", {
+            id: toastId,
+            duration: 2000,
+          });
+          setImages([]);
+        }
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to add product");
+    }
+
     // Here you would typically make an API call to save the product
   };
 
@@ -281,11 +283,7 @@ export default function AddProduct() {
                       }}
                     >
                       <Image
-                        src={
-                          typeof img === "string"
-                            ? img
-                            : img.secure_url || img.url || img
-                        }
+                        src={typeof img === "string" ? img : img.secure_url}
                         alt={`uploaded-${idx}`}
                         width={100}
                         height={100}
