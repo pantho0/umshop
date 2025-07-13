@@ -1,4 +1,4 @@
-import { LucideIcon, PackagePlus } from "lucide-react";
+import { LucideIcon, PackagePlus, ShoppingBasket } from "lucide-react";
 import {
   Bell,
   CreditCard,
@@ -35,6 +35,11 @@ export const sidebarNavItems: NavSection = {
       href: "/dashboard/add-product",
       label: "Add Product",
       icon: PackagePlus,
+    },
+    {
+      href: "/dashboard/products",
+      label: "Products",
+      icon: ShoppingBasket,
     },
     {
       href: "/dashboard/wishlist",

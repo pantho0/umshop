@@ -13,21 +13,23 @@ import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useAppDispatch } from "@/redux/hook";
-import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { verifyToken } from "@/utils/verifyToken";
 import { setUser } from "@/redux/features/auth/authSlice";
+import { useLogin } from "@/hooks/auth.hook";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const [login] = useLoginMutation();
+  const { mutate: handleLogin, data, error, isPending, isSuccess } = useLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-    const res = await login(data).unwrap();
-    const user = verifyToken(res.data.accessToken);
-    dispatch(setUser({ user, token: res.data.accessToken }));
+    handleLogin(data);
   };
+
+  if (!isPending && isSuccess) {
+    const user = verifyToken(data?.data?.accessToken);
+    dispatch(setUser({ user: user, token: data?.data?.accessToken }));
+  }
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
