@@ -32,7 +32,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   if (result?.error?.status === 401) {
     console.log("sendiing token");
     const res = await fetch(
-      "http://localhost:5000/api/v1/auth/generate-accesstoken",
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/generate-accesstoken`,
       {
         method: "POST",
         credentials: "include",

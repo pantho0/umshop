@@ -127,7 +127,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </div>
           ))}
         </div>
-      </AccordionContent>
+c      </AccordionContent>
     </AccordionItem>
   );
 

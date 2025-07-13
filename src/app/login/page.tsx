@@ -23,6 +23,7 @@ const LoginPage: React.FC = () => {
   const [login] = useLoginMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
     const res = await login(data).unwrap();
     const user = verifyToken(res.data.accessToken);
     dispatch(setUser({ user, token: res.data.accessToken }));

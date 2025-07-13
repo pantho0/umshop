@@ -96,7 +96,7 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                 {featuredProduct.details.split(".")[0]}.
               </p>
               <button className="px-6 py-3 bg-red-500 text-white text-base font-semibold rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center">
-                From ${featuredProduct?.variants[0]?.price.toFixed(2)}
+                From ${featuredProduct?.variants?.[0]?.price.toFixed(2)}
                 <svg
                   className="ml-2 w-4 h-4"
                   fill="none"
@@ -150,12 +150,12 @@ export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
                 </div>
                 <div className="flex items-baseline space-x-2">
                   <span className=" font-bold text-gray-900 text-sm">
-                    ${product.variants[0].price.toFixed(2)}
+                    ${product.variants?.[0].price.toFixed(2)}
                   </span>
                   {/* Example of a flash sale price (optional) */}
                   {index % 2 === 0 && ( // Apply flash sale to every other product for demo
                     <span className="text-sm text-gray-500 line-through ">
-                      ${(product.variants[0].price * 1.2).toFixed(2)}
+                      ${(product.variants?.[0].price * 1.2).toFixed(2)}
                     </span>
                   )}
                 </div>

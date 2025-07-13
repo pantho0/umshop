@@ -144,7 +144,7 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
           {" "}
           {/* Adjust margin for gap */}
           {products.slice(0, 8).map((product, index) => {
-            const oldPrice = (product.variants[0].price * 1.2).toFixed(2); // Simulate 20% higher old price
+            const oldPrice = (product.variants?.[0].price * 1.2).toFixed(2); // Simulate 20% higher old price
             // Generate consistent available count based on product title
             const availableCount = (simpleHash(product.title) % 100) + 1; // 1-100 available
 
@@ -185,7 +185,7 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
                       </h3>
                       <div className="flex items-baseline space-x-2 mt-auto">
                         <span className="text-xl font-bold text-gray-900">
-                          ${product.variants[0].price.toFixed(2)}
+                          ${product.variants?.[0].price.toFixed(2)}
                         </span>
                         <span className="text-sm text-gray-500 line-through">
                           ${oldPrice}

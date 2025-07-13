@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, PackagePlus } from "lucide-react";
 import {
   Bell,
   CreditCard,
@@ -10,7 +10,7 @@ import {
   User,
   Package,
   Settings,
-} from 'lucide-react';
+} from "lucide-react";
 
 export interface NavItem {
   href: string;
@@ -26,58 +26,63 @@ type NavSection = {
 export const sidebarNavItems: NavSection = {
   main: [
     {
-      href: '/dashboard/orders',
-      label: 'Orders',
+      href: "/dashboard/orders",
+      label: "Orders",
       icon: Package,
-      badge: '1',
+      badge: "1",
     },
     {
-      href: '/dashboard/wishlist',
-      label: 'Wishlist',
+      href: "/dashboard/add-product",
+      label: "Add Product",
+      icon: PackagePlus,
+    },
+    {
+      href: "/dashboard/wishlist",
+      label: "Wishlist",
       icon: Heart,
     },
     {
-      href: '/dashboard/payment',
-      label: 'Payment Methods',
+      href: "/dashboard/payment",
+      label: "Payment Methods",
       icon: CreditCard,
     },
     {
-      href: '/dashboard/reviews',
-      label: 'My Reviews',
+      href: "/dashboard/reviews",
+      label: "My Reviews",
       icon: LayoutDashboard,
     },
   ],
   account: [
     {
-      href: '/dashboard/profile',
-      label: 'Profile',
+      href: "/dashboard/profile",
+      label: "Profile",
       icon: User,
     },
     {
-      href: '/dashboard/addresses',
-      label: 'Addresses',
+      href: "/dashboard/addresses",
+      label: "Addresses",
       icon: MapPin,
     },
     {
-      href: '/dashboard/notifications',
-      label: 'Notifications',
+      href: "/dashboard/notifications",
+      label: "Notifications",
       icon: Bell,
     },
     {
-      href: '/dashboard/settings',
-      label: 'Settings',
+      href: "/dashboard/settings",
+      label: "Settings",
       icon: Settings,
     },
   ],
   service: [
     {
-      href: '/dashboard/help',
-      label: 'Help Center',
+      href: "/dashboard/help",
+      label: "Help Center",
       icon: HelpCircle,
     },
     {
-      href: '/dashboard/terms',
-      label: 'Terms & Conditions',
+      href: "/dashboard/terms",
+      label: "Terms & Conditions",
       icon: FileText,
     },
   ],
