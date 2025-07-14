@@ -4,14 +4,15 @@ import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
 export const useLogin = () => {
-  return useMutation({
+  return useMutation<any, Error, FieldValues>({
+    mutationKey: ["USER_LOGIN"],
     mutationFn: async (credentials: FieldValues) =>
       await loginUser(credentials),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Login Success");
     },
-    onError: (err: any) => {
-      toast.error(err?.message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 };

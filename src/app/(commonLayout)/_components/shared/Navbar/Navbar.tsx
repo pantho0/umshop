@@ -3,18 +3,21 @@
 import React from "react";
 import MegaMenu from "./MegaMenu";
 import Logo from "../../../../../../public/assets/umshop.jpg";
-import { Search, Heart, User, Percent } from "lucide-react";
+import { Search, Heart, User, Percent, LogIn } from "lucide-react";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
 
 import CartDrawer from "./cartDrawer";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hook";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 interface NavbarProps {
   className?: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
+  const user = useAppSelector(selectUser);
   return (
     <nav
       className={`bg-gray-800 text-white shadow-md z-50 relative ${className}`}
@@ -38,12 +41,21 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
             </a>
 
             <CartDrawer />
-            <Link
-              href="/login"
-              className="hover:text-white transition-colors duration-200"
-            >
-              <User className="h-5 w-5" />
-            </Link>
+            {!user ? (
+              <Link
+                href="/login"
+                className="hover:text-white transition-colors duration-200"
+              >
+                <LogIn className="h-5 w-5" />
+              </Link>
+            ) : (
+              <Link
+                href="/dashboard/orders"
+                className="hover:text-white transition-colors duration-200"
+              >
+                <User className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </div>
       </div>
