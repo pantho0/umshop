@@ -47,8 +47,8 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
             </a>
 
             <CartDrawer />
-            {mounted && (
-              !user ? (
+            {mounted &&
+              (!user ? (
                 <Link
                   href="/login"
                   className="hover:text-white transition-colors duration-200"
@@ -62,8 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                 >
                   <User className="h-5 w-5" />
                 </Link>
-              )
-            )}
+              ))}
           </div>
         </div>
       </div>

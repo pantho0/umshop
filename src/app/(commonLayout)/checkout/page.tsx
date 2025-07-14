@@ -19,16 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox"; // Keep Checkbox import for other potential uses if any, or remove if not used elsewhere
-import {
-  Minus,
-  Plus,
-  X,
-  Percent,
-  ChevronRight,
-  CheckCircle2,
-  Edit,
-} from "lucide-react";
+
+import { Percent, ChevronRight, CheckCircle2, Edit } from "lucide-react";
+import UMForm from "@/components/UMForm/UMForm";
+import { FieldValues } from "react-hook-form";
+import { UMInput } from "@/components/UMForm/UMInput";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
@@ -43,16 +38,6 @@ interface CartItem {
 }
 
 const CheckoutPage: React.FC = () => {
-  // Dummy form states for shipping and payment
-  const [shippingInfo, setShippingInfo] = useState({
-    fullName: "Jane Cooper",
-    mobileNumber: "(213) 555-1234",
-    email: "jane.cooper@gmail.com",
-    district: "Harrisburg", // Now a select option
-    upazila: "Central", // Now a select option
-    detailedAddress: "567 Cherry Lane Apt 812", // Now a textarea
-  });
-
   // paymentMethod now defaults to "cash_on_delivery"
   const [paymentMethod, setPaymentMethod] =
     useState<string>("cash_on_delivery");
@@ -107,18 +92,8 @@ const CheckoutPage: React.FC = () => {
 
   const estimatedTotal = subtotal - saving + taxCollected;
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the order information to your backend
-    alert("Order submitted successfully!");
-    console.log("Order Details:", {
-      shippingInfo,
-      paymentMethod,
-      cardDetails: paymentMethod === "credit_card" ? cardDetails : "N/A",
-      additionalComments,
-      total: estimatedTotal,
-      cartItems,
-    });
+  const handleSubmitOrder = (data: FieldValues) => {
+    console.log(data);
   };
 
   return (
@@ -131,7 +106,7 @@ const CheckoutPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column: Shipping Address and Payment */}
           <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden p-6 md:p-8">
-            <form onSubmit={handleSubmitOrder} className="space-y-8">
+            <UMForm onSubmit={handleSubmitOrder} className="space-y-8">
               {/* Shipping Information */}
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -139,63 +114,30 @@ const CheckoutPage: React.FC = () => {
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="fullName"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Full Name
-                    </label>
-                    <Input
-                      id="fullName"
-                      value={shippingInfo.fullName}
-                      onChange={(e) =>
-                        setShippingInfo({
-                          ...shippingInfo,
-                          fullName: e.target.value,
-                        })
-                      }
-                      required
+                    <UMInput
+                      type="text"
+                      name="full name"
+                      label="Full Name"
+                      placeholder="Full Name"
                     />
                   </div>
                   <div>
-                    <label
-                      htmlFor="mobileNumber"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Mobile Number
-                    </label>
-                    <Input
-                      id="mobileNumber"
-                      type="tel"
-                      value={shippingInfo.mobileNumber}
-                      onChange={(e) =>
-                        setShippingInfo({
-                          ...shippingInfo,
-                          mobileNumber: e.target.value,
-                        })
-                      }
-                      required
+                    <UMInput
+                      type="text"
+                      name="mobile number"
+                      label="Mobile Number"
+                      placeholder="Mobile Number"
                     />
                   </div>
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Email (Optional)
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={shippingInfo.email}
-                      onChange={(e) =>
-                        setShippingInfo({
-                          ...shippingInfo,
-                          email: e.target.value,
-                        })
-                      }
+                    <UMInput
+                      type="text"
+                      name="email"
+                      label="Email (Optional)"
+                      placeholder="Email (Optional)"
                     />
                   </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label
@@ -204,12 +146,7 @@ const CheckoutPage: React.FC = () => {
                       >
                         District
                       </label>
-                      <Select
-                        onValueChange={(value) =>
-                          setShippingInfo({ ...shippingInfo, district: value })
-                        }
-                        value={shippingInfo.district}
-                      >
+                      <Select>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select District" />
                         </SelectTrigger>
@@ -232,12 +169,7 @@ const CheckoutPage: React.FC = () => {
                       >
                         Upazila
                       </label>
-                      <Select
-                        onValueChange={(value) =>
-                          setShippingInfo({ ...shippingInfo, upazila: value })
-                        }
-                        value={shippingInfo.upazila}
-                      >
+                      <Select>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select Upazila" />
                         </SelectTrigger>
@@ -254,24 +186,11 @@ const CheckoutPage: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label
-                      htmlFor="detailedAddress"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Detailed Address Information
-                    </label>
-                    <Input
-                      id="detailedAddress"
-                      type="textarea" // This creates a textarea
-                      value={shippingInfo.detailedAddress}
-                      onChange={(e) =>
-                        setShippingInfo({
-                          ...shippingInfo,
-                          detailedAddress: e.target.value,
-                        })
-                      }
-                      placeholder="Street, Building, Apartment, etc."
-                      required
+                    <UMInput
+                      type="text"
+                      name="details information"
+                      label="Details Information"
+                      placeholder="Details Information"
                     />
                   </div>
                 </div>
@@ -400,24 +319,6 @@ const CheckoutPage: React.FC = () => {
                   </div>
                 </RadioGroup>
 
-                <div className="mt-6">
-                  <label
-                    htmlFor="comments"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Additional comments
-                  </label>
-                  <Input
-                    id="comments"
-                    type="textarea"
-                    value={additionalComments}
-                    onChange={(e) => setAdditionalComments(e.target.value)}
-                    placeholder="Add any special instructions here..."
-                  />
-                </div>
-
-                {/* Removed the "I accept the Terms and Conditions" checkbox */}
-
                 <Button
                   type="submit"
                   className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
@@ -425,7 +326,7 @@ const CheckoutPage: React.FC = () => {
                   Pay ${estimatedTotal.toFixed(2)}
                 </Button>
               </div>
-            </form>
+            </UMForm>
           </div>
 
           {/* Right Column: Order Summary */}
