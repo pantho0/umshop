@@ -25,6 +25,7 @@ import {
   removeFromCart,
 } from "@/redux/features/cartSlice";
 import Image from "next/image";
+import Link from "next/link";
 
 // Define a type for a cart item
 interface CartItem {
@@ -331,9 +332,11 @@ const ShoppingCartPage: React.FC = () => {
               <span>${estimatedTotal.toFixed(2)}</span>
             </div>
 
-            <Button className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center">
-              Proceed to checkout <ChevronRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/checkout">
+              <Button className="w-full bg-red-500 cursor-pointer text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center">
+                Proceed to checkout <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
 
             <p className="text-sm text-center text-gray-600 mt-4">
               <a href="#" className="text-purple-600 hover:underline">
@@ -364,13 +367,13 @@ const ShoppingCartPage: React.FC = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <a
-            href="#"
+          <Link
+            href="/products"
             className="text-purple-600 hover:underline flex items-center justify-center"
           >
             <ChevronRight className="rotate-180 mr-2 h-4 w-4" /> Continue
             shopping
-          </a>
+          </Link>
         </div>
       </div>
     </div>

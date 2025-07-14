@@ -17,7 +17,6 @@ import { uploadSingleImage } from "@/services/product";
 import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useAddProduct } from "@/hooks/product.hooks";
-import { Product } from "@/interface";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -39,8 +38,6 @@ const formSchema = z.object({
     .min(1, "At least one image is required"),
   variants: z.array(variantSchema).min(1, "At least one variant is required"),
 });
-
-// type Variant = z.infer<typeof variantSchema>;
 
 interface Category {
   _id: string;
@@ -81,7 +78,6 @@ export default function AddProduct() {
     name: "variants",
   });
 
-  // Ref for file input to clear it after upload
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,12 +96,10 @@ export default function AddProduct() {
     }
   };
 
-  // Remove image by index
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Fetch Parent Categories on component mount
   useEffect(() => {
     const fetchParentCategories = async () => {
       try {
@@ -126,7 +120,6 @@ export default function AddProduct() {
     fetchParentCategories();
   }, []);
 
-  // Fetch Subcategories when selectedParentCategory changes
   useEffect(() => {
     if (selectedParentCategory) {
       const fetchSubCategories = async () => {

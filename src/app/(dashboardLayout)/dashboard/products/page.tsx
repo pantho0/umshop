@@ -9,14 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetProduct } from "@/hooks/product.hooks";
-import { Edit, Eye, Trash, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const ProductsPage = () => {
   const { data, isLoading, isError, error } = useGetProduct();
   const products = data?.data;
-  console.log(products);
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Products</h2>

@@ -11,6 +11,7 @@ import CartDrawer from "./cartDrawer";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { useState, useEffect } from "react";
 
 interface NavbarProps {
   className?: string;
@@ -18,6 +19,11 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
   const user = useAppSelector(selectUser);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <nav
       className={`bg-gray-800 text-white shadow-md z-50 relative ${className}`}
@@ -41,20 +47,22 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
             </a>
 
             <CartDrawer />
-            {!user ? (
-              <Link
-                href="/login"
-                className="hover:text-white transition-colors duration-200"
-              >
-                <LogIn className="h-5 w-5" />
-              </Link>
-            ) : (
-              <Link
-                href="/dashboard/orders"
-                className="hover:text-white transition-colors duration-200"
-              >
-                <User className="h-5 w-5" />
-              </Link>
+            {mounted && (
+              !user ? (
+                <Link
+                  href="/login"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  <LogIn className="h-5 w-5" />
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard/orders"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  <User className="h-5 w-5" />
+                </Link>
+              )
             )}
           </div>
         </div>

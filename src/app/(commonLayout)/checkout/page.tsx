@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox"; // Keep Checkbox import for other potential uses if any, or remove if not used elsewhere
 import {
   Minus,
   Plus,
@@ -43,31 +43,25 @@ interface CartItem {
 }
 
 const CheckoutPage: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState<number>(1); // 1: Delivery, 2: Shipping, 3: Payment
-
-  // Dummy form states for each step
-  const [deliveryInfo, setDeliveryInfo] = useState({
-    postcode: "15006",
-    estimatedDate: "Monday, 13 - 12:00 - 16:00",
-  });
-
-  const [shippingAddress, setShippingAddress] = useState({
+  // Dummy form states for shipping and payment
+  const [shippingInfo, setShippingInfo] = useState({
     fullName: "Jane Cooper",
+    mobileNumber: "(213) 555-1234",
     email: "jane.cooper@gmail.com",
-    phone: "(213) 555-1234",
-    address: "567 Cherry Lane Apt 812 Harrisburg",
-    city: "Harrisburg",
-    state: "Pennsylvania",
-    zip: "15006",
+    district: "Harrisburg", // Now a select option
+    upazila: "Central", // Now a select option
+    detailedAddress: "567 Cherry Lane Apt 812", // Now a textarea
   });
 
-  const [paymentMethod, setPaymentMethod] = useState<string>("credit_card");
+  // paymentMethod now defaults to "cash_on_delivery"
+  const [paymentMethod, setPaymentMethod] =
+    useState<string>("cash_on_delivery");
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
     expiry: "",
     cvc: "",
   });
-  const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
+  // The `acceptTerms` state is removed as the checkbox is removed
   const [additionalComments, setAdditionalComments] = useState<string>("");
 
   // Dummy cart data for order summary demonstration
@@ -113,17 +107,18 @@ const CheckoutPage: React.FC = () => {
 
   const estimatedTotal = subtotal - saving + taxCollected;
 
-  const handleNextStep = () => {
-    if (currentStep < 3) {
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      // Handle final payment submission
-      alert("Proceeding to payment!");
-    }
-  };
-
-  const handleEditStep = (step: number) => {
-    setCurrentStep(step);
+  const handleSubmitOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would typically send the order information to your backend
+    alert("Order submitted successfully!");
+    console.log("Order Details:", {
+      shippingInfo,
+      paymentMethod,
+      cardDetails: paymentMethod === "credit_card" ? cardDetails : "N/A",
+      additionalComments,
+      total: estimatedTotal,
+      cartItems,
+    });
   };
 
   return (
@@ -134,116 +129,15 @@ const CheckoutPage: React.FC = () => {
         </h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column: Checkout Steps */}
+          {/* Left Column: Shipping Address and Payment */}
           <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden p-6 md:p-8">
-            {/* Step 1: Delivery Information */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                      currentStep >= 1
-                        ? "bg-purple-600 text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {currentStep > 1 ? (
-                      <CheckCircle2 className="h-4 w-4" />
-                    ) : (
-                      "1"
-                    )}
-                  </span>
-                  Delivery Information
+            <form onSubmit={handleSubmitOrder} className="space-y-8">
+              {/* Shipping Information */}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Shipping Information
                 </h2>
-                {currentStep > 1 && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleEditStep(1)}
-                    className="text-purple-600 hover:underline flex items-center"
-                  >
-                    <Edit className="h-4 w-4 mr-1" /> Edit
-                  </Button>
-                )}
-              </div>
-              {currentStep === 1 ? (
-                <form className="space-y-4">
-                  <div>
-                    <label
-                      htmlFor="postcode"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Postcode
-                    </label>
-                    <Input
-                      id="postcode"
-                      value={deliveryInfo.postcode}
-                      onChange={(e) =>
-                        setDeliveryInfo({
-                          ...deliveryInfo,
-                          postcode: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  {/* Add more delivery related inputs if needed */}
-                  <Button
-                    onClick={handleNextStep}
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    Next Step
-                  </Button>
-                </form>
-              ) : (
-                <div className="text-gray-700 space-y-1 pl-11">
-                  <p>
-                    Postcode:{" "}
-                    <span className="font-semibold">
-                      {deliveryInfo.postcode}
-                    </span>
-                  </p>
-                  <p>
-                    Estimated delivery date:{" "}
-                    <span className="font-semibold">
-                      {deliveryInfo.estimatedDate}
-                    </span>
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <Separator className="my-6 bg-gray-200" />
-
-            {/* Step 2: Shipping Address */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                      currentStep >= 2
-                        ? "bg-purple-600 text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {currentStep > 2 ? (
-                      <CheckCircle2 className="h-4 w-4" />
-                    ) : (
-                      "2"
-                    )}
-                  </span>
-                  Shipping Address
-                </h2>
-                {currentStep > 2 && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleEditStep(2)}
-                    className="text-purple-600 hover:underline flex items-center"
-                  >
-                    <Edit className="h-4 w-4 mr-1" /> Edit
-                  </Button>
-                )}
-              </div>
-              {currentStep === 2 ? (
-                <form className="space-y-4">
+                <div className="space-y-4">
                   <div>
                     <label
                       htmlFor="fullName"
@@ -253,13 +147,34 @@ const CheckoutPage: React.FC = () => {
                     </label>
                     <Input
                       id="fullName"
-                      value={shippingAddress.fullName}
+                      value={shippingInfo.fullName}
                       onChange={(e) =>
-                        setShippingAddress({
-                          ...shippingAddress,
+                        setShippingInfo({
+                          ...shippingInfo,
                           fullName: e.target.value,
                         })
                       }
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="mobileNumber"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Mobile Number
+                    </label>
+                    <Input
+                      id="mobileNumber"
+                      type="tel"
+                      value={shippingInfo.mobileNumber}
+                      onChange={(e) =>
+                        setShippingInfo({
+                          ...shippingInfo,
+                          mobileNumber: e.target.value,
+                        })
+                      }
+                      required
                     />
                   </div>
                   <div>
@@ -267,348 +182,250 @@ const CheckoutPage: React.FC = () => {
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Email
+                      Email (Optional)
                     </label>
                     <Input
                       id="email"
                       type="email"
-                      value={shippingAddress.email}
+                      value={shippingInfo.email}
                       onChange={(e) =>
-                        setShippingAddress({
-                          ...shippingAddress,
+                        setShippingInfo({
+                          ...shippingInfo,
                           email: e.target.value,
                         })
                       }
                     />
                   </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label
+                        htmlFor="district"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        District
+                      </label>
+                      <Select
+                        onValueChange={(value) =>
+                          setShippingInfo({ ...shippingInfo, district: value })
+                        }
+                        value={shippingInfo.district}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select District" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {/* Populate with actual districts for Bangladesh */}
+                          <SelectItem value="Brahmanbaria">
+                            Brahmanbaria
+                          </SelectItem>
+                          <SelectItem value="Comilla">Comilla</SelectItem>
+                          <SelectItem value="Dhaka">Dhaka</SelectItem>
+                          <SelectItem value="Chittagong">Chittagong</SelectItem>
+                          {/* Add more districts as needed */}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="upazila"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Upazila
+                      </label>
+                      <Select
+                        onValueChange={(value) =>
+                          setShippingInfo({ ...shippingInfo, upazila: value })
+                        }
+                        value={shippingInfo.upazila}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Upazila" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {/* Populate with actual upazilas based on selected district */}
+                          <SelectItem value="Brahmanbaria Sadar">
+                            Brahmanbaria Sadar
+                          </SelectItem>
+                          <SelectItem value="Akhaura">Akhaura</SelectItem>
+                          <SelectItem value="Kasba">Kasba</SelectItem>
+                          {/* Add more upazilas as needed */}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                   <div>
                     <label
-                      htmlFor="phone"
+                      htmlFor="detailedAddress"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Phone
+                      Detailed Address Information
                     </label>
                     <Input
-                      id="phone"
-                      type="tel"
-                      value={shippingAddress.phone}
+                      id="detailedAddress"
+                      type="textarea" // This creates a textarea
+                      value={shippingInfo.detailedAddress}
                       onChange={(e) =>
-                        setShippingAddress({
-                          ...shippingAddress,
-                          phone: e.target.value,
+                        setShippingInfo({
+                          ...shippingInfo,
+                          detailedAddress: e.target.value,
                         })
                       }
+                      placeholder="Street, Building, Apartment, etc."
+                      required
                     />
                   </div>
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Address
-                    </label>
-                    <Input
-                      id="address"
-                      value={shippingAddress.address}
-                      onChange={(e) =>
-                        setShippingAddress({
-                          ...shippingAddress,
-                          address: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        City
-                      </label>
-                      <Input
-                        id="city"
-                        value={shippingAddress.city}
-                        onChange={(e) =>
-                          setShippingAddress({
-                            ...shippingAddress,
-                            city: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="state"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        State
-                      </label>
-                      <Input
-                        id="state"
-                        value={shippingAddress.state}
-                        onChange={(e) =>
-                          setShippingAddress({
-                            ...shippingAddress,
-                            state: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="zip"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Zip Code
-                      </label>
-                      <Input
-                        id="zip"
-                        value={shippingAddress.zip}
-                        onChange={(e) =>
-                          setShippingAddress({
-                            ...shippingAddress,
-                            zip: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                  <Button
-                    onClick={handleNextStep}
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    Next Step
-                  </Button>
-                </form>
-              ) : (
-                <div className="text-gray-700 space-y-1 pl-11">
-                  <p>
-                    <span className="font-semibold">
-                      {shippingAddress.fullName}
-                    </span>
-                  </p>
-                  <p>{shippingAddress.email}</p>
-                  <p>{shippingAddress.phone}</p>
-                  <p>{shippingAddress.address}</p>
-                  <p>
-                    {shippingAddress.city}, {shippingAddress.state}{" "}
-                    {shippingAddress.zip}
-                  </p>
                 </div>
-              )}
-            </div>
+              </div>
 
-            <Separator className="my-6 bg-gray-200" />
+              <Separator className="my-6 bg-gray-200" />
 
-            {/* Step 3: Payment */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                      currentStep >= 3
-                        ? "bg-purple-600 text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {currentStep > 3 ? (
-                      <CheckCircle2 className="h-4 w-4" />
-                    ) : (
-                      "3"
-                    )}
-                  </span>
+              {/* Payment Method */}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Payment
                 </h2>
-                {currentStep > 3 && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleEditStep(3)}
-                    className="text-purple-600 hover:underline flex items-center"
-                  >
-                    <Edit className="h-4 w-4 mr-1" /> Edit
-                  </Button>
-                )}
-              </div>
-              {currentStep === 3 ? (
-                <form className="space-y-6">
-                  <RadioGroup
-                    value={paymentMethod}
-                    onValueChange={setPaymentMethod}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem
-                        value="cash_on_delivery"
-                        id="cash_on_delivery"
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={setPaymentMethod}
+                  className="space-y-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="cash_on_delivery"
+                      id="cash_on_delivery"
+                    />
+                    <label
+                      htmlFor="cash_on_delivery"
+                      className="text-gray-700 font-medium"
+                    >
+                      Cash on delivery
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="credit_card" id="credit_card" />
+                    <label
+                      htmlFor="credit_card"
+                      className="text-gray-700 font-medium flex items-center"
+                    >
+                      Credit or debit card
+                      <img
+                        src="https://placehold.co/40x20/000000/FFFFFF?text=VISA"
+                        alt="Visa"
+                        className="ml-3 h-4"
                       />
-                      <label
-                        htmlFor="cash_on_delivery"
-                        className="text-gray-700 font-medium"
-                      >
-                        Cash on delivery
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="credit_card" id="credit_card" />
-                      <label
-                        htmlFor="credit_card"
-                        className="text-gray-700 font-medium flex items-center"
-                      >
-                        Credit or debit card
-                        <img
-                          src="https://placehold.co/40x20/000000/FFFFFF?text=VISA"
-                          alt="Visa"
-                          className="ml-3 h-4"
-                        />
-                        <img
-                          src="https://placehold.co/40x20/000000/FFFFFF?text=MC"
-                          alt="MasterCard"
-                          className="ml-1 h-4"
-                        />
-                        <img
-                          src="https://placehold.co/40x20/000000/FFFFFF?text=AE"
-                          alt="Amex"
-                          className="ml-1 h-4"
-                        />
-                      </label>
-                    </div>
-                    {paymentMethod === "credit_card" && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
-                        <div className="md:col-span-2">
-                          <label htmlFor="cardNumber" className="sr-only">
-                            Card number
-                          </label>
-                          <Input
-                            id="cardNumber"
-                            placeholder="Card number"
-                            value={cardDetails.cardNumber}
-                            onChange={(e) =>
-                              setCardDetails({
-                                ...cardDetails,
-                                cardNumber: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="expiry" className="sr-only">
-                            MM/YY
-                          </label>
-                          <Input
-                            id="expiry"
-                            placeholder="MM/YY"
-                            value={cardDetails.expiry}
-                            onChange={(e) =>
-                              setCardDetails({
-                                ...cardDetails,
-                                expiry: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="cvc" className="sr-only">
-                            CVC
-                          </label>
-                          <Input
-                            id="cvc"
-                            placeholder="CVC"
-                            value={cardDetails.cvc}
-                            onChange={(e) =>
-                              setCardDetails({
-                                ...cardDetails,
-                                cvc: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="paypal" id="paypal" />
-                      <label
-                        htmlFor="paypal"
-                        className="text-gray-700 font-medium"
-                      >
-                        PayPal
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="google_pay" id="google_pay" />
-                      <label
-                        htmlFor="google_pay"
-                        className="text-gray-700 font-medium"
-                      >
-                        Google Pay
-                      </label>
-                    </div>
-                  </RadioGroup>
-
-                  <div className="mt-6">
-                    <label
-                      htmlFor="comments"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Additional comments
-                    </label>
-                    <Input
-                      id="comments"
-                      type="textarea"
-                      value={additionalComments}
-                      onChange={(e) => setAdditionalComments(e.target.value)}
-                      placeholder="Add any special instructions here..."
-                    />
-                  </div>
-
-                  <div className="flex items-center space-x-2 mt-6">
-                    <Checkbox
-                      id="terms"
-                      checked={acceptTerms}
-                      onCheckedChange={(checked: boolean) =>
-                        setAcceptTerms(checked)
-                      }
-                    />
-                    <label
-                      htmlFor="terms"
-                      className="text-sm text-gray-700 cursor-pointer"
-                    >
-                      I accept the{" "}
-                      <a href="#" className="text-purple-600 hover:underline">
-                        Terms and Conditions
-                      </a>
+                      <img
+                        src="https://placehold.co/40x20/000000/FFFFFF?text=MC"
+                        alt="MasterCard"
+                        className="ml-1 h-4"
+                      />
+                      <img
+                        src="https://placehold.co/40x20/000000/FFFFFF?text=AE"
+                        alt="Amex"
+                        className="ml-1 h-4"
+                      />
                     </label>
                   </div>
-
-                  <Button
-                    onClick={handleNextStep}
-                    disabled={!acceptTerms}
-                    className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center"
-                  >
-                    Pay ${estimatedTotal.toFixed(2)}
-                  </Button>
-                </form>
-              ) : (
-                <div className="text-gray-700 space-y-1 pl-11">
-                  <p>
-                    Payment Method:{" "}
-                    <span className="font-semibold">
-                      {paymentMethod
-                        .replace(/_/g, " ")
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                    </span>
-                  </p>
                   {paymentMethod === "credit_card" && (
-                    <p>
-                      Card ending in:{" "}
-                      <span className="font-semibold">
-                        **** {cardDetails.cardNumber.slice(-4)}
-                      </span>
-                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
+                      <div className="md:col-span-2">
+                        <label htmlFor="cardNumber" className="sr-only">
+                          Card number
+                        </label>
+                        <Input
+                          id="cardNumber"
+                          placeholder="Card number"
+                          value={cardDetails.cardNumber}
+                          onChange={(e) =>
+                            setCardDetails({
+                              ...cardDetails,
+                              cardNumber: e.target.value,
+                            })
+                          }
+                          required={paymentMethod === "credit_card"}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="expiry" className="sr-only">
+                          MM/YY
+                        </label>
+                        <Input
+                          id="expiry"
+                          placeholder="MM/YY"
+                          value={cardDetails.expiry}
+                          onChange={(e) =>
+                            setCardDetails({
+                              ...cardDetails,
+                              expiry: e.target.value,
+                            })
+                          }
+                          required={paymentMethod === "credit_card"}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="cvc" className="sr-only">
+                          CVC
+                        </label>
+                        <Input
+                          id="cvc"
+                          placeholder="CVC"
+                          value={cardDetails.cvc}
+                          onChange={(e) =>
+                            setCardDetails({
+                              ...cardDetails,
+                              cvc: e.target.value,
+                            })
+                          }
+                          required={paymentMethod === "credit_card"}
+                        />
+                      </div>
+                    </div>
                   )}
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="paypal" id="paypal" />
+                    <label
+                      htmlFor="paypal"
+                      className="text-gray-700 font-medium"
+                    >
+                      PayPal
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="google_pay" id="google_pay" />
+                    <label
+                      htmlFor="google_pay"
+                      className="text-gray-700 font-medium"
+                    >
+                      Google Pay
+                    </label>
+                  </div>
+                </RadioGroup>
+
+                <div className="mt-6">
+                  <label
+                    htmlFor="comments"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Additional comments
+                  </label>
+                  <Input
+                    id="comments"
+                    type="textarea"
+                    value={additionalComments}
+                    onChange={(e) => setAdditionalComments(e.target.value)}
+                    placeholder="Add any special instructions here..."
+                  />
                 </div>
-              )}
-            </div>
+
+                {/* Removed the "I accept the Terms and Conditions" checkbox */}
+
+                <Button
+                  type="submit"
+                  className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
+                >
+                  Pay ${estimatedTotal.toFixed(2)}
+                </Button>
+              </div>
+            </form>
           </div>
 
           {/* Right Column: Order Summary */}
@@ -617,13 +434,6 @@ const CheckoutPage: React.FC = () => {
               <h2 className="text-2xl font-semibold text-gray-900">
                 Order summary
               </h2>
-              <Button
-                variant="ghost"
-                onClick={() => handleEditStep(1)}
-                className="text-purple-600 hover:underline flex items-center"
-              >
-                <Edit className="h-4 w-4 mr-1" /> Edit
-              </Button>
             </div>
             <div className="flex items-center justify-between mb-4">
               {cartItems.slice(0, 3).map((item, _index) => (
