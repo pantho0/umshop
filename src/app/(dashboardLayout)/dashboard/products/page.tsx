@@ -1,7 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useGetProduct } from "@/hooks/product.hooks";
+import { Edit, Eye, Trash, Trash2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const ProductsPage = () => {
   const { data, isLoading, isError, error } = useGetProduct();
@@ -13,7 +23,9 @@ const ProductsPage = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
-        <div className="text-red-500">Error: {error?.message || 'Failed to load products.'}</div>
+        <div className="text-red-500">
+          Error: {error?.message || "Failed to load products."}
+        </div>
       ) : (
         <Table>
           <TableHeader>
@@ -27,29 +39,62 @@ const ProductsPage = () => {
           <TableBody>
             {products && products.length > 0 ? (
               products.map((product: any) => {
-                const totalStock = product.variants?.reduce((acc: number, variant: any) => acc + (variant.stock || 0), 0);
+                const totalStock = product.variants?.reduce(
+                  (acc: number, variant: any) => acc + (variant.stock || 0),
+                  0
+                );
                 return (
                   <TableRow key={product._id}>
                     <TableCell>
                       {product.images && product.images.length > 0 ? (
-                        <img src={product.images[0]} alt={product.title} className="w-16 h-16 object-cover rounded" />
+                        <Image
+                          src={product.images[0]}
+                          alt={product.title}
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 object-cover rounded"
+                        />
                       ) : (
-                        <div className="w-16 h-16 bg-gray-200 flex items-center justify-center text-xs">No Image</div>
+                        <div className="w-16 h-16 bg-gray-200 flex items-center justify-center text-xs">
+                          No Image
+                        </div>
                       )}
                     </TableCell>
                     <TableCell>{product.title}</TableCell>
                     <TableCell>{totalStock}</TableCell>
                     <TableCell className="flex gap-2 justify-end">
-                      <Button variant="outline" size="sm">View</Button>
-                      <Button variant="secondary" size="sm">Update</Button>
-                      <Button variant="destructive" size="sm">Delete</Button>
+                      <Link href={`/products/${product.slug}`}>
+                        <Button
+                          className="cursor-pointer"
+                          variant="outline"
+                          size="sm"
+                        >
+                          <Eye className="text-green-600" />
+                        </Button>
+                      </Link>
+                      <Button
+                        className="cursor-pointer"
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Edit className="text-blue-600" />
+                      </Button>
+                      <Button
+                        className="cursor-pointer"
+                        variant="destructive"
+                        size="sm"
+                      >
+                        <Trash2 />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 );
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className="text-center">No products found.</TableCell>
+                <TableCell colSpan={4} className="text-center">
+                  No products found.
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

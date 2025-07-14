@@ -200,7 +200,7 @@ const MegaMenu: React.FC = () => {
                           (subItem: ISubCategory) => (
                             <li key={subItem._id.toString()}>
                               <Link
-                                href={`/products?sub_category=${subItem.slug}`}
+                                href={`/products?subCategory=${subItem.slug}`}
                                 className="hover:text-purple-600 transition-colors duration-150"
                                 onClick={() => setIsDesktopMenuOpen(false)}
                               >

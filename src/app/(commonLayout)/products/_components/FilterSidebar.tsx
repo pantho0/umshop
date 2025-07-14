@@ -31,7 +31,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const [selectedSubCats, setSelectedSubCats] = useState<string[]>(
-    typeof currentSearchParams.subCategory === 'string'
+    typeof currentSearchParams.subCategory === "string"
       ? currentSearchParams.subCategory.split(",").filter(Boolean)
       : []
   );
@@ -43,11 +43,12 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       isInitialMount.current = false;
       return;
     }
-    
-    const newSubCats = typeof currentSearchParams.subCategory === 'string'
-      ? currentSearchParams.subCategory.split(",").filter(Boolean)
-      : [];
-    
+
+    const newSubCats =
+      typeof currentSearchParams.subCategory === "string"
+        ? currentSearchParams.subCategory.split(",").filter(Boolean)
+        : [];
+
     setSelectedSubCats(newSubCats);
   }, [currentSearchParams]);
 
@@ -63,10 +64,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const handleSubCatCheckboxChange = (
-    subSlug: string,
-    isChecked: boolean
-  ) => {
+  const handleSubCatCheckboxChange = (subSlug: string, isChecked: boolean) => {
     let newSubCats: string[];
     if (isChecked) {
       newSubCats = [...selectedSubCats, subSlug];
@@ -100,10 +98,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                           id={`sub-${parentCat.slug}-${subCat.slug}`}
                           checked={selectedSubCats.includes(subCat.slug)}
                           onCheckedChange={(checked: boolean) =>
-                            handleSubCatCheckboxChange(
-                              subCat.slug,
-                              checked
-                            )
+                            handleSubCatCheckboxChange(subCat.slug, checked)
                           }
                         />
                         <label
@@ -127,7 +122,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </div>
           ))}
         </div>
-c      </AccordionContent>
+      </AccordionContent>
     </AccordionItem>
   );
 
