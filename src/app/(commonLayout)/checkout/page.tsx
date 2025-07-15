@@ -27,7 +27,11 @@ import { FieldValues } from "react-hook-form";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { allDistict, upazilasOf } from "@bangladeshi/bangladesh-address";
 import UmSelect from "@/components/UMForm/UmSelect";
-import { useAppSelector } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useConfirmOrder } from "@/hooks/order.hook";
+import { IOrder } from "@/interface";
+import { toast } from "sonner";
+import { clearCart } from "@/redux/features/cartSlice";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
@@ -52,9 +56,11 @@ const CheckoutPage: React.FC = () => {
   // The `acceptTerms` state is removed as the checkbox is removed
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazilla, setSelectedUpazilla] = useState("");
+  const { mutate: handleConfirmOrder } = useConfirmOrder();
 
   const [mounted, setMounted] = useState(false);
   const cartItems: CartItem[] = useAppSelector((state) => state.persisted.cart);
+  const dispatch = useAppDispatch();
 
   const calculateSubtotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -66,13 +72,22 @@ const CheckoutPage: React.FC = () => {
   const estimatedTotal = subtotal + shippingCost;
 
   const handleSubmitOrder = (data: FieldValues) => {
+    const toastId = toast.loading("Confirming your order");
     const orderData = {
       ...data,
       paymentMethod,
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
     };
-    console.log(orderData);
+    handleConfirmOrder(orderData as IOrder, {
+      onSuccess: () => {
+        toast.success("Order Confirmed", { id: toastId, duration: 2000 });
+        dispatch(clearCart());
+      },
+      onError: (err) => {
+        toast.error(err.message, { id: toastId, duration: 2000 });
+      },
+    });
   };
 
   const districts = allDistict();
@@ -104,7 +119,7 @@ const CheckoutPage: React.FC = () => {
                       <div>
                         <UMInput
                           type="text"
-                          name="full name"
+                          name="fullName"
                           label="Full Name"
                           placeholder="Full Name"
                         />
@@ -112,7 +127,7 @@ const CheckoutPage: React.FC = () => {
                       <div>
                         <UMInput
                           type="text"
-                          name="mobile number"
+                          name="mobileNumber"
                           label="Mobile Number"
                           placeholder="Mobile Number"
                         />
@@ -171,7 +186,7 @@ const CheckoutPage: React.FC = () => {
                       <div>
                         <UMInput
                           type="text"
-                          name="details information"
+                          name="detailsInformation"
                           label="Details Information"
                           placeholder="Details Information"
                         />
