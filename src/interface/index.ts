@@ -95,6 +95,7 @@ export interface LoginSuccessResponse {
 
 export interface IOrder {
   _id?: string;
+  orderId: string;
   fullName: string;
   mobileNumber: string;
   email: string;
@@ -110,7 +111,7 @@ export interface IOrder {
     sku: string;
     name: string;
     price: number;
-    image: string[];
+    image: string;
     color: string;
     model: string;
     quantity: number;

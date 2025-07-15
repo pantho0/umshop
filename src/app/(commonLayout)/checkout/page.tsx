@@ -32,6 +32,7 @@ import { useConfirmOrder } from "@/hooks/order.hook";
 import { IOrder } from "@/interface";
 import { toast } from "sonner";
 import { clearCart } from "@/redux/features/cartSlice";
+import { generateUUID } from "@/utils/uuidGenerator";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
@@ -73,16 +74,17 @@ const CheckoutPage: React.FC = () => {
   const estimatedTotal = subtotal + shippingCost;
 
   const handleSubmitOrder = (data: FieldValues) => {
+    const orderId = generateUUID();
     const toastId = toast.loading("Confirming your order");
     const orderData = {
       ...data,
       paymentMethod,
+      orderId: orderId,
       status: "Pending",
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
-    };
-    console.log(orderData);
-    handleConfirmOrder(orderData as IOrder, {
+    } as IOrder;
+    handleConfirmOrder(orderData, {
       onSuccess: () => {
         toast.success("Order Confirmed", { id: toastId, duration: 2000 });
         dispatch(clearCart());
