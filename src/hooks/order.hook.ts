@@ -9,9 +9,7 @@ export const useConfirmOrder = () => {
   const router = useRouter();
   return useMutation({
     mutationKey: ["CONFIRM_ORDER"],
-    mutationFn: async (orderData: IOrder) => {
-      return await confirmOrder(orderData);
-    },
+    mutationFn: async (orderData: IOrder) => await confirmOrder(orderData),
     onSuccess: () => {
       router.push("/payment-success");
     },

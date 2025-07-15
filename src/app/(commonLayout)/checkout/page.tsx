@@ -79,10 +79,11 @@ const CheckoutPage: React.FC = () => {
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
     };
+    console.log(orderData);
     handleConfirmOrder(orderData as IOrder, {
       onSuccess: () => {
         toast.success("Order Confirmed", { id: toastId, duration: 2000 });
-        dispatch(clearCart());
+        // dispatch(clearCart());
       },
       onError: (err) => {
         toast.error(err.message, { id: toastId, duration: 2000 });
