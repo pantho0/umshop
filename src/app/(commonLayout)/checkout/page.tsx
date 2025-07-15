@@ -66,7 +66,12 @@ const CheckoutPage: React.FC = () => {
   const estimatedTotal = subtotal + shippingCost;
 
   const handleSubmitOrder = (data: FieldValues) => {
-    const orderData = { ...data, paymentMethod };
+    const orderData = {
+      ...data,
+      paymentMethod,
+      orderedItems: cartItems,
+      grandTotal: estimatedTotal,
+    };
     console.log(orderData);
   };
 
