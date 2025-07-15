@@ -1,5 +1,8 @@
 "use client";
-import Image from "next/image";
+
+import React, { useState, useEffect } from "react";
+import { useGetAllOrders } from "@/hooks/order.hook";
+
 import {
   Table,
   TableBody,
@@ -8,235 +11,528 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal } from "lucide-react";
-import { TOrder } from "@/interface";
+import { IOrder } from "@/interface"; // Assuming IOrder is correctly defined here
 
-const mockOrders: TOrder[] = [
-  {
-    orderId: "78A6431D409",
-    orderDate: "Feb 6, 2025",
-    status: "In progress",
-    total: 2105.9,
-    items: [
-      { name: "Phone", image: "/placeholder.svg" },
-      { name: "Laptop", image: "/placeholder.svg" },
-    ],
-  },
-  {
-    orderId: "47H76G09F33",
-    orderDate: "Dec 12, 2024",
-    status: "Delivered",
-    total: 360.75,
-    items: [{ name: "VR Headset", image: "/placeholder.svg" }],
-  },
-  {
-    orderId: "502TR872W2",
-    orderDate: "Nov 7, 2024",
-    status: "Delivered",
-    total: 4268.0,
-    items: [
-      { name: "Laptop", image: "/placeholder.svg" },
-      { name: "Headphones", image: "/placeholder.svg" },
-      { name: "Tablet", image: "/placeholder.svg" },
-    ],
-  },
-  {
-    orderId: "34V85540K83",
-    orderDate: "Sep 15, 2024",
-    status: "Canceled",
-    total: 987.5,
-    items: [
-      { name: "Earbuds", image: "/placeholder.svg" },
-      { name: "Phone", image: "/placeholder.svg" },
-    ],
-  },
-  {
-    orderId: "112P945A90V2",
-    orderDate: "May 12, 2024",
-    status: "Delivered",
-    total: 53.0,
-    items: [{ name: "Case", image: "/placeholder.svg" }],
-  },
-  {
-    orderId: "28BA67U0981",
-    orderDate: "Apr 20, 2024",
-    status: "Canceled",
-    total: 1029.5,
-    items: [
-      { name: "Camera", image: "/placeholder.svg" },
-      { name: "Controller", image: "/placeholder.svg" },
-    ],
-  },
-];
+// --- Embedded useMediaQuery Hook ---
+// This hook determines if the current screen size matches a given media query.
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
 
-const StatusBadge = ({ status }: { status: TOrder["status"] }) => {
-  const statusStyles = {
-    Delivered: "bg-green-100 text-green-800 border-green-200",
-    "In progress": "bg-blue-100 text-blue-800 border-blue-200",
-    Canceled: "bg-red-100 text-red-800 border-red-200",
-  };
-  const dotStyles = {
-    Delivered: "bg-green-500",
-    "In progress": "bg-blue-500",
-    Canceled: "bg-red-500",
-  };
+  useEffect(() => {
+    // Ensure window is defined (runs only on client-side)
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia(query);
+      setMatches(mediaQuery.matches);
+
+      const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
+      mediaQuery.addEventListener("change", handler);
+
+      // Cleanup function to remove the event listener when the component unmounts
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [query]);
+  return matches;
+}
+
+// --- Main OrdersPage Component ---
+const OrdersPage = () => {
+  // Fetch order data using your custom hook
+  const { data, isLoading } = useGetAllOrders();
+
+  // Determine if the screen is desktop-sized (medium or large)
+  // Tailwind's 'md' breakpoint is 768px.
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  // Handle loading state: Display a loading message while data is being fetched.
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <p className="text-lg text-gray-700 font-medium">Loading orders....</p>
+      </div>
+    );
+  }
+
+  // Ensure orders data is an array, defaulting to an empty array if null/undefined.
+  const ordersData: IOrder[] = data?.data || []; // Cast to IOrder[] for type safety
 
   return (
-    <Badge variant="outline" className={`capitalize ${statusStyles[status]}`}>
-      <span className={`mr-2 h-2 w-2 rounded-full ${dotStyles[status]}`}></span>
-      {status}
-    </Badge>
-  );
-};
+    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 font-inter">
+      <h1 className="text-4xl font-extrabold mb-8 text-center md:text-left text-gray-900">
+        Your Orders
+      </h1>
 
-export default function OrdersPage() {
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-            <CardTitle className="text-2xl mb-4 md:mb-0">Orders</CardTitle>
-            {/* Filter buttons can be added here */}
-          </div>
-        </CardHeader>
-      </Card>
-
-      {/* Desktop Table View */}
-      <div className="hidden md:block">
-        <div className="overflow-x-auto">
-          <Card className="min-w-[800px]">
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[150px]">Order #</TableHead>
-                    <TableHead>Order date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Total</TableHead>
-                    <TableHead className="text-center">Items</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockOrders.map((order) => (
-                    <TableRow
-                      key={order.orderId}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <TableCell className="font-medium">
-                        {order.orderId}
-                      </TableCell>
-                      <TableCell>{order.orderDate}</TableCell>
-                      <TableCell>
-                        <StatusBadge status={order.status} />
-                      </TableCell>
-                      <TableCell className="text-right font-medium">
-                        ${order.total.toFixed(2)}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center justify-end space-x-2">
-                          {order.items.slice(0, 3).map((item, index) => (
-                            <div
-                              key={index}
-                              className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-md p-1 flex items-center justify-center"
-                            >
-                              <Image
-                                src={item.image}
-                                alt={item.name}
-                                width={24}
-                                height={24}
-                                className="object-contain"
-                              />
-                            </div>
-                          ))}
-                          {order.items.length > 3 && (
-                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
-                              +{order.items.length - 3}
-                            </div>
-                          )}
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+      {ordersData.length === 0 ? (
+        // Display a message if no orders are found.
+        <div className="flex justify-center items-center py-20 bg-white rounded-lg shadow-md border border-gray-200">
+          <p className="text-xl text-gray-600 font-medium">No orders found.</p>
         </div>
-      </div>
+      ) : isDesktop ? (
+        // --- Desktop (Medium and Large Screens): Shadcn Table (Manual Rendering) ---
+        <div className="w-full">
+          <div className="rounded-md border shadow-sm">
+            <Table>
+              <TableHeader className="bg-gray-50">
+                <TableRow>
+                  <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Order ID
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Customer Name
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Customer Email
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Amount
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Order Date
+                  </TableHead>
+                  <TableHead className="h-12 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {ordersData.length ? (
+                  ordersData.map((order: IOrder) => {
+                    const orderDate = new Date(
+                      order.createdAt as Date
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    });
+                    const formattedTotal = new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(order.grandTotal);
 
-      {/* Mobile Card View */}
-      <div className="space-y-4 md:hidden px-4">
-        {mockOrders.map((order) => (
-          <Card key={order.orderId} className="overflow-hidden w-full">
-            <div className="p-4 border-b">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Order #</p>
-                  <p className="font-medium">{order.orderId}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-medium text-gray-500">Total</p>
-                  <p className="font-medium">${order.total.toFixed(2)}</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 space-y-3">
-              <div className="flex justify-between">
-                <div className="space-y-1">
-                  <p className="text-sm text-gray-500">Date</p>
-                  <p>{order.orderDate}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">Status</p>
-                  <StatusBadge status={order.status} />
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 mb-2">Items</p>
-                <div className="flex items-center space-x-2">
-                  {order.items.slice(0, 3).map((item, index) => (
-                    <div
-                      key={index}
-                      className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-md p-1 flex items-center justify-center"
+                    let statusVariant:
+                      | "default"
+                      | "secondary"
+                      | "destructive"
+                      | "outline" = "default";
+                    let statusColorClass = "";
+
+                    switch (order.status) {
+                      case "Pending":
+                        statusVariant = "secondary";
+                        statusColorClass =
+                          "bg-orange-100 text-orange-800 hover:bg-orange-200";
+                        break;
+                      case "Completed":
+                        statusVariant = "default";
+                        statusColorClass =
+                          "bg-green-100 text-green-800 hover:bg-green-200";
+                        break;
+                      case "Cancelled":
+                        statusVariant = "destructive";
+                        statusColorClass =
+                          "bg-red-100 text-red-800 hover:bg-red-200";
+                        break;
+                      default:
+                        statusVariant = "outline";
+                        statusColorClass =
+                          "bg-gray-100 text-gray-800 hover:bg-gray-200";
+                    }
+
+                    return (
+                      <TableRow
+                        key={order._id}
+                        className="border-b transition-colors hover:bg-muted/50"
+                      >
+                        <TableCell className="p-4 align-middle font-medium">
+                          {order._id!.substring(0, 8)}...
+                        </TableCell>
+                        <TableCell className="p-4 align-middle">
+                          {order.fullName}
+                        </TableCell>
+                        <TableCell className="p-4 align-middle">
+                          {order.email}
+                        </TableCell>
+                        <TableCell className="p-4 align-middle text-right">
+                          {formattedTotal}
+                        </TableCell>
+                        <TableCell className="p-4 align-middle">
+                          <Badge
+                            variant={statusVariant}
+                            className={`capitalize ${statusColorClass}`}
+                          >
+                            {order.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="p-4 align-middle">
+                          {orderDate}
+                        </TableCell>
+                        <TableCell className="p-4 align-middle text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  const el = document.createElement("textarea");
+                                  el.value = order._id!; // Ensure _id is not null
+                                  document.body.appendChild(el);
+                                  el.select();
+                                  document.execCommand("copy");
+                                  document.body.removeChild(el);
+                                  alert("Order ID copied to clipboard!");
+                                }}
+                              >
+                                Copy order ID
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <Sheet>
+                                <SheetTrigger asChild>
+                                  <DropdownMenuItem
+                                    onSelect={(e) => e.preventDefault()}
+                                  >
+                                    View Order Details
+                                  </DropdownMenuItem>
+                                </SheetTrigger>
+                                <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                                  <SheetHeader>
+                                    <SheetTitle>
+                                      Order Details:{" "}
+                                      {order._id!.substring(0, 8)}
+                                      ...
+                                    </SheetTitle>
+                                    <SheetDescription>
+                                      Detailed information about this order.
+                                    </SheetDescription>
+                                  </SheetHeader>
+                                  <div className="grid gap-4 p-6 text-sm border m-2 rounded-md">
+                                    <p>
+                                      <strong>Customer:</strong>{" "}
+                                      {order.fullName}
+                                    </p>
+                                    <p>
+                                      <strong>Email:</strong> {order.email}
+                                    </p>
+                                    <p>
+                                      <strong>Mobile:</strong>{" "}
+                                      {order.mobileNumber}
+                                    </p>
+                                    <p>
+                                      <strong>Address:</strong>{" "}
+                                      {order.detailsInformation},{" "}
+                                      {order.upazilla}, {order.district}
+                                    </p>
+                                    <p>
+                                      <strong>Payment Method:</strong>{" "}
+                                      {order.paymentMethod
+                                        .replace(/_/g, " ")
+                                        .replace(/\b\w/g, (char) =>
+                                          char.toUpperCase()
+                                        )}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong>{" "}
+                                      <Badge
+                                        variant={
+                                          order.status === "Pending"
+                                            ? "secondary"
+                                            : order.status === "Completed"
+                                            ? "default"
+                                            : order.status === "Cancelled"
+                                            ? "destructive"
+                                            : "outline"
+                                        }
+                                        className={`capitalize ${
+                                          order.status === "Pending"
+                                            ? "bg-orange-100 text-orange-800"
+                                            : order.status === "Completed"
+                                            ? "bg-green-100 text-green-800"
+                                            : order.status === "Cancelled"
+                                            ? "bg-red-100 text-red-800"
+                                            : "bg-gray-100 text-gray-800"
+                                        }`}
+                                      >
+                                        {order.status}
+                                      </Badge>
+                                    </p>
+                                    <p>
+                                      <strong>Total:</strong> $
+                                      {order.grandTotal.toFixed(2)}
+                                    </p>
+                                    <p className="font-semibold mt-2">
+                                      Ordered Items:
+                                    </p>
+                                    <ul className=" list-disc pl-5 space-y-1">
+                                      {order.orderedItems.map((item) => (
+                                        <li key={item.id}>
+                                          <div className="flex flex-col gap-2 border p-3 rounded-md">
+                                            {item.image && item.image[0] && (
+                                              <img
+                                                src={item.image[0]}
+                                                alt={item.name}
+                                                className="w-10 h-10 object-cover rounded-md"
+                                                onError={(e) => {
+                                                  e.currentTarget.src = `https://placehold.co/40x40/f0f0f0/cccccc?text=No+Image`;
+                                                }}
+                                              />
+                                            )}
+                                            <div>
+                                              {item.name} (Qty: {item.quantity})
+                                              - ${item.price.toFixed(2)}
+                                            </div>
+                                            <div>
+                                              <p> Model: {item.model}</p>
+                                              <p> Color : {item.color}</p>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </SheetContent>
+                              </Sheet>
+                              <DropdownMenuItem>
+                                Mark as Completed
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>Cancel Order</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={7} // Updated colspan to match the number of headers
+                      className="h-24 text-center text-gray-500"
                     >
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        width={32}
-                        height={32}
-                        className="object-contain"
-                      />
-                    </div>
-                  ))}
-                  {order.items.length > 3 && (
-                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center justify-center text-xs font-semibold text-gray-600 dark:text-gray-300">
-                      +{order.items.length - 3}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 flex justify-end">
-              <Button variant="outline" size="sm" className="gap-2">
-                View Details
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      ) : (
+        // --- Mobile/Tablet (Small Screens): Shadcn Cards ---
+        <div className="grid grid-cols-1 gap-4">
+          {ordersData.map((order: IOrder) => {
+            const orderDate = new Date(
+              order.createdAt as Date
+            ).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+            const formattedTotal = new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(order.grandTotal);
 
-      {/* Pagination can be added here */}
+            let statusVariant:
+              | "default"
+              | "secondary"
+              | "destructive"
+              | "outline" = "default";
+            let statusColorClass = "";
+
+            switch (order.status) {
+              case "Pending":
+                statusVariant = "secondary";
+                statusColorClass =
+                  "bg-orange-100 text-orange-800 hover:bg-orange-200";
+                break;
+              case "Completed":
+                statusVariant = "default";
+                statusColorClass =
+                  "bg-green-100 text-green-800 hover:bg-green-200";
+                break;
+              case "Cancelled":
+                statusVariant = "destructive";
+                statusColorClass = "bg-red-100 text-red-800 hover:bg-red-200";
+                break;
+              default:
+                statusVariant = "outline";
+                statusColorClass =
+                  "bg-gray-100 text-gray-800 hover:bg-gray-200";
+            }
+
+            return (
+              <Card
+                key={order._id}
+                className="rounded-lg shadow-md border border-gray-200"
+              >
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-semibold text-gray-900">
+                    Order ID: {order._id!.substring(0, 8)}...
+                  </CardTitle>
+                  <CardDescription className="text-sm text-gray-600">
+                    Placed on: {orderDate}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-2 text-sm text-gray-700">
+                  <p>
+                    <strong>Customer:</strong> {order.fullName}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <strong>Status:</strong>{" "}
+                    <Badge
+                      variant={statusVariant}
+                      className={`capitalize ${statusColorClass}`}
+                    >
+                      {order.status}
+                    </Badge>
+                  </p>
+                  <p>
+                    <strong>Total:</strong> {formattedTotal}
+                  </p>
+                </CardContent>
+                <CardFooter className="flex justify-end gap-2 pt-2">
+                  {/* View Details Button for Card, using Shadcn Sheet */}
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-md shadow-sm"
+                      >
+                        View Details
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                      <SheetHeader>
+                        <SheetTitle>
+                          Order Details: {order._id!.substring(0, 8)}...
+                        </SheetTitle>
+                        <SheetDescription>
+                          Detailed information about this order.
+                        </SheetDescription>
+                      </SheetHeader>
+                      {/* THIS SECTION IS NOW IDENTICAL TO DESKTOP'S SHEET CONTENT */}
+                      <div className="grid gap-4 p-6 text-sm border m-2 rounded-md">
+                        <p>
+                          <strong>Customer:</strong> {order.fullName}
+                        </p>
+                        <p>
+                          <strong>Email:</strong> {order.email}
+                        </p>
+                        <p>
+                          <strong>Mobile:</strong> {order.mobileNumber}
+                        </p>
+                        <p>
+                          <strong>Address:</strong> {order.detailsInformation},{" "}
+                          {order.upazilla}, {order.district}
+                        </p>
+                        <p>
+                          <strong>Payment Method:</strong>{" "}
+                          {order.paymentMethod
+                            .replace(/_/g, " ")
+                            .replace(/\b\w/g, (char) => char.toUpperCase())}
+                        </p>
+                        <p>
+                          <strong>Status:</strong>{" "}
+                          <Badge
+                            variant={
+                              order.status === "Pending"
+                                ? "secondary"
+                                : order.status === "Completed"
+                                ? "default"
+                                : order.status === "Cancelled"
+                                ? "destructive"
+                                : "outline"
+                            }
+                            className={`capitalize ${
+                              order.status === "Pending"
+                                ? "bg-orange-100 text-orange-800"
+                                : order.status === "Completed"
+                                ? "bg-green-100 text-green-800"
+                                : order.status === "Cancelled"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {order.status}
+                          </Badge>
+                        </p>
+                        <p>
+                          <strong>Total:</strong> ${order.grandTotal.toFixed(2)}
+                        </p>
+                        <p className="font-semibold mt-2">Ordered Items:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {order.orderedItems.map((item) => (
+                            <li key={item.id}>
+                              <div className="flex flex-col gap-2 border p-3 rounded-md">
+                                {item.image && item.image[0] && (
+                                  <img
+                                    src={item.image[0]}
+                                    alt={item.name}
+                                    className="w-10 h-10 object-cover rounded-md"
+                                    onError={(e) => {
+                                      e.currentTarget.src = `https://placehold.co/40x40/f0f0f0/cccccc?text=No+Image`;
+                                    }}
+                                  />
+                                )}
+                                <div>
+                                  {item.name} (Qty: {item.quantity}) - $
+                                  {item.price.toFixed(2)}
+                                </div>
+                                <div>
+                                  <p> Model: {item.model}</p>
+                                  <p> Color : {item.color}</p>
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                  {/* Example Action Button for Card */}
+                  <Button size="sm" className="rounded-md shadow-sm">
+                    Take Action
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
-}
+};
+export default OrdersPage;

@@ -94,6 +94,7 @@ export interface LoginSuccessResponse {
 }
 
 export interface IOrder {
+  _id?: string;
   fullName: string;
   mobileNumber: string;
   email: string;
@@ -101,18 +102,17 @@ export interface IOrder {
   upazilla: string;
   detailsInformation: string;
   paymentMethod: string;
-  status: "Pending" | "In progress" | "Delivered" | "Canceled";
-  orderedItems: IOrderedItem[];
+  status: "Pending" | "Completed" | "Cancelled";
   grandTotal: number;
-}
-
-export interface IOrderedItem {
-  id: string;
-  sku: string;
-  name: string;
-  price: number;
-  image: string;
-  color: string;
-  model: string;
-  quantity: number;
+  createdAt?: Date;
+  orderedItems: Array<{
+    id: string;
+    sku: string;
+    name: string;
+    price: number;
+    image: string[];
+    color: string;
+    model: string;
+    quantity: number;
+  }>;
 }

@@ -1,6 +1,6 @@
 import { IOrder } from "@/interface";
-import { confirmOrder } from "@/services/order";
-import { useMutation } from "@tanstack/react-query";
+import { confirmOrder, getAllOrders } from "@/services/order";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { error } from "console";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -16,5 +16,12 @@ export const useConfirmOrder = () => {
     onError: (error: any) => {
       toast.error(error.message);
     },
+  });
+};
+
+export const useGetAllOrders = () => {
+  return useQuery({
+    queryKey: ["ALL_ORDERS"],
+    queryFn: async () => await getAllOrders(),
   });
 };

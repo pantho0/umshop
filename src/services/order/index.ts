@@ -25,3 +25,17 @@ export const confirmOrder = async (orderData: IOrder) => {
     );
   }
 };
+
+export const getAllOrders = async () => {
+  try {
+    const res = await nexiosInstance.get<ApiResponse<IOrder>>("/orders");
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Error fetching orders");
+    }
+    return res.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || error.message || "Error fetching data"
+    );
+  }
+};
