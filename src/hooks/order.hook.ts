@@ -2,7 +2,6 @@ import { statusChanging } from "./../services/order/index";
 import { IOrder } from "@/interface";
 import { confirmOrder, getAllOrders } from "@/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { error } from "console";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 

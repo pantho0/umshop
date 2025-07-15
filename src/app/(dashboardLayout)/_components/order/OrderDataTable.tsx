@@ -8,14 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import {
   Table,
   TableBody,
@@ -24,10 +17,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUpdateOrderStatus } from "@/hooks/order.hook";
+
 import { IOrder } from "@/interface";
 import { MoreHorizontal } from "lucide-react";
-import { toast } from "sonner";
+
 import StatusUpdate from "./StatusUpdate";
 
 const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {

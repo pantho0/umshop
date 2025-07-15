@@ -116,8 +116,8 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
 
   return (
     <section className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
-      <div className="flex justify-between items-center mb-6 md:mb-8">
-        <div className="flex items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8">
+        <div className="flex  items-center">
           <h2 className="text-lg md:text-4xl font-semibold text-gray-900 mr-4">
             Special offers for you
           </h2>
@@ -211,9 +211,11 @@ const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
             );
           })}
         </CarouselContent>
-        <CarouselPrevious className="-left-12" />{" "}
-        {/* Position arrows outside */}
-        <CarouselNext className="-right-12" /> {/* Position arrows outside */}
+        <div className="">
+          <CarouselPrevious className="left-4" />{" "}
+          {/* Position arrows outside */}
+          <CarouselNext className="right-4" /> {/* Position arrows outside */}
+        </div>
       </Carousel>
     </section>
   );

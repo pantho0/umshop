@@ -100,8 +100,24 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
           <div className="flex items-center space-x-4 md:hidden">
             <Search className="h-6 w-6 text-white" />
             <Heart className="h-6 w-6 text-white" />
-            <User className="h-6 w-6 text-white" />
             <CartDrawer />
+            {mounted &&
+              (!user ? (
+                <Link
+                  href="/login"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  <LogIn className="h-5 w-5" />
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard/orders"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  <User className="h-5 w-5" />
+                </Link>
+              ))}
+
             {/* Mobile Mega Menu */}
             <MegaMenu />
           </div>

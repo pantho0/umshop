@@ -16,16 +16,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import { IOrder } from "@/interface";
-import { MoreHorizontal } from "lucide-react";
+
 import StatusUpdate from "./StatusUpdate";
 
 export const OrderDataMobileView = ({ ordersData }: IOrder[] | any) => {

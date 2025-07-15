@@ -3,41 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useGetAllOrders } from "@/hooks/order.hook";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react";
 import { IOrder } from "@/interface"; // Assuming IOrder is correctly defined here
 import OrderDataTable from "../../_components/order/OrderDataTable";
 import { OrderDataMobileView } from "../../_components/order/OrderDataMobileView";
