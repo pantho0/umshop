@@ -13,7 +13,12 @@ import { toast } from "sonner";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import UmSelect from "@/components/UMForm/UmSelect";
-import { uploadSingleImage } from "@/services/product";
+import {
+  getParentCategories,
+  getSubCategories,
+  getSubCategoriesByParent,
+  uploadSingleImage,
+} from "@/services/product";
 import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useAddProduct } from "@/hooks/product.hooks";
@@ -103,14 +108,12 @@ export default function AddProduct() {
   useEffect(() => {
     const fetchParentCategories = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/parent-categories/`
-        );
-        const data = await response.json();
-        if (data.success) {
-          setParentCategories(data.data);
+        const response = await getParentCategories();
+
+        if (response?.data) {
+          setParentCategories(response?.data);
         } else {
-          toast.error(data.message || "Failed to fetch parent categories");
+          toast.error(response?.message || "Failed to fetch parent categories");
         }
       } catch (error) {
         console.error("Error fetching parent categories:", error);
@@ -124,14 +127,14 @@ export default function AddProduct() {
     if (selectedParentCategory) {
       const fetchSubCategories = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/sub-categories/${selectedParentCategory}`
+          const response = await getSubCategoriesByParent(
+            selectedParentCategory
           );
-          const data = await response.json();
-          if (data.success) {
-            setSubCategories(data.data);
+
+          if (response?.data) {
+            setSubCategories(response?.data);
           } else {
-            toast.error(data.message || "Failed to fetch subcategories");
+            toast.error(response?.message || "Failed to fetch subcategories");
           }
         } catch (error) {
           console.error("Error fetching subcategories:", error);
@@ -263,7 +266,7 @@ export default function AddProduct() {
                       }}
                     >
                       <Image
-                        src={typeof img === "string" ? img : img.secure_url}
+                        src={typeof img === "string" ? img : img}
                         alt={`uploaded-${idx}`}
                         width={100}
                         height={100}

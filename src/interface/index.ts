@@ -83,3 +83,13 @@ export type TOrder = {
     image: string;
   }[];
 };
+
+export interface LoginSuccessResponse {
+  success: boolean;
+  message: string;
+  data: {
+    accessToken?: string;
+    refreshToken?: string;
+  };
+
+}

@@ -164,7 +164,7 @@ const CheckoutPage: React.FC = () => {
                                 value: "__placeholder__",
                                 label: "Select your district",
                               },
-                              ...districts.map((dist: any) => ({
+                              ...districts.map((dist: string) => ({
                                 value: dist,
                                 label: dist,
                               })),

@@ -54,6 +54,18 @@ export const getSubCategories = async () => {
   return res.data;
 };
 
+export const getSubCategoriesByParent = async (parentCategoryId: string) => {
+  const res = await nexiosInstance.get<ApiResponse<ISubCategory[]>>(
+    `/sub-categories/${parentCategoryId}`,
+    {
+      next: {
+        tags: ["subcategory"],
+      },
+    }
+  );
+  return res.data;
+};
+
 export const uploadSingleImage = async (image: string) => {
   const res = await fetch(`http://localhost:5000/api/v1/cloudinary`, {
     method: "POST",
