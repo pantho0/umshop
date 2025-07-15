@@ -65,11 +65,8 @@ const OrdersPage = () => {
   // Fetch order data using your custom hook
   const { data, isLoading } = useGetAllOrders();
 
-  // Determine if the screen is desktop-sized (medium or large)
-  // Tailwind's 'md' breakpoint is 768px.
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Handle loading state: Display a loading message while data is being fetched.
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">

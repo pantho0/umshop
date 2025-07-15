@@ -137,7 +137,7 @@ const OrderDataTable = ({ ordersData }: IOrder[] | any) => {
                       <DropdownMenuItem
                         onClick={() => {
                           const el = document.createElement("textarea");
-                          el.value = order._id!; // Ensure _id is not null
+                          el.value = order.orderId!;
                           document.body.appendChild(el);
                           el.select();
                           document.execCommand("copy");
