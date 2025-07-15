@@ -116,4 +116,5 @@ export interface IOrder {
     model: string;
     quantity: number;
   }>;
+  __v?: number;
 }
