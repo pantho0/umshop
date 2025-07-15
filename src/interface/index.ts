@@ -91,7 +91,6 @@ export interface LoginSuccessResponse {
     accessToken?: string;
     refreshToken?: string;
   };
-
 }
 
 export interface IOrder {
@@ -102,12 +101,14 @@ export interface IOrder {
   upazilla: string;
   detailsInformation: string;
   paymentMethod: string;
+  status: "Pending" | "In progress" | "Delivered" | "Canceled";
   orderedItems: IOrderedItem[];
   grandTotal: number;
 }
 
 export interface IOrderedItem {
   id: string;
+  sku: string;
   name: string;
   price: number;
   image: string;

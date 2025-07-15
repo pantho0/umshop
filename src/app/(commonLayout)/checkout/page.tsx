@@ -36,6 +36,7 @@ import { clearCart } from "@/redux/features/cartSlice";
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
   id: string;
+  sku: string;
   name: string;
   price: number;
   image: string;
@@ -76,6 +77,7 @@ const CheckoutPage: React.FC = () => {
     const orderData = {
       ...data,
       paymentMethod,
+      status: "Pending",
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
     };

@@ -170,7 +170,8 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
       return;
     }
     const cartItem = {
-      id: selectedVariant.sku, // Use SKU as cart item ID
+      id: product?._id!,
+      sku: selectedVariant.sku, // Use SKU as cart item ID
       name: product!.title,
       price: selectedVariant.price,
       image: product!.images[0], // Always use the first top-level product image

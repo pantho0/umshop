@@ -9,7 +9,6 @@ export const confirmOrder = async (orderData: IOrder) => {
       "/orders/create-order",
       orderData
     );
-
     if (!res.data.success) {
       throw new Error(
         res.data.message || "Order confirmation failed due to validation"
