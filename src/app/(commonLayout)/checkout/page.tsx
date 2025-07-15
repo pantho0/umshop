@@ -11,14 +11,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import { Percent, ChevronRight, CheckCircle2, Edit } from "lucide-react";
 import UMForm from "@/components/UMForm/UMForm";
@@ -26,16 +27,16 @@ import { FieldValues } from "react-hook-form";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { allDistict, upazilasOf } from "@bangladeshi/bangladesh-address";
 import UmSelect from "@/components/UMForm/UmSelect";
+import { useAppSelector } from "@/redux/hook";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
   id: string;
-  title: string;
+  name: string;
+  price: number;
   image: string;
   color: string;
   model: string;
-  price: number;
-  oldPrice?: number;
   quantity: number;
 }
 
@@ -52,54 +53,21 @@ const CheckoutPage: React.FC = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazilla, setSelectedUpazilla] = useState("");
 
-  console.log({ selectedDistrict, selectedUpazilla });
   const [mounted, setMounted] = useState(false);
-
-  // Dummy cart data for order summary demonstration
-  const cartItems: CartItem[] = [
-    {
-      id: "iphone14",
-      title: "Apple iPhone 14 128GB",
-      image: "https://placehold.co/80x80/E0E0E0/333333?text=iPhone",
-      color: "White",
-      model: "128 GB",
-      price: 899.0,
-      quantity: 1,
-    },
-    {
-      id: "ipadpro",
-      title: "Tablet Apple iPad Pro M2",
-      image: "https://placehold.co/80x80/D0D0D0/333333?text=iPad",
-      color: "Black",
-      model: "256 GB",
-      price: 989.0,
-      oldPrice: 1099.0,
-      quantity: 1,
-    },
-    {
-      id: "smartwatch",
-      title: "Smart Watch Series 7",
-      image: "https://placehold.co/80x80/C0C0C0/333333?text=Watch",
-      color: "White",
-      model: "44 mm",
-      price: 429.0,
-      quantity: 2,
-    },
-  ];
+  const cartItems: CartItem[] = useAppSelector((state) => state.persisted.cart);
 
   const calculateSubtotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
 
   const subtotal = calculateSubtotal();
-  const saving = 110.0; // Dummy saving
-  const taxCollected = 73.4; // Dummy tax
-  const shippingCost = "Calculated at checkout"; // As per image
+  const shippingCost = 0; // As per image
 
-  const estimatedTotal = subtotal - saving + taxCollected;
+  const estimatedTotal = subtotal + shippingCost;
 
   const handleSubmitOrder = (data: FieldValues) => {
-    console.log(data);
+    const orderData = { ...data, paymentMethod };
+    console.log(orderData);
   };
 
   const districts = allDistict();
@@ -333,7 +301,9 @@ const CheckoutPage: React.FC = () => {
                       type="submit"
                       className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
                     >
-                      Pay ${estimatedTotal.toFixed(2)}
+                      {paymentMethod === "cash_on_delivery"
+                        ? "Confirm Order"
+                        : `Pay ${estimatedTotal.toFixed(2)}`}
                     </Button>
                   </div>
                 </UMForm>
@@ -347,26 +317,32 @@ const CheckoutPage: React.FC = () => {
                   </h2>
                 </div>
                 <div className="flex items-center justify-between mb-4">
-                  {cartItems.slice(0, 3).map((item, _index) => (
-                    <img
-                      key={item.id}
-                      src={item.image}
-                      alt={item.title}
-                      className="w-16 h-16 object-contain rounded-md"
-                    />
-                  ))}
-                  {cartItems.length > 3 && (
-                    <span className="text-gray-600 text-sm">
-                      +{cartItems.length - 3} more
-                    </span>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-gray-600 hover:text-purple-700"
+                  <Carousel
+                    opts={{
+                      align: "start",
+                    }}
+                    className="w-full max-w-sm mx-10"
                   >
-                    <ChevronRight className="h-5 w-5" />
-                  </Button>
+                    <CarouselContent className="-ml-2">
+                      {cartItems.map((item, index) => (
+                        <CarouselItem
+                          key={index}
+                          className="pl-2 basis-1/3 md:basis-1/4 lg:basis-1/3"
+                        >
+                          <div className="p-1">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-16 h-16 object-contain rounded-md"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
                 </div>
                 <div className="space-y-4 text-gray-700">
                   <div className="flex justify-between">
@@ -376,16 +352,16 @@ const CheckoutPage: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Saving:</span>
+                    {/* <span>Saving:</span>
                     <span className="font-semibold text-red-500">
                       -${saving.toFixed(2)}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="flex justify-between">
-                    <span>Tax collected:</span>
+                    {/* <span>Tax collected:</span>
                     <span className="font-semibold">
                       ${taxCollected.toFixed(2)}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping:</span>
@@ -401,8 +377,8 @@ const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="bg-orange-100 text-orange-800 p-3 rounded-md text-sm flex items-center justify-center">
-                  <CheckCircle2 className="h-4 w-4 mr-2" /> Congratulations! You
-                  have earned 256 bonuses
+                  <CheckCircle2 className="h-4 w-4 mr-2" /> Thanks for shopping
+                  with us
                 </div>
 
                 <Separator className="my-6 bg-gray-200" />

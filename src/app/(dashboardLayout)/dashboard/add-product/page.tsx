@@ -15,7 +15,6 @@ import { UMInput } from "@/components/UMForm/UMInput";
 import UmSelect from "@/components/UMForm/UmSelect";
 import {
   getParentCategories,
-  getSubCategories,
   getSubCategoriesByParent,
   uploadSingleImage,
 } from "@/services/product";
