@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Star } from "lucide-react";
-import { Product } from "@/interface";
+import { Product, IProductResult } from "@/interface";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -17,7 +17,11 @@ const simpleHash = (str: string) => {
   return Math.abs(hash);
 };
 
-export const NewArraivalsClient = ({ products }: { products: Product[] }) => {
+export const NewArraivalsClient = ({
+  products,
+}: {
+  products: IProductResult[];
+}) => {
   const [isMounted, setIsMounted] = useState(false);
   const [ratings, setRatings] = useState<{ [key: string]: number }>(() => {
     // Initialize with deterministic ratings based on product ID

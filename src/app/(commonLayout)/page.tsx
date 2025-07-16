@@ -7,18 +7,18 @@ import TrandingProducts from "./_components/trandingProduct/TrandingProducts";
 import DiscountBanner from "./_components/discountedSection/DiscountBanner";
 import SpecialOffersSection from "./_components/SpecialOffers/SpecialOffersSection";
 import nexiosInstance from "@/app/config/nexios.config";
-import { ApiResponse, Product } from "@/interface";
+import { ApiResponse, Product, IProductResult } from "@/interface";
 
 const HomePage = async () => {
-  let products: Product[] = [];
+  let products: IProductResult[] = [];
 
   try {
-    const response = await nexiosInstance.get<ApiResponse<Product[]>>(
+    const response = await nexiosInstance.get<ApiResponse<Product>>(
       "/products?limit=7&sortBy=-createdAt"
     );
 
-    if (response?.data?.data && Array.isArray(response.data.data)) {
-      products = response.data.data;
+    if (response?.data?.data && Array.isArray(response?.data?.data?.result)) {
+      products = response.data.data?.result;
     } else {
       console.warn("Unexpected API response structure:", response.data);
     }

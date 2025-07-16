@@ -2,10 +2,12 @@
 "use client";
 import React from "react";
 import { Star, ChevronRight, EyeIcon } from "lucide-react";
-import { Product } from "@/interface";
+import { IProductResult } from "@/interface";
 import Link from "next/link";
 
-const TrandingProducts: React.FC<{ products: Product[] }> = ({ products }) => {
+const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
+  products,
+}) => {
   // Simple deterministic hash function
   const simpleHash = (str: string) => {
     let hash = 0;

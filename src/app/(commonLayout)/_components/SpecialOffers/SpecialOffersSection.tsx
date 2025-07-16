@@ -12,7 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Product } from "@/interface";
+import { Product, IProductResult } from "@/interface";
 import Link from "next/link";
 
 // Simple deterministic hash function
@@ -108,7 +108,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   );
 };
 
-const SpecialOffersSection: React.FC<{ products: Product[] }> = ({
+const SpecialOffersSection: React.FC<{ products: IProductResult[] }> = ({
   products,
 }) => {
   const targetDate = new Date();

@@ -26,7 +26,7 @@ export interface Variant {
   stock: number;
 }
 
-export interface Product {
+export interface IProductResult {
   _id: string;
   title: string;
   parentCategory: IParentCategory;
@@ -38,6 +38,18 @@ export interface Product {
   updatedAt: string;
   slug: string;
   __v: number;
+}
+
+export interface Meta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+}
+
+export interface Product {
+  result: IProductResult[];
+  meta: Meta;
 }
 
 export interface ApiResponse<T> {

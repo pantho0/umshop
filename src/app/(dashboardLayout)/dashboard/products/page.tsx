@@ -15,7 +15,8 @@ import Link from "next/link";
 
 const ProductsPage = () => {
   const { data, isLoading, isError, error } = useGetProduct();
-  const products = data?.data;
+  const products = data?.data?.result;
+  const meta = data?.data?.meta;
 
   return (
     <div className="p-4">

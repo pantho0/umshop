@@ -9,7 +9,7 @@ import {
 } from "@/interface";
 
 export const getProducts = async (query?: Record<string, unknown>) => {
-  const res = await nexiosInstance.get<ApiResponse<Product[]>>("/products", {
+  const res = await nexiosInstance.get<ApiResponse<Product>>("/products", {
     params: query,
     next: {
       tags: ["products"],
