@@ -28,6 +28,8 @@ export const metadata: Metadata = {
 };
 interface SearchParamsObject {
   parent_category?: string;
+  page?: string;
+  limit?: string;
   sub_category?: string;
   sortBy?: string;
   [key: string]: string | string[] | undefined;
@@ -47,7 +49,8 @@ const ProductListingPage = async ({
 
   try {
     const productsResponse = await getProducts(searchParams);
-    const rawProductsData = productsResponse?.data || [];
+    const rawProductsData = productsResponse?.data.result || [];
+    console.log(rawProductsData);
 
     const [parentCategoriesData, subCategoriesData] = await Promise.all([
       getParentCategories(),
