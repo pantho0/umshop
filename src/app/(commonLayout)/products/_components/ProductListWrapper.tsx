@@ -8,6 +8,7 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({
   filterOptions,
   products,
   currentSearchParams,
+  meta,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,6 +40,7 @@ export const ProductListWrapper: React.FC<ProductListWrapperProps> = ({
         products={products}
         currentSortBy={currentSearchParams.sortBy || "popular"}
         isLoading={isLoading}
+        meta={meta}
       />
     </div>
   );

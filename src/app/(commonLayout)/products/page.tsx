@@ -46,10 +46,11 @@ const ProductListingPage = async ({
 
   let filteredProducts: any[] = [];
   let filterOptions: any = {};
-
+  let meta;
   try {
     const productsResponse = await getProducts(searchParams);
     const rawProductsData = productsResponse?.data.result || [];
+    meta = productsResponse?.data.meta || {};
 
     const [parentCategoriesData, subCategoriesData] = await Promise.all([
       getParentCategories(),
@@ -89,6 +90,7 @@ const ProductListingPage = async ({
     }
   } catch (error) {
     console.error("Error fetching products:", error);
+
     return (
       <div className="font-inter antialiased bg-gray-50 min-h-screen">
         <main className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
@@ -155,6 +157,7 @@ const ProductListingPage = async ({
               filterOptions={filterOptions}
               products={filteredProducts}
               currentSearchParams={searchParams}
+              meta={meta}
             />
           </>
         ) : (

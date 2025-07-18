@@ -15,6 +15,14 @@ import DiscountBanner from "../../_components/discountedSection/DiscountBanner";
 import { ProductGridDisplayProps } from "@/interface";
 import renderProductCardSkeleton from "@/components/ui/Product/renderProductCardSkeleton";
 import { useState } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 // Simple deterministic hash function
 const simpleHash = (str: string) => {
@@ -30,6 +38,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
   products,
   currentSortBy,
   isLoading,
+  meta,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -47,6 +56,12 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
     const params = new URLSearchParams(searchParams.toString());
     params.set("sortBy", value);
     router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNumber.toString());
+    return `?${params.toString()}`;
   };
 
   const getRating = (productId: string) => {
@@ -123,7 +138,10 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                     </span>
                   )}
 
-                  <Link href={`/products/${product.slug || '#'}`} className="block">
+                  <Link
+                    href={`/products/${product.slug || "#"}`}
+                    className="block"
+                  >
                     <div className="relative w-full h-36 flex items-center justify-center overflow-hidden">
                       <img
                         src={
@@ -168,13 +186,41 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                 </div>
               );
             })}
-        {/* Integrate DiscountBanner after a few products for visual effect */}
-        {products.length > 4 &&
-          !isLoading && ( // Only show banner when not loading
-            <div className="col-span-full mt-8 mb-4">
-              <DiscountBanner />
-            </div>
-          )}
+      </div>
+      <div>
+        {meta && meta.totalPage > 1 && (
+          <div className="mt-8 flex justify-center">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={createPageURL(Math.max(1, meta.page - 1))}
+                    isActive={meta.page === 1}
+                  />
+                </PaginationItem>
+                {Array.from({ length: meta.totalPage }, (_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      href={createPageURL(i + 1)}
+                      isActive={meta.page === i + 1}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href={createPageURL(
+                      Math.min(meta.totalPage, meta.page + 1)
+                    )}
+                    isActive={meta.page === meta.totalPage}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </div>
     </section>
   );

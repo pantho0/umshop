@@ -69,19 +69,31 @@ export interface FilterSidebarProps {
 }
 
 export interface ProductGridDisplayProps {
-  products: Product[];
+  products: IProductResult[];
   currentSortBy: string;
   isLoading: boolean;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+  };
 }
 
 export interface ProductListWrapperProps {
   filterOptions: any;
-  products: Product[];
+  products: IProductResult[];
   currentSearchParams: {
     parent_category?: string;
     sub_category?: string;
     sortBy?: string;
     [key: string]: string | string[] | undefined;
+  };
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
   };
 }
 
