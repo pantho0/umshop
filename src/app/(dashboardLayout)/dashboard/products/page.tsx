@@ -1,6 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
   Table,
   TableBody,
   TableCell,
@@ -12,6 +20,7 @@ import { useGetProduct } from "@/hooks/product.hooks";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export interface searchParamsObjec {
@@ -29,6 +38,8 @@ interface producPageProps {
 
 const ProductsPage = ({ searchParams }: producPageProps) => {
   const actualSearchParams = React.use(searchParams);
+  const currentSearchParams = useSearchParams();
+  const router = useRouter();
   const {
     mutate: handleGetProduct,
     data: productsResponse,
@@ -37,16 +48,17 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
     error,
   } = useGetProduct();
   const products = productsResponse?.data?.result;
-  console.log(productsResponse);
+  const meta = productsResponse?.data?.meta;
 
-  console.log(products);
+  const createPageUrl = (pageNumber: number | string) => {
+    const params = new URLSearchParams(currentSearchParams.toString());
+    params.set("page", pageNumber.toString());
+    return `/dashboard/products?${params.toString()}`;
+  };
 
   useEffect(() => {
     handleGetProduct(actualSearchParams as Record<string, unknown>);
-  }, [actualSearchParams]);
-
-  // const products = data?.data?.result;
-  // const meta = data?.data?.meta;
+  }, [actualSearchParams, handleGetProduct]);
 
   return (
     <div className="p-4">
@@ -132,24 +144,42 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
             </TableBody>
           </Table>
 
-          {/* <div>
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                {Array.from({ length: meta?.totalPage }, (_, i) => (
-                  <PaginationItem key={i}>
-                    <PaginationLink href="#">{i + 1}</PaginationLink>
-                  </PaginationItem>
-                ))}
+          <div>
+            {meta && meta.totalPage > 1 && (
+              <div>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        
+                        href={createPageUrl(Math.max(1, meta.page - 1))}
+                        isActive={meta.page === 1}
+                      />
+                    </PaginationItem>
+                    {Array.from({ length: meta.totalPage }, (_, i) => (
+                      <PaginationItem key={i}>
+                        <PaginationLink
+                          href={createPageUrl(i + 1)}
+                          isActive={meta.page === i + 1}
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
 
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div> */}
+                    <PaginationItem>
+                      <PaginationNext
+                        href={createPageUrl(
+                          Math.min(meta.totalPage, meta.page + 1)
+                        )}
+                        isActive={meta.page === meta.totalPage}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
