@@ -27,10 +27,10 @@ export const metadata: Metadata = {
   ],
 };
 interface SearchParamsObject {
-  parent_category?: string;
+  parentCategory?: string;
   page?: string;
   limit?: string;
-  sub_category?: string;
+  subCategory?: string;
   sortBy?: string;
   [key: string]: string | string[] | undefined;
 }
@@ -50,7 +50,6 @@ const ProductListingPage = async ({
   try {
     const productsResponse = await getProducts(searchParams);
     const rawProductsData = productsResponse?.data.result || [];
-    console.log(rawProductsData);
 
     const [parentCategoriesData, subCategoriesData] = await Promise.all([
       getParentCategories(),
@@ -121,7 +120,7 @@ const ProductListingPage = async ({
             </div>
 
             <div className="flex items-center space-x-2 mb-6">
-              {searchParams.parent_category?.split(",").map((val) => (
+              {searchParams.parentCategory?.split(",").map((val) => (
                 <span
                   key={`parentCat-${val}`}
                   className="flex items-center bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full"
@@ -132,7 +131,7 @@ const ProductListingPage = async ({
                   <X className="ml-1 h-3 w-3 cursor-pointer" />
                 </span>
               ))}
-              {searchParams.sub_category?.split(",").map((val) => (
+              {searchParams.subCategory?.split(",").map((val) => (
                 <span
                   key={`subCat-${val}`}
                   className="flex items-center bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full"
@@ -143,7 +142,7 @@ const ProductListingPage = async ({
                   <X className="ml-1 h-3 w-3 cursor-pointer" />
                 </span>
               ))}
-              {(searchParams.parent_category || searchParams.sub_category) && (
+              {(searchParams.parentCategory || searchParams.subCategory) && (
                 <Link
                   href="/products"
                   className="text-purple-600 text-sm hover:underline"

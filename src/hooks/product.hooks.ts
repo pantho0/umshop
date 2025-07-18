@@ -1,12 +1,14 @@
+import { searchParamsObjec } from "@/app/(dashboardLayout)/dashboard/products/page";
 import { Product } from "@/interface";
 import { addProduct, getProducts } from "@/services/product";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const useGetProduct = () => {
-  return useQuery({
-    queryKey: ["products"],
-    queryFn: () => getProducts(),
+  return useMutation({
+    mutationKey: ["products"],
+    mutationFn: async (searchParams: Record<string, unknown>) =>
+      await getProducts(searchParams),
   });
 };
 

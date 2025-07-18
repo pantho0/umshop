@@ -1,15 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   Table,
   TableBody,
   TableCell,
@@ -21,16 +12,46 @@ import { useGetProduct } from "@/hooks/product.hooks";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-const ProductsPage = () => {
-  const { data, isLoading, isError, error } = useGetProduct();
-  const products = data?.data?.result;
-  const meta = data?.data?.meta;
+export interface searchParamsObjec {
+  parentCategory?: string;
+  page?: string;
+  limit?: string;
+  subCategory?: string;
+  sortBy?: string;
+  // [key: string]: string | string[] | undefined;
+}
+
+interface producPageProps {
+  searchParams: Promise<searchParamsObjec>;
+}
+
+const ProductsPage = ({ searchParams }: producPageProps) => {
+  const actualSearchParams = React.use(searchParams);
+  const {
+    mutate: handleGetProduct,
+    data: productsResponse,
+    isPending,
+    isError,
+    error,
+  } = useGetProduct();
+  const products = productsResponse?.data?.result;
+  console.log(productsResponse);
+
+  console.log(products);
+
+  useEffect(() => {
+    handleGetProduct(actualSearchParams as Record<string, unknown>);
+  }, [actualSearchParams]);
+
+  // const products = data?.data?.result;
+  // const meta = data?.data?.meta;
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Products</h2>
-      {isLoading ? (
+      {isPending ? (
         <div>Loading...</div>
       ) : isError ? (
         <div className="text-red-500">
