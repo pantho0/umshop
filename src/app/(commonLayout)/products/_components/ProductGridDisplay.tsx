@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
-import DiscountBanner from "../../_components/discountedSection/DiscountBanner";
 import { ProductGridDisplayProps } from "@/interface";
 import renderProductCardSkeleton from "@/components/ui/Product/renderProductCardSkeleton";
 import { useState } from "react";
@@ -40,6 +39,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
   isLoading,
   meta,
 }) => {
+  console.log(meta);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [ratings, setRatings] = useState<{ [key: string]: number }>(() => {
