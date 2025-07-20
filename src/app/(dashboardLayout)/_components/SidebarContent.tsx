@@ -4,9 +4,15 @@ import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { sidebarNavItems } from "./config/SidebarItems";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hook";
+import {
+  sidebarAdminNavItems,
+  sidebarUserNavItems,
+} from "./config/SidebarItems";
 
 interface NavItemProps {
   href: string;
@@ -43,6 +49,7 @@ const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
 };
 
 export function SidebarContent() {
+  const user = useAppSelector(selectUser);
   return (
     <div className="flex h-full flex-col p-4 text-gray-300 md:mt-8">
       <div className="space-y-6">
@@ -65,9 +72,13 @@ export function SidebarContent() {
         {/* Navigation */}
         <nav className="space-y-4">
           <div className="space-y-1">
-            {sidebarNavItems.main.map((item) => (
-              <NavItem key={item.href} {...item} />
-            ))}
+            {user && user.role === "user"
+              ? sidebarUserNavItems.main.map((item) => (
+                  <NavItem key={item.href} {...item} />
+                ))
+              : sidebarAdminNavItems.main.map((item) => (
+                  <NavItem key={item.href} {...item} />
+                ))}
           </div>
 
           <div className="space-y-1 pt-2">
@@ -75,9 +86,13 @@ export function SidebarContent() {
               Manage account
             </h3>
             <div className="space-y-1">
-              {sidebarNavItems.account.map((item) => (
-                <NavItem key={item.href} {...item} />
-              ))}
+              {user && user.role === "user"
+                ? sidebarUserNavItems.account.map((item) => (
+                    <NavItem key={item.href} {...item} />
+                  ))
+                : sidebarAdminNavItems.account.map((item) => (
+                    <NavItem key={item.href} {...item} />
+                  ))}
             </div>
           </div>
 
@@ -86,9 +101,13 @@ export function SidebarContent() {
               Customer service
             </h3>
             <div className="space-y-1">
-              {sidebarNavItems.service.map((item) => (
-                <NavItem key={item.href} {...item} />
-              ))}
+              {user && user.role === "user"
+                ? sidebarUserNavItems.service.map((item) => (
+                    <NavItem key={item.href} {...item} />
+                  ))
+                : sidebarAdminNavItems.service.map((item) => (
+                    <NavItem key={item.href} {...item} />
+                  ))}
             </div>
           </div>
         </nav>
