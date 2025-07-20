@@ -42,6 +42,24 @@ export const getAllOrders = async () => {
   }
 };
 
+export const getMyOrders = async (email: string) => {
+  try {
+    const res = await nexiosInstance.get<ApiResponse<IOrder>>(
+      `/orders/${email}`
+    );
+
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Error fetching orders");
+    }
+
+    return res.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || error.message || "Error fetching data"
+    );
+  }
+};
+
 export const statusChanging = async (orderId: string, statusOption: string) => {
   try {
     const res = await nexiosInstance.put<ApiResponse<IOrder>>(
