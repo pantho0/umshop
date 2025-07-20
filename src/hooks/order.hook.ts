@@ -4,7 +4,6 @@ import { confirmOrder, getAllOrders } from "@/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { email } from "zod";
 
 export const useConfirmOrder = () => {
   const router = useRouter();
