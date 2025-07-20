@@ -39,7 +39,6 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
   isLoading,
   meta,
 }) => {
-  console.log(meta);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [ratings, setRatings] = useState<{ [key: string]: number }>(() => {

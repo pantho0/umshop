@@ -1,7 +1,7 @@
 import nexiosInstance from "@/app/config/nexios.config";
 import ContainerLayout from "../../_components/layouts/ContainerLayout";
 import ProductDetailsPage from "../../_components/pages/productDetails/ProductDetailsPage";
-import { ApiResponse, Product } from "@/interface";
+import { ApiResponse, IProductResult } from "@/interface";
 
 type Params = Promise<{ productId: string }>;
 
@@ -9,7 +9,7 @@ type Params = Promise<{ productId: string }>;
 const ProductPage = async ({ params }: { params: Params }) => {
   const { productId } = await params;
 
-  const res = await nexiosInstance.get<ApiResponse<Product>>(
+  const res = await nexiosInstance.get<ApiResponse<IProductResult>>(
     `/products/${productId}`,
     {
       cache: "no-store",

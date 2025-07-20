@@ -12,7 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Product, IProductResult } from "@/interface";
+import { IProductResult } from "@/interface";
 import Link from "next/link";
 
 // Simple deterministic hash function

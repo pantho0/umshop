@@ -20,8 +20,8 @@ import { useGetProduct } from "@/hooks/product.hooks";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 export interface searchParamsObjec {
   parentCategory?: string;
@@ -39,7 +39,7 @@ interface producPageProps {
 const ProductsPage = ({ searchParams }: producPageProps) => {
   const actualSearchParams = React.use(searchParams);
   const currentSearchParams = useSearchParams();
-  const router = useRouter();
+
   const {
     mutate: handleGetProduct,
     data: productsResponse,
@@ -151,7 +151,6 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        
                         href={createPageUrl(Math.max(1, meta.page - 1))}
                         isActive={meta.page === 1}
                       />

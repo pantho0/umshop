@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { useUpdateOrderStatus } from "@/hooks/order.hook";
 import { IOrder } from "@/interface";
+import Image from "next/image";
 import { toast } from "sonner";
 
 const StatusUpdate = ({ order }: { order: IOrder }) => {
@@ -127,7 +128,9 @@ const StatusUpdate = ({ order }: { order: IOrder }) => {
               <li key={item.id}>
                 <div className="flex flex-col gap-2 border p-3 rounded-md">
                   {item.image && item.image[0] && (
-                    <img
+                    <Image
+                      width={40}
+                      height={40}
                       src={item.image[0]}
                       alt={item.name}
                       className="w-10 h-10 object-cover rounded-md"

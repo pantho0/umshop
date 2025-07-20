@@ -26,10 +26,15 @@ type NavSection = {
 export const sidebarNavItems: NavSection = {
   main: [
     {
-      href: "/dashboard/orders",
-      label: "Orders",
+      href: "/dashboard/all-orders",
+      label: "All Orders",
       icon: Package,
-      badge: "1",
+    },
+    {
+      href: "/dashboard/my-orders",
+
+      label: "My Orders",
+      icon: Package,
     },
     {
       href: "/dashboard/add-product",

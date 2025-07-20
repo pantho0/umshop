@@ -1,7 +1,7 @@
 import React from "react";
 import nexiosInstance from "@/app/config/nexios.config";
 import { NewArraivalsClient } from "./_components/NewArraivalsClient";
-import { ApiResponse, Product, IProductResult } from "@/interface";
+import { ApiResponse, Product } from "@/interface";
 
 const NewArraivals: React.FC = async () => {
   const { data } = await nexiosInstance.get<ApiResponse<Product>>(
