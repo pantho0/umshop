@@ -1,9 +1,10 @@
-import { statusChanging } from "./../services/order/index";
+import { getMyOrders, statusChanging } from "./../services/order/index";
 import { IOrder } from "@/interface";
 import { confirmOrder, getAllOrders } from "@/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { email } from "zod";
 
 export const useConfirmOrder = () => {
   const router = useRouter();
@@ -23,6 +24,13 @@ export const useGetAllOrders = () => {
   return useQuery({
     queryKey: ["ALL_ORDERS"],
     queryFn: async () => await getAllOrders(),
+  });
+};
+
+export const useGetMyOrders = () => {
+  return useMutation<any, Error, any>({
+    mutationKey: ["GET_MY_ORDERS"],
+    mutationFn: async (email: string) => await getMyOrders(email),
   });
 };
 
