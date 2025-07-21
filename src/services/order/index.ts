@@ -1,7 +1,7 @@
 "use server";
 
 import nexiosInstance from "@/app/config/nexios.config";
-import { ApiResponse, IOrder } from "@/interface";
+import { ApiResponse, IOrder, IorderCancepApiRes } from "@/interface";
 
 export const confirmOrder = async (orderData: IOrder) => {
   try {
@@ -79,7 +79,12 @@ export const statusChanging = async (orderId: string, statusOption: string) => {
 
 export const cancelOrder = async (orderId: string) => {
   try {
-    const res = await nexiosInstance.delete(`/orders/${orderId}`);
+    const res = await nexiosInstance.delete<ApiResponse<IorderCancepApiRes>>(
+      `/orders/${orderId}`
+    );
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Error fetching data");
+    }
     return res.data;
   } catch (error: any) {
     throw new Error(

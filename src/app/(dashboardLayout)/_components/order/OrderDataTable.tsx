@@ -23,9 +23,7 @@ import { IOrder } from "@/interface";
 import { MoreHorizontal } from "lucide-react";
 
 import StatusUpdate from "./StatusUpdate";
-import { useCancelOrder, useGetMyOrders } from "@/hooks/order.hook";
-import { useAppSelector } from "@/redux/hook";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import { useCancelOrder } from "@/hooks/order.hook";
 
 const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {
   const { mutate: cancelOrder } = useCancelOrder();

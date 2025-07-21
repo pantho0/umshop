@@ -142,3 +142,9 @@ export interface IOrder {
   }>;
   __v?: number;
 }
+
+export interface IorderCancepApiRes {
+  success: boolean;
+  message: string;
+  data: any[];
+}
