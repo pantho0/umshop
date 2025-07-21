@@ -5,6 +5,8 @@ import { useGetMyOrders } from "@/hooks/order.hook";
 import { IOrder } from "@/interface";
 import OrderDataTable from "../../_components/order/OrderDataTable";
 import { OrderDataMobileView } from "../../_components/order/OrderDataMobileView";
+import { useAppSelector } from "@/redux/hook";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -24,6 +26,7 @@ function useMediaQuery(query: string) {
 }
 
 const MyOrders = () => {
+  const user = useAppSelector(selectUser);
   const {
     mutate: getMyOrders,
     data: myOrdersData,
@@ -32,8 +35,8 @@ const MyOrders = () => {
 
   useEffect(() => {
     // You might want to get the user's email dynamically, e.g., from an auth context
-    getMyOrders(`anannait@gmail.com`);
-  }, [getMyOrders]);
+    getMyOrders(user?.email);
+  }, [getMyOrders, user?.email]);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
