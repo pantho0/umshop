@@ -101,56 +101,57 @@ export const sidebarAdminNavItems: NavSection = {
 export const sidebarUserNavItems: NavSection = {
   main: [
     {
-      href: "/dashboard/my-orders",
+      href: "/user-dashboard/my-orders",
       label: "My Orders",
       icon: Package,
     },
     {
-      href: "/dashboard/wishlist",
+      href: "/user-dashboard/wishlist",
       label: "Wishlist",
       icon: Heart,
     },
     {
-      href: "/dashboard/payment",
+      href: "/user-dashboard/payment",
       label: "Payment Methods",
       icon: CreditCard,
     },
     {
-      href: "/dashboard/reviews",
+      href: "/user-dashboard/reviews",
       label: "My Reviews",
       icon: LayoutDashboard,
     },
   ],
   account: [
     {
-      href: "/dashboard/profile",
+      href: "/user-dashboard/profile",
       label: "Profile",
       icon: User,
     },
     {
-      href: "/dashboard/addresses",
+      href: "/user-dashboard/addresses",
       label: "Addresses",
       icon: MapPin,
     },
     {
-      href: "/dashboard/notifications",
+      href: "/user-dashboard/notifications",
       label: "Notifications",
       icon: Bell,
     },
     {
-      href: "/dashboard/settings",
+      href: "/user-dashboard/settings",
       label: "Settings",
       icon: Settings,
     },
   ],
   service: [
     {
-      href: "/dashboard/help",
+      href: "/user-dashboard/help",
       label: "Help Center",
       icon: HelpCircle,
     },
     {
-      href: "/dashboard/terms",
+      href: "/user-dashboard/terms",
+
       label: "Terms & Conditions",
       icon: FileText,
     },
