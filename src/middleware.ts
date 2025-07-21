@@ -11,8 +11,6 @@ export async function middleware(request: NextRequest) {
 
   const accessToken = (await cookies()).get("accessToken")?.value;
 
-  console.log(accessToken);
-
   if (!accessToken) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
@@ -36,15 +34,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (role === "driver" && pathname.match(/^\/driver-dashboard/)) {
-    return NextResponse.next();
-  }
-
-  // /dashboard , /dashboard/my-requested-rides , /profile
   if (role === "user" && pathname.match(/^\/user-dashboard/)) {
-    return NextResponse.next();
-  }
-  if (role === "user" && pathname === "/profile") {
     return NextResponse.next();
   }
 
