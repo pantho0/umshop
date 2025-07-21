@@ -56,6 +56,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onFilterChange();
     const params = new URLSearchParams(searchParams.toString());
 
+    params.delete("page");
+    params.delete("sort");
+
     if (newSubCats.length > 0) {
       params.set("subCategory", newSubCats.join(","));
     } else {
