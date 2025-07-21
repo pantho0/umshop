@@ -10,11 +10,15 @@ import {
 } from "@/components/ui/sheet";
 import { useUpdateOrderStatus } from "@/hooks/order.hook";
 import { IOrder } from "@/interface";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/hook";
 import Image from "next/image";
 import { toast } from "sonner";
 
 const StatusUpdate = ({ order }: { order: IOrder }) => {
   const { mutate: updateStatus } = useUpdateOrderStatus();
+  const user = useAppSelector(selectUser);
+  const role = user?.role;
   const handleStatusChange = (orderId: string, statusOption: string) => {
     if (statusOption === "Pending") {
       updateStatus({ orderId, statusOption });
@@ -89,36 +93,38 @@ const StatusUpdate = ({ order }: { order: IOrder }) => {
             </Badge>
           </p>
           <p>Change Status: </p>
-          <div className="grid grid-cols-2 gap-4">
-            <Badge
-              onClick={() => handleStatusChange(order._id!, "Pending")}
-              variant={"secondary"}
-              className={`capitalize ${"bg-orange-100 text-orange-800 cursor-pointer"}`}
-            >
-              Pending
-            </Badge>
-            <Badge
-              onClick={() => handleStatusChange(order._id!, "In progress")}
-              variant={"secondary"}
-              className={`capitalize ${"bg-blue-100 text-blue-800 cursor-pointer"}`}
-            >
-              In progress
-            </Badge>
-            <Badge
-              onClick={() => handleStatusChange(order._id!, "Completed")}
-              variant={"secondary"}
-              className={`capitalize ${"bg-green-100 text-green-800 cursor-pointer"}`}
-            >
-              Delivered
-            </Badge>
-            <Badge
-              onClick={() => handleStatusChange(order._id!, "Canceled")}
-              variant={"secondary"}
-              className={`capitalize ${"bg-red-100 text-red-800 cursor-pointer"}`}
-            >
-              Canceled
-            </Badge>
-          </div>
+          {role && role === "admin" && (
+            <div className="grid grid-cols-2 gap-4">
+              <Badge
+                onClick={() => handleStatusChange(order._id!, "Pending")}
+                variant={"secondary"}
+                className={`capitalize ${"bg-orange-100 text-orange-800 cursor-pointer"}`}
+              >
+                Pending
+              </Badge>
+              <Badge
+                onClick={() => handleStatusChange(order._id!, "In progress")}
+                variant={"secondary"}
+                className={`capitalize ${"bg-blue-100 text-blue-800 cursor-pointer"}`}
+              >
+                In progress
+              </Badge>
+              <Badge
+                onClick={() => handleStatusChange(order._id!, "Completed")}
+                variant={"secondary"}
+                className={`capitalize ${"bg-green-100 text-green-800 cursor-pointer"}`}
+              >
+                Delivered
+              </Badge>
+              <Badge
+                onClick={() => handleStatusChange(order._id!, "Canceled")}
+                variant={"secondary"}
+                className={`capitalize ${"bg-red-100 text-red-800 cursor-pointer"}`}
+              >
+                Canceled
+              </Badge>
+            </div>
+          )}
           <p>
             <strong>Total:</strong> ${order.grandTotal.toFixed(2)}
           </p>

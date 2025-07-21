@@ -28,15 +28,11 @@ function useMediaQuery(query: string) {
 const MyOrders = () => {
   const user = useAppSelector(selectUser);
   const {
-    mutate: getMyOrders,
     data: myOrdersData,
     isPending,
-  } = useGetMyOrders();
+  } = useGetMyOrders(user?.email!);
 
-  useEffect(() => {
-    // You might want to get the user's email dynamically, e.g., from an auth context
-    getMyOrders(user?.email);
-  }, [getMyOrders, user?.email]);
+
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 

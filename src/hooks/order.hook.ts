@@ -1,4 +1,8 @@
-import { getMyOrders, statusChanging } from "./../services/order/index";
+import {
+  cancelOrder,
+  getMyOrders,
+  statusChanging,
+} from "./../services/order/index";
 import { IOrder } from "@/interface";
 import { confirmOrder, getAllOrders } from "@/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -26,10 +30,11 @@ export const useGetAllOrders = () => {
   });
 };
 
-export const useGetMyOrders = () => {
-  return useMutation<any, Error, any>({
-    mutationKey: ["GET_MY_ORDERS"],
-    mutationFn: async (email: string) => await getMyOrders(email),
+export const useGetMyOrders = (email: string) => {
+  return useQuery({
+    queryKey: ["GET_MY_ORDERS", email],
+    queryFn: async () => await getMyOrders(email),
+    enabled: !!email,
   });
 };
 
@@ -42,7 +47,29 @@ export const useUpdateOrderStatus = () => {
     },
     onSuccess: () => {
       toast.success("Status Updated Successfully");
-      queryClient.invalidateQueries({ queryKey: ["ALL_ORDERS"] });
+      queryClient.invalidateQueries({
+        queryKey: ["ALL_ORDERS"],
+      });
+    },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["CANCEL_ORDER"],
+    mutationFn: async (orderId: string) => await cancelOrder(orderId),
+    onSuccess: () => {
+      toast.success("Order Cancelled Successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["ALL_ORDERS"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["GET_MY_ORDERS"],
+      });
     },
     onError: (error: any) => {
       toast.error(error.message);

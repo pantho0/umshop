@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,8 +23,16 @@ import { IOrder } from "@/interface";
 import { MoreHorizontal } from "lucide-react";
 
 import StatusUpdate from "./StatusUpdate";
+import { useCancelOrder, useGetMyOrders } from "@/hooks/order.hook";
+import { useAppSelector } from "@/redux/hook";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {
+  const { mutate: cancelOrder } = useCancelOrder();
+
+  const handleCancelOrder = (orderId: string) => {
+    cancelOrder(orderId);
+  };
   return (
     <Table>
       <TableHeader className="bg-gray-50">
@@ -145,8 +154,12 @@ const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <StatusUpdate order={order} />
-                      <DropdownMenuItem>Mark as Completed</DropdownMenuItem>
-                      <DropdownMenuItem>Cancel Order</DropdownMenuItem>
+                      {/* <DropdownMenuItem>Mark as Completed</DropdownMenuItem> */}
+                      <DropdownMenuItem
+                        onClick={() => handleCancelOrder(order._id!)}
+                      >
+                        Cancel Order
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

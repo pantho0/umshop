@@ -76,3 +76,14 @@ export const statusChanging = async (orderId: string, statusOption: string) => {
     );
   }
 };
+
+export const cancelOrder = async (orderId: string) => {
+  try {
+    const res = await nexiosInstance.delete(`/orders/${orderId}`);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || error.message || "Error fetching data"
+    );
+  }
+};
