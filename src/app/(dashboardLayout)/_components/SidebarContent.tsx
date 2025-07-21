@@ -6,9 +6,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/hook";
+import { usePathname, useRouter } from "next/navigation";
+import { logOut, selectUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   sidebarAdminNavItems,
   sidebarUserNavItems,
@@ -51,7 +51,19 @@ const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
 
 export function SidebarContent() {
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    document.cookie =
+      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.push("/");
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -121,8 +133,9 @@ export function SidebarContent() {
           </div>
 
           <Button
+            onClick={handleLogout}
             variant="ghost"
-            className="w-full justify-start mt-auto text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg"
+            className="w-full justify-start mt-auto text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg cursor-pointer"
           >
             <LogOut className="mr-3 h-5 w-5" />
             Log out

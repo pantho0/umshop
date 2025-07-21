@@ -17,11 +17,13 @@ import { verifyToken } from "@/utils/verifyToken";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useLogin } from "@/hooks/auth.hook";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { mutate: handleLogin, data, isPending, isSuccess } = useLogin();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     handleLogin(data);
@@ -33,6 +35,7 @@ const LoginPage: React.FC = () => {
       toast.error("Incorrect email or password");
     }
     dispatch(setUser({ user: user, token: data?.data?.accessToken }));
+    router.push("/");
   }
 
   return (
