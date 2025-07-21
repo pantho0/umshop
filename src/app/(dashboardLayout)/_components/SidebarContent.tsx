@@ -83,8 +83,10 @@ export function SidebarContent() {
                 <AvatarFallback className="bg-gray-600">SG</AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-semibold text-white">Susan Gardner</p>
-                <p className="text-xs text-gray-400">100 bonuses available</p>
+                <p className="font-semibold text-white">
+                  {user?.firstName! + " " + user?.lastName}
+                </p>
+                <p className="text-xs text-gray-400">{user?.email}</p>
               </div>
             </div>
 

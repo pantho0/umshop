@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface IUserState {
   userId: string;
+  firstName: string;
+  lastName: string;
   role: string;
   email: string;
   iat: number;
