@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
@@ -29,14 +29,16 @@ const LoginPage: React.FC = () => {
     handleLogin(data);
   };
 
-  if (!isPending && isSuccess) {
-    const user = verifyToken(data?.data?.accessToken);
-    if (!user) {
-      toast.error("Incorrect email or password");
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      const user = verifyToken(data?.data?.accessToken);
+      if (!user) {
+        toast.error("Incorrect email or password");
+      }
+      dispatch(setUser({ user: user, token: data?.data?.accessToken }));
+      router.push("/");
     }
-    dispatch(setUser({ user: user, token: data?.data?.accessToken }));
-    router.push("/");
-  }
+  }, [isPending, isSuccess]);
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
