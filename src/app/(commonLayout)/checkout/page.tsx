@@ -111,8 +111,10 @@ const CheckoutPage: React.FC = () => {
 
   useEffect(() => {
     setDefaultValues({
-      fullName: user?.firstName + " " + user?.lastName,
-      email: user?.email!,
+      fullName:
+        (user?.firstName ? user.firstName : "") +
+        (user?.lastName ? " " + user.lastName : ""),
+      email: user?.email || "",
     });
   }, [user]);
 
