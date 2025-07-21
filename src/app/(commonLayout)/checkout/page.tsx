@@ -114,7 +114,7 @@ const CheckoutPage: React.FC = () => {
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Left Column: Shipping Address and Payment */}
               <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden p-6 md:p-8">
-                <UMForm onSubmit={handleSubmitOrder} className="space-y-8">
+                <UMForm onSubmit={handleSubmitOrder}>
                   {/* Shipping Information */}
                   <div>
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">
