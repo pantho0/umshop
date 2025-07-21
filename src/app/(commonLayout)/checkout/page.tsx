@@ -33,6 +33,7 @@ import { IOrder } from "@/interface";
 import { toast } from "sonner";
 import { clearCart } from "@/redux/features/cartSlice";
 import { generateUUID } from "@/utils/uuidGenerator";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
@@ -59,9 +60,14 @@ const CheckoutPage: React.FC = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazilla, setSelectedUpazilla] = useState("");
   const { mutate: handleConfirmOrder } = useConfirmOrder();
+  const [defaultValues, setDefaultValues] = useState({
+    fullName: "",
+    email: "",
+  });
 
   const [mounted, setMounted] = useState(false);
   const cartItems: CartItem[] = useAppSelector((state) => state.persisted.cart);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const calculateSubtotal = () => {
@@ -103,6 +109,13 @@ const CheckoutPage: React.FC = () => {
     scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    setDefaultValues({
+      fullName: user?.firstName + " " + user?.lastName,
+      email: user?.email!,
+    });
+  }, [user]);
+
   return (
     <>
       {mounted && (
@@ -114,7 +127,10 @@ const CheckoutPage: React.FC = () => {
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Left Column: Shipping Address and Payment */}
               <div className="lg:w-2/3 bg-white rounded-lg shadow-md overflow-hidden p-6 md:p-8">
-                <UMForm onSubmit={handleSubmitOrder}>
+                <UMForm
+                  onSubmit={handleSubmitOrder}
+                  defaultValues={defaultValues}
+                >
                   {/* Shipping Information */}
                   <div>
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">
