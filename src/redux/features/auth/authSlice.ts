@@ -6,6 +6,7 @@ export interface IUserState {
   firstName: string;
   lastName: string;
   role: string;
+  image?: string;
   email: string;
   iat: number;
   exp: number;

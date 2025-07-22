@@ -148,3 +148,7 @@ export interface IorderCancepApiRes {
   message: string;
   data: any[];
 }
+
+export interface IUpdatePassRes {
+  data: any[];
+}

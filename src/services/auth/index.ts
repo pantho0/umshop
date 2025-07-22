@@ -1,6 +1,6 @@
 "use server";
 import nexiosInstance from "@/app/config/nexios.config";
-import { ApiResponse, LoginSuccessResponse } from "@/interface";
+import { ApiResponse, IUpdatePassRes, LoginSuccessResponse } from "@/interface";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -21,6 +21,26 @@ export const loginUser = async (credentials: FieldValues) => {
       error.response?.data?.message ||
         error.message ||
         "An error occurred during login"
+    );
+  }
+};
+
+export const upDatePassword = async (updatedCredentials: FieldValues) => {
+  try {
+    const res = await nexiosInstance.put<ApiResponse<IUpdatePassRes>>(
+      "/auth/change-password",
+      updatedCredentials
+    );
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Password update failed");
+    }
+    return res.data;
+  } catch (error: any) {
+    console.error("Password update error:", error);
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "An error occurred during password update"
     );
   }
 };
