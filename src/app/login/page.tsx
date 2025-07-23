@@ -36,7 +36,6 @@ const LoginPage: React.FC = () => {
         toast.error("Incorrect email or password");
       }
       dispatch(setUser({ user: user, token: data?.data?.accessToken }));
-      router.push("/");
     }
   }, [isPending, isSuccess]);
 

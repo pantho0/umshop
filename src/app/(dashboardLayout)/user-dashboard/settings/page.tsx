@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,25 +11,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UploadCloud, Lock, User } from "lucide-react";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useUpdatePassword } from "@/hooks/auth.hook";
+import { useDispatch } from "react-redux";
+import { logOut } from "@/redux/features/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 const SettingsPage: React.FC = () => {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     "https://github.com/shadcn.png"
   ); // Dummy avatar
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const { mutate: updatePassword } = useUpdatePassword();
+  const { mutate: updatePassword, isSuccess } = useUpdatePassword();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     updatePassword(data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(logOut());
+      router.push("/");
+    }
+  }, [isSuccess]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

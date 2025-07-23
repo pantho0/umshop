@@ -27,14 +27,18 @@ export const loginUser = async (credentials: FieldValues) => {
 
 export const upDatePassword = async (updatedCredentials: FieldValues) => {
   try {
-    const res = await nexiosInstance.put<ApiResponse<IUpdatePassRes>>(
+    const { data } = await nexiosInstance.put<ApiResponse<IUpdatePassRes>>(
       "/auth/change-password",
       updatedCredentials
     );
-    if (!res.data.success) {
-      throw new Error(res.data.message || "Password update failed");
+    if (!data.success) {
+      throw new Error(
+        data.errorSources?.[0].messsage || "Password update failed"
+      );
     }
-    return res.data;
+    (await cookies()).delete("accessToken");
+    (await cookies()).delete("refreshToken");
+    return data;
   } catch (error: any) {
     console.error("Password update error:", error);
     throw new Error(

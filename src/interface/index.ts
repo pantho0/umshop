@@ -52,10 +52,17 @@ export interface Product {
   meta: Meta;
 }
 
+export interface ErrorSource {
+  path: string;
+  messsage: string;
+}
+
 export interface ApiResponse<T> {
-  data: T;
-  message?: string;
   success: boolean;
+  message: string;
+  data?: T;
+  errorSources?: ErrorSource[];
+  stack?: string;
 }
 
 export interface FilterSidebarProps {
@@ -150,5 +157,6 @@ export interface IorderCancepApiRes {
 }
 
 export interface IUpdatePassRes {
-  data: any[];
+  accessToken?: string;
+  refreshToken?: string;
 }
