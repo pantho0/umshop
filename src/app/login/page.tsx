@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
   const { mutate: handleLogin, data, isPending, isSuccess } = useLogin();
   const router = useRouter();
 
@@ -30,12 +31,20 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     if (!isPending && isSuccess) {
       const user = verifyToken(data?.data?.accessToken);
       if (!user) {
         toast.error("Incorrect email or password");
       }
       dispatch(setUser({ user: user, token: data?.data?.accessToken }));
+
+      if (params.get("redirect")) {
+        console.log(params.get("redirect"));
+        router.push(params.get("redirect") as any);
+      } else {
+        router.push("/");
+      }
     }
   }, [isPending, isSuccess]);
 
