@@ -29,7 +29,7 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-64px)] bg-gray-50 p-4">
+    <div className="min-h-[calc(100vh-64px)] bg-gray-50 p-4 flex flex-col lg:flex-row gap-4 justify-center items-start lg:items-center">
       <Card className="w-full max-w-md shadow-lg rounded-lg">
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
@@ -67,6 +67,42 @@ const ProfilePage: React.FC = () => {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Statistics Cards Section */}
+      <div className="w-full max-w-md lg:max-w-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        {/* Total Pending Orders Card */}
+        <Card className="shadow-lg rounded-lg p-4">
+          <CardHeader className="pb-2">
+            <CardDescription>Total Pending Orders</CardDescription>
+            <CardTitle className="text-2xl">15</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-gray-500">Orders awaiting processing</p>
+          </CardContent>
+        </Card>
+
+        {/* Total Completed Orders Card */}
+        <Card className="shadow-lg rounded-lg p-4">
+          <CardHeader className="pb-2">
+            <CardDescription>Total Completed Orders</CardDescription>
+            <CardTitle className="text-2xl">120</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-gray-500">Orders successfully delivered</p>
+          </CardContent>
+        </Card>
+
+        {/* Total Income Card */}
+        <Card className="shadow-lg rounded-lg p-4 md:col-span-2 lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardDescription>Total Income</CardDescription>
+            <CardTitle className="text-2xl">$15,000</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-gray-500">Overall earnings</p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
