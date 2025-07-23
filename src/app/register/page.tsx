@@ -11,13 +11,21 @@ import registerAnimation from "../../../public/assets/register-animation.json";
 import Logo from "../../../public/assets/umshop.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import { useCreateUser } from "@/hooks/auth.hook";
+import { useRouter } from "next/navigation";
 
 const RegisterPage: React.FC = () => {
-  const onSubmit: SubmitHandler<
-    Omit<FieldValues, "password" | "confirmPassword">
-  > = async (data) => {
-    console.log(data);
+  const { mutate: handleCreateUser, isPending, isSuccess } = useCreateUser();
+  const router = useRouter();
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    handleCreateUser(data);
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      router.push("/");
+    }
+  }, [isSuccess]);
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
@@ -86,10 +94,11 @@ const RegisterPage: React.FC = () => {
               </div>
 
               <Button
+                disabled={isPending}
                 type="submit"
                 className="w-full bg-red-500 text-white py-2.5 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md"
               >
-                Create an account
+                {isPending ? "Creating account..." : "Create account"}
               </Button>
             </UMForm>
 
