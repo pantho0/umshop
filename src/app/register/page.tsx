@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import UMForm from "@/components/UMForm/UMForm";
+import { UMInput } from "@/components/UMForm/UMInput";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
 import Lottie from "lottie-react";
 import registerAnimation from "../../../public/assets/register-animation.json";
@@ -12,32 +13,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 const RegisterPage: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [savePassword, setSavePassword] = useState<boolean>(false);
-  const [receiveOffers, setReceiveOffers] = useState<boolean>(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle registration logic here
-    console.log("Registration attempt:", {
-      email,
-      password,
-      confirmPassword,
-      savePassword,
-      receiveOffers,
-    });
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    alert("Registration functionality not implemented in this demo.");
+  const onSubmit: SubmitHandler<
+    Omit<FieldValues, "password" | "confirmPassword">
+  > = async (data) => {
+    console.log(data);
   };
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
-      <div className="bg-slate-50 rounded-lg  flex flex-col lg:flex-row w-full max-w-4xl items-center  overflow-hidden">
+      <div className=" flex flex-col lg:flex-row w-full max-w-4xl items-center  overflow-hidden">
         {/* Left Section: Registration Form */}
         <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-between">
           <div>
@@ -65,84 +49,39 @@ const RegisterPage: React.FC = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="sr-only">
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Passwords must be at least 8 characters.
-                </p>
-              </div>
-              <div>
-                <label htmlFor="confirm-password" className="sr-only">
-                  Confirm Password
-                </label>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="save-password"
-                    checked={savePassword}
-                    onCheckedChange={(checked: boolean) =>
-                      setSavePassword(checked)
-                    }
+            <UMForm onSubmit={onSubmit}>
+              <div className="space-y-2 mb-4">
+                <div className="space-y-1">
+                  <UMInput
+                    type="text"
+                    name="firstName"
+                    placeholder="Enter your first name"
+                    label="First Name"
                   />
-                  <label
-                    htmlFor="save-password"
-                    className="text-gray-700 cursor-pointer"
-                  >
-                    Save the password
-                  </label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="receive-offers"
-                    checked={receiveOffers}
-                    onCheckedChange={(checked: boolean) =>
-                      setReceiveOffers(checked)
-                    }
+                <div className="space-y-1">
+                  <UMInput
+                    type="text"
+                    name="lastName"
+                    placeholder="Enter your last name"
+                    label="Last Name"
                   />
-                  <label
-                    htmlFor="receive-offers"
-                    className="text-gray-700 cursor-pointer"
-                  >
-                    I would like to receive personalized commercial offers from
-                    Cartzilla by email.
-                  </label>
+                </div>
+                <div className="space-y-1">
+                  <UMInput
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    label="Email"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <UMInput
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    label="Password"
+                  />
                 </div>
               </div>
 
@@ -152,7 +91,7 @@ const RegisterPage: React.FC = () => {
               >
                 Create an account
               </Button>
-            </form>
+            </UMForm>
 
             <div className="flex items-center my-6">
               <Separator className="flex-grow bg-gray-200" />
@@ -202,7 +141,7 @@ const RegisterPage: React.FC = () => {
                 Contact us
               </a>
             </p>
-            <p>© All rights reserved. Made by Createx Studio</p>
+            <p>© All rights reserved. Made by BRHEX Solutions</p>
           </div>
         </div>
 

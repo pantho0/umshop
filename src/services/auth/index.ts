@@ -1,6 +1,7 @@
 "use server";
 import nexiosInstance from "@/app/config/nexios.config";
 import { ApiResponse, IUpdatePassRes, LoginSuccessResponse } from "@/interface";
+import { AppInitialProps } from "next/app";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -45,6 +46,27 @@ export const upDatePassword = async (updatedCredentials: FieldValues) => {
       error.response?.data?.message ||
         error.message ||
         "An error occurred during password update"
+    );
+  }
+};
+
+export const createUser = async (userData: FieldValues) => {
+  try {
+    const { data } = await nexiosInstance.post<ApiResponse<any>>(
+      "/users/create-user",
+      userData
+    );
+    if (!data.success) {
+      throw new Error(
+        data.errorSources?.[0].messsage || "User creation failed"
+      );
+    }
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "An error occurred during user creation"
     );
   }
 };
