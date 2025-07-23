@@ -26,72 +26,54 @@ type NavSection = {
 export const sidebarAdminNavItems: NavSection = {
   main: [
     {
-      href: "/dashboard/all-orders",
+      href: "/admin-dashboard/all-orders",
       label: "All Orders",
       icon: Package,
     },
     {
-      href: "/dashboard/my-orders",
+      href: "/admin-dashboard/add-product",
 
-      label: "My Orders",
-      icon: Package,
-    },
-    {
-      href: "/dashboard/add-product",
       label: "Add Product",
       icon: PackagePlus,
     },
     {
-      href: "/dashboard/products",
+      href: "/admin-dashboard/products",
+
       label: "Products",
       icon: ShoppingBasket,
-    },
-    {
-      href: "/dashboard/wishlist",
-      label: "Wishlist",
-      icon: Heart,
-    },
-    {
-      href: "/dashboard/payment",
-      label: "Payment Methods",
-      icon: CreditCard,
-    },
-    {
-      href: "/dashboard/reviews",
-      label: "My Reviews",
-      icon: LayoutDashboard,
     },
   ],
   account: [
     {
-      href: "/dashboard/profile",
+      href: "/admin-dashboard/profile",
+
       label: "Profile",
       icon: User,
     },
     {
-      href: "/dashboard/addresses",
+      href: "/admin-dashboard/addresses",
       label: "Addresses",
       icon: MapPin,
     },
     {
-      href: "/dashboard/notifications",
+      href: "/admin-dashboard/notifications",
       label: "Notifications",
       icon: Bell,
     },
     {
-      href: "/dashboard/settings",
+      href: "/admin-dashboard/settings",
       label: "Settings",
       icon: Settings,
     },
   ],
   service: [
     {
-      href: "/dashboard/help",
+      href: "/admin-dashboard/help",
       label: "Help Center",
       icon: HelpCircle,
     },
     {
-      href: "/dashboard/terms",
+      href: "/admin-dashboard/terms",
       label: "Terms & Conditions",
       icon: FileText,
     },

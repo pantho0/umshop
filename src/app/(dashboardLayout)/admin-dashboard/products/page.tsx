@@ -53,7 +53,7 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
   const createPageUrl = (pageNumber: number | string) => {
     const params = new URLSearchParams(currentSearchParams.toString());
     params.set("page", pageNumber.toString());
-    return `/dashboard/products?${params.toString()}`;
+    return `/admin-dashboard/products?${params.toString()}`;
   };
 
   useEffect(() => {
