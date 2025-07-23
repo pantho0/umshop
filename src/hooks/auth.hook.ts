@@ -1,4 +1,8 @@
-import { loginUser, upDatePassword } from "./../services/auth/index";
+import {
+  createUser,
+  loginUser,
+  upDatePassword,
+} from "./../services/auth/index";
 import { useMutation } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -24,6 +28,19 @@ export const useUpdatePassword = () => {
       await upDatePassword(updatedCredentials),
     onSuccess: () => {
       toast.success("Password updated successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useCreateUser = () => {
+  return useMutation({
+    mutationKey: ["CREATE_USER"],
+    mutationFn: async (userData: FieldValues) => await createUser(userData),
+    onSuccess: () => {
+      toast.success("User created successfully");
     },
     onError: (error: Error) => {
       toast.error(error.message);
