@@ -65,12 +65,6 @@ const ProfilePage: React.FC = () => {
           >
             <ShoppingCart className="mr-3 h-5 w-5" /> View All Orders
           </Button>
-          <Button
-            variant="outline"
-            className="w-full flex items-center justify-start text-lg py-6"
-          >
-            <Star className="mr-3 h-5 w-5" /> Your Reviews
-          </Button>
         </CardContent>
       </Card>
     </div>

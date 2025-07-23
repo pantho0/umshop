@@ -34,8 +34,8 @@ const ProfilePage: React.FC = () => {
         <CardHeader className="text-center pb-4">
           <div className="flex justify-center mb-4">
             <Avatar className="h-24 w-24 border-4 border-purple-500 shadow-md">
-              <AvatarImage src={user?.avatarUrl} alt={user?.name} />
-              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+              <AvatarImage src={user.avatarUrl} alt={user.name} />
+              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
           </div>
           <CardTitle className="text-2xl font-bold text-gray-800">
@@ -64,6 +64,12 @@ const ProfilePage: React.FC = () => {
             className="w-full flex items-center justify-start text-lg py-6"
           >
             <ShoppingCart className="mr-3 h-5 w-5" /> View All Orders
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-start text-lg py-6"
+          >
+            <Star className="mr-3 h-5 w-5" /> Your Reviews
           </Button>
         </CardContent>
       </Card>
