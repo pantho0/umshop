@@ -24,7 +24,7 @@ import { useAddProduct } from "@/hooks/product.hooks";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
-  color: z.string().min(1, "Color is required"),
+  color: z.string().min(1, "At least one color is required").array(),
   size: z.string().min(1, "Size is required"),
   price: z.number().min(0.01, "Price must be greater than 0"),
   stock: z.number().min(0, "Stock cannot be negative").int(),
@@ -68,7 +68,7 @@ export default function AddProduct() {
       variants: [
         {
           sku: "",
-          color: "",
+          color: [""],
           size: "",
           price: 0,
           stock: 0,
@@ -149,7 +149,7 @@ export default function AddProduct() {
   const addVariant = () => {
     append({
       sku: "",
-      color: "",
+      color: [""],
       size: "",
       price: 0,
       stock: 0,
@@ -321,8 +321,10 @@ export default function AddProduct() {
               </div>
 
               <div className="space-y-6">
-                {fields.map((field, index) => (
-                  <div
+                {fields.map((field, index) => {
+                  const colors = form.watch(`variants.${index}.color`);
+                  return (
+                    <div
                     key={field.id}
                     className="border rounded-lg p-4 space-y-4"
                   >
@@ -347,13 +349,64 @@ export default function AddProduct() {
                         {...field}
                       />
 
-                      <UMInput
-                        label="Color"
-                        name={`variants.${index}.color`}
-                        type="text"
-                        placeholder="Enter color"
-                        {...field}
-                      />
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Colors
+                        </label>
+                        {colors.map(
+                          (colorItem: string, colorIndex: number) => (
+                            <div
+                              key={colorIndex}
+                              className="flex items-center space-x-2 mt-2"
+                            >
+                              <UMInput
+                                name={`variants.${index}.color.${colorIndex}`}
+                                type="text"
+                                placeholder="Enter color"
+                              />
+                              {colors.length > 1 && (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const currentColors = form.getValues(
+                                      `variants.${index}.color`
+                                    );
+                                    const newColors = currentColors.filter(
+                                      (_: string, i: number) => i !== colorIndex
+                                    )
+                                    form.setValue(
+                                      `variants.${index}.color`,
+                                      newColors
+                                    )
+                                  }}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </div>
+                          )
+                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const currentColors = form.getValues(
+                              `variants.${index}.color`
+                            )
+                            form.setValue(
+                              `variants.${index}.color`,
+                              [...currentColors, ""]
+                            )
+                          }}
+                          className="mt-2"
+                        >
+                          <Plus className="h-4 w-4 mr-2" /> Add Color
+                        </Button>
+                      </div>
                       <UMInput
                         label="Size"
                         name={`variants.${index}.size`}
@@ -377,7 +430,8 @@ export default function AddProduct() {
                       />
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 

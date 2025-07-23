@@ -5,7 +5,7 @@ interface UMInputProps {
   type: string;
   name: string;
   placeholder: string;
-  label: React.ReactNode;
+  label?: React.ReactNode;
   defaultValue?: string;
 }
 
