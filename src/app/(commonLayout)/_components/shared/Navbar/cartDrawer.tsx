@@ -18,6 +18,7 @@ import Link from "next/link";
 
 interface CartItem {
   id: string;
+  customId?: string;
   name: string;
   price: number;
   image: string;
@@ -92,7 +93,7 @@ const CartDrawer: React.FC = () => {
           <div className="flex-grow overflow-y-auto py-4 space-y-3">
             {cartItems.map((item) => (
               <div
-                key={item.id}
+                key={item.customId}
                 className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 cursor-default"
               >
                 <div className="flex items-center flex-grow">
@@ -115,7 +116,7 @@ const CartDrawer: React.FC = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => removeFromCartHandler(item.id)}
+                  onClick={() => removeFromCartHandler(item.customId!)}
                   className="ml-3 p-1 rounded-full text-gray-400 hover:text-red-500 hover:bg-gray-100 transition-colors duration-200"
                   aria-label={`Remove ${item.name}`}
                 >
@@ -139,17 +140,19 @@ const CartDrawer: React.FC = () => {
             <Link href="/cart">
               <Button
                 onClick={() => setIsDrawerOpen(false)}
-                className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors duration-200 text-center"
+                className="w-full cursor-pointer bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors duration-200 text-center"
               >
                 View Cart
               </Button>
             </Link>
-            <Button
-              onClick={() => setIsDrawerOpen(false)}
-              className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors duration-200 mt-2 text-center"
-            >
-              Checkout
-            </Button>
+            <Link href="/checkout">
+              <Button
+                onClick={() => setIsDrawerOpen(false)}
+                className="w-full cursor-pointer bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors duration-200 mt-2 text-center"
+              >
+                Checkout
+              </Button>
+            </Link>
           </DrawerFooter>
         )}
       </DrawerContent>

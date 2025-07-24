@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartItem {
   id: string;
+  customId?: string;
   sku: string;
   name: string;
   price: number;
@@ -27,24 +28,21 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const item = state.find((item) => action.payload.id === item.id);
-      if (item) {
-        item.quantity += 1;
-      } else {
-        state.push(action.payload);
-      }
+      const customId = Math.random().toString(36).toLowerCase().substring(2);
+      const newItem = { ...action.payload, customId };
+      state.push(newItem);
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
-      return state.filter((item) => item.id !== action.payload);
+      return state.filter((item) => item.customId !== action.payload);
     },
     increaseQuantity: (state, action: PayloadAction<string>) => {
-      const item = state.find((item) => item.id === action.payload);
+      const item = state.find((item) => item.customId === action.payload);
       if (item) {
         item.quantity += 1;
       }
     },
     decreaseQuantity: (state, action: PayloadAction<string>) => {
-      const item = state.find((item) => item.id === action.payload);
+      const item = state.find((item) => item.customId === action.payload);
       if (item) {
         item.quantity -= 1;
       }

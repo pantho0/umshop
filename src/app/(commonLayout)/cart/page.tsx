@@ -30,6 +30,7 @@ import Link from "next/link";
 // Define a type for a cart item
 interface CartItem {
   id: string;
+  customId?: string;
   name: string;
   image: string;
   color: string;
@@ -44,18 +45,19 @@ const ShoppingCartPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleQuantityChange = (
-    id: string,
+    customId: string,
+
     type: "increment" | "decrement"
   ) => {
     if (type === "increment") {
-      dispatch(increaseQuantity(id));
+      dispatch(increaseQuantity(customId));
     } else {
-      dispatch(decreaseQuantity(id));
+      dispatch(decreaseQuantity(customId));
     }
   };
 
-  const handleRemoveItem = (id: string) => {
-    dispatch(removeFromCart(id));
+  const handleRemoveItem = (customId: string) => {
+    dispatch(removeFromCart(customId));
   };
 
   const calculateSubtotal = () => {
@@ -101,9 +103,9 @@ const ShoppingCartPage: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {cartItems.map((item) => (
+                  {cartItems.map((item, idx) => (
                     <TableRow
-                      key={item.id}
+                      key={item.customId}
                       className="border-b border-gray-200 last:border-b-0"
                     >
                       {/* Product Info */}
@@ -151,7 +153,7 @@ const ShoppingCartPage: React.FC = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() =>
-                              handleQuantityChange(item.id, "decrement")
+                              handleQuantityChange(item.customId!, "decrement")
                             }
                             className="h-8 w-8 rounded-none"
                           >
@@ -164,7 +166,7 @@ const ShoppingCartPage: React.FC = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() =>
-                              handleQuantityChange(item.id, "increment")
+                              handleQuantityChange(item.customId!, "increment")
                             }
                             className="h-8 w-8 rounded-none"
                           >
@@ -183,7 +185,7 @@ const ShoppingCartPage: React.FC = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleRemoveItem(item.id)}
+                          onClick={() => handleRemoveItem(item.customId!)}
                           className="text-gray-500 hover:text-red-500"
                         >
                           <X className="h-4 w-4" />
@@ -199,7 +201,7 @@ const ShoppingCartPage: React.FC = () => {
             <div className="md:hidden space-y-4 p-4">
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item.customId}
                   className="border border-gray-200 rounded-lg p-4"
                 >
                   <div className="flex justify-between items-start mb-3">
