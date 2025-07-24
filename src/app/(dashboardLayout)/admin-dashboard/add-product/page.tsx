@@ -21,6 +21,7 @@ import {
 import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useAddProduct } from "@/hooks/product.hooks";
+import TipTap from "@/components/UMForm/TipTap";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -55,7 +56,12 @@ export default function AddProduct() {
   const [subCategories, setSubCategories] = useState<Category[]>([]);
   const [selectedParentCategory, setSelectedParentCategory] =
     useState<string>("");
+  const [content, setContent] = useState<string>("");
   const { mutate: addProduct } = useAddProduct();
+
+  const handleContentChange = (value: string) => {
+    setContent(value);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -239,11 +245,17 @@ export default function AddProduct() {
             </div>
 
             <div className="my-4">
-              <UMInput
+              {/* <UMInput
                 label="Details"
                 name="details"
                 type="text"
                 placeholder="Product Details"
+              /> */}
+              <TipTap
+                content={content}
+                onChange={(newContent: string) =>
+                  handleContentChange(newContent)
+                }
               />
             </div>
             <div>
