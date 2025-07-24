@@ -178,7 +178,8 @@ export default function AddProduct() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    // const productData = { ...values, images };
+    const productData = { ...values, images, details: content };
+    console.log(productData);
     // if (productData) {
     //   addProduct(productData as any);
     //   setImages([]);
