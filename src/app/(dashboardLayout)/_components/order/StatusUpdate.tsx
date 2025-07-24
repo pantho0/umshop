@@ -42,7 +42,7 @@ const StatusUpdate = ({ order }: { order: IOrder }) => {
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Order Details: {order._id!}</SheetTitle>
+          <SheetTitle>Order Details: {order.orderId}</SheetTitle>
           <SheetDescription>
             Detailed information about this order.
           </SheetDescription>
@@ -130,8 +130,8 @@ const StatusUpdate = ({ order }: { order: IOrder }) => {
           </p>
           <p className="font-semibold mt-2">Ordered Items:</p>
           <ul className=" list-disc pl-5 space-y-1">
-            {order.orderedItems.map((item) => (
-              <li key={item.id}>
+            {order.orderedItems.map((item, idx) => (
+              <li key={idx}>
                 <div className="flex flex-col gap-2 border p-3 rounded-md">
                   {item.image && item.image[0] && (
                     <Image
