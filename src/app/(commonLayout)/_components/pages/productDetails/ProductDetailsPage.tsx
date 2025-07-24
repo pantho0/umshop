@@ -609,55 +609,67 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
                 </div>
               </div>
             )}
-            {/* Product Details in general info tab */}
-            <div className="py-5 px-10 md:px-5 w-full md:max-w-2/4">
-              <div className="py-5">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Product details
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-x-8 gap-y-4">
-                  {/* General Specs */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                      General specs
-                    </h3>
-                    <div className="space-y-2 text-gray-700">
-                      <div className="flex justify-between border-b border-gray-100 pb-1">
-                        <span>Title:</span>
-                        <span className="font-medium text-gray-900">
-                          {product?.title}
-                        </span>
-                      </div>
-                      <div className="flex justify-between border-b border-gray-100 pb-1">
-                        <span>Size:</span>
-                        <span className="font-medium text-gray-900">
-                          {/* {product?.size} */}
-                        </span>
-                      </div>
-                      <div className="flex justify-between border-b border-gray-100 pb-1">
-                        <span>Variant/color:</span>
-                        <span className="font-medium text-gray-900">
-                          {/* {product?.variant_color} */}
-                        </span>
-                        <span className="text-gray-500 cursor-pointer">?</span>
-                      </div>
-                      <div className="flex justify-between border-b border-gray-100 pb-1">
-                        <span>Details:</span>
-                        <span className="font-medium text-gray-900">
-                          {product?.details}
-                        </span>
-                      </div>
+          </TabsContent>
+
+          <TabsContent
+            value="product-details"
+            className="bg-white rounded-lg p-6 md:p-8"
+          >
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Product details
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-x-8 gap-y-4">
+                {/* General Specs */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                    General specs
+                  </h3>
+                  <div className="space-y-2 text-gray-700">
+                    <div className="flex justify-between border-b border-gray-100 pb-1">
+                      <span>Title:</span>
+                      <span className="font-medium text-gray-900">
+                        {product?.title}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-gray-100 pb-1">
+                      <span>Size:</span>
+                      <span className="font-medium text-gray-900">
+                        {/* {product?.size} */}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-gray-100 pb-1">
+                      <span>Variant/color:</span>
+                      <span className="font-medium text-gray-900">
+                        {/* {product?.variant_color} */}
+                      </span>
+                      <span className="text-gray-500 cursor-pointer">?</span>
+                    </div>
+                    <div className="flex justify-between border-b border-gray-100 pb-1">
+                      <span>Details:</span>
+                      <span className="font-medium text-gray-900">
+                        {product?.details}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="text-purple-600 hover:text-purple-800 font-semibold flex items-center mt-6"
-                >
-                  See all product details
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </a>
               </div>
+              <a
+                href="#"
+                className="text-purple-600 hover:text-purple-800 font-semibold flex items-center mt-6"
+              >
+                See all product details
+                <ChevronRight className="ml-1 h-4 w-4" />
+              </a>
+            </div>
+          </TabsContent>
+
+          <TabsContent
+            value="reviews"
+            className="bg-white rounded-lg p-6 md:p-8"
+          >
+            {/* Product Details in general info tab */}
+            <div className="py-2 px-10 md:px-5 w-full md:max-w-2/4">
               {/* Product review in general tab */}
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Reviews</h2>
