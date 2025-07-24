@@ -19,7 +19,7 @@ const ProductPage = async ({ params }: { params: Params }) => {
 
   return (
     <ContainerLayout>
-      <ProductDetailsPage product={product} />
+      <ProductDetailsPage product={product!} />
     </ContainerLayout>
   );
 };

@@ -20,7 +20,7 @@ export interface ISubCategory {
 
 export interface Variant {
   sku: string;
-  color: string;
+  color: string[];
   size: string;
   price: number;
   stock: number;

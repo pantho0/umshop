@@ -27,7 +27,7 @@ import { toast } from "sonner";
 // Define the new Product interface based on your provided JSON structure
 interface ProductVariant {
   sku: string;
-  color: string;
+  color: string[];
   size: string;
   price: number;
   stock: number;
@@ -95,7 +95,7 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
   // Derived state: currently selected variant
   const selectedVariant = product?.variants.find(
     (variant) =>
-      variant.size === selectedSize && variant.color === selectedColor
+      variant.size === selectedSize && variant.color.includes(selectedColor)
   );
 
   // Derived state: unique sizes and colors available for this product
@@ -103,7 +103,7 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
     new Set(product?.variants.map((v) => v.size) || [])
   );
   const availableColors = Array.from(
-    new Set(product?.variants.map((v) => v.color) || [])
+    new Set(product?.variants.flatMap((v) => v.color) || [])
   );
 
   // Embla Carousel Callbacks
@@ -126,7 +126,10 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
       // Set initial selected size and color to the attributes of the first variant
       if (product.variants.length > 0) {
         setSelectedSize(product.variants[0].size);
-        setSelectedColor(product.variants[0].color);
+        // Set initial selected color to the first color of the first variant
+        if (product.variants[0].color.length > 0) {
+          setSelectedColor(product.variants[0].color[0]);
+        }
       }
       setIsLoading(false); // Product data loaded, turn off skeleton
       window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on product change
@@ -175,7 +178,7 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
       name: product!.title,
       price: selectedVariant.price,
       image: product!.images[0], // Always use the first top-level product image
-      color: selectedVariant.color,
+      color: selectedColor,
       model: selectedVariant.size, // Use size as model for cart display
       quantity: quantity,
     };
@@ -445,27 +448,23 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
 
                   {/* Color Variants */}
                   <div className="mb-6">
-                    <p className="text-gray-700 font-semibold mb-2">
-                      Color:{" "}
-                      <span className="font-normal">{selectedColor}</span>
-                    </p>
-                    <div className="flex space-x-2">
+                    <p className="text-gray-700 font-semibold mb-2">Color: </p>
+                    <div className="flex flex-wrap gap-2">
                       {availableColors.map((color: string) => (
-                        <button
+                        <Button
                           key={color}
-                          className={`w-8 h-8 rounded-full border-2 ${
-                            selectedColor === color
-                              ? "border-purple-600"
-                              : "border-gray-300"
-                          } transition-colors duration-200`}
-                          style={{
-                            backgroundColor: color
-                              .toLowerCase()
-                              .replace(/\s/g, ""),
-                          }} // Simple color mapping
+                          variant={
+                            selectedColor === color ? "default" : "outline"
+                          }
                           onClick={() => setSelectedColor(color)}
-                          title={color}
-                        ></button>
+                          className={`rounded-md ${
+                            selectedColor === color
+                              ? "bg-purple-600 text-white hover:bg-purple-700"
+                              : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                          }`}
+                        >
+                          {color}
+                        </Button>
                       ))}
                     </div>
                   </div>

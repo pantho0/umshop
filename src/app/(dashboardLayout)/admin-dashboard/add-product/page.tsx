@@ -171,11 +171,12 @@ export default function AddProduct() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const productData = { ...values, images };
-    if (productData) {
-      addProduct(productData as any);
-      setImages([]);
-    }
+    console.log(values);
+    // const productData = { ...values, images };
+    // if (productData) {
+    //   addProduct(productData as any);
+    //   setImages([]);
+    // }
   };
 
   return (
@@ -325,111 +326,112 @@ export default function AddProduct() {
                   const colors = form.watch(`variants.${index}.color`);
                   return (
                     <div
-                    key={field.id}
-                    className="border rounded-lg p-4 space-y-4"
-                  >
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-medium">Variant {index + 1}</h4>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeVariant(index)}
-                        className="text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <UMInput
-                        label="SKU"
-                        name={`variants.${index}.sku`}
-                        type="text"
-                        placeholder="Enter SKU"
-                        {...field}
-                      />
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Colors
-                        </label>
-                        {colors.map(
-                          (colorItem: string, colorIndex: number) => (
-                            <div
-                              key={colorIndex}
-                              className="flex items-center space-x-2 mt-2"
-                            >
-                              <UMInput
-                                name={`variants.${index}.color.${colorIndex}`}
-                                type="text"
-                                placeholder="Enter color"
-                              />
-                              {colors.length > 1 && (
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    const currentColors = form.getValues(
-                                      `variants.${index}.color`
-                                    );
-                                    const newColors = currentColors.filter(
-                                      (_: string, i: number) => i !== colorIndex
-                                    )
-                                    form.setValue(
-                                      `variants.${index}.color`,
-                                      newColors
-                                    )
-                                  }}
-                                  className="text-destructive"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              )}
-                            </div>
-                          )
-                        )}
+                      key={field.id}
+                      className="border rounded-lg p-4 space-y-4"
+                    >
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-medium">Variant {index + 1}</h4>
                         <Button
                           type="button"
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
-                          onClick={() => {
-                            const currentColors = form.getValues(
-                              `variants.${index}.color`
-                            )
-                            form.setValue(
-                              `variants.${index}.color`,
-                              [...currentColors, ""]
-                            )
-                          }}
-                          className="mt-2"
+                          onClick={() => removeVariant(index)}
+                          className="text-destructive"
                         >
-                          <Plus className="h-4 w-4 mr-2" /> Add Color
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-                      <UMInput
-                        label="Size"
-                        name={`variants.${index}.size`}
-                        type="text"
-                        placeholder="Enter size"
-                        {...field}
-                      />
-                      <UMInput
-                        label="Price"
-                        name={`variants.${index}.price`}
-                        type="number"
-                        placeholder="Enter price"
-                        {...field}
-                      />
-                      <UMInput
-                        label="Stock"
-                        name={`variants.${index}.stock`}
-                        type="number"
-                        placeholder="Enter stock"
-                        {...field}
-                      />
+                      <div className="grid grid-cols-1 gap-4">
+                        <UMInput
+                          label="SKU"
+                          name={`variants.${index}.sku`}
+                          type="text"
+                          placeholder="Enter SKU"
+                          {...field}
+                        />
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Colors
+                          </label>
+                          {colors.map(
+                            (colorItem: string, colorIndex: number) => (
+                              <div
+                                key={colorIndex}
+                                className="flex items-center  mt-2"
+                              >
+                                <UMInput
+                                  name={`variants.${index}.color.${colorIndex}`}
+                                  type="text"
+                                  placeholder="Enter color"
+                                />
+                                {colors.length > 1 && (
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      const currentColors = form.getValues(
+                                        `variants.${index}.color`
+                                      );
+                                      const newColors = currentColors.filter(
+                                        (_: string, i: number) =>
+                                          i !== colorIndex
+                                      );
+                                      form.setValue(
+                                        `variants.${index}.color`,
+                                        newColors
+                                      );
+                                    }}
+                                    className="text-destructive"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                )}
+                              </div>
+                            )
+                          )}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const currentColors = form.getValues(
+                                `variants.${index}.color`
+                              );
+                              form.setValue(`variants.${index}.color`, [
+                                ...currentColors,
+                                "",
+                              ]);
+                            }}
+                            className="mt-2"
+                          >
+                            <Plus className="h-4 w-4 mr-2" /> Add Color
+                          </Button>
+                        </div>
+                        <UMInput
+                          label="Size"
+                          name={`variants.${index}.size`}
+                          type="text"
+                          placeholder="Enter size"
+                          {...field}
+                        />
+                        <UMInput
+                          label="Price"
+                          name={`variants.${index}.price`}
+                          type="number"
+                          placeholder="Enter price"
+                          {...field}
+                        />
+                        <UMInput
+                          label="Stock"
+                          name={`variants.${index}.stock`}
+                          type="number"
+                          placeholder="Enter stock"
+                          {...field}
+                        />
+                      </div>
                     </div>
-                  </div>
                   );
                 })}
               </div>
