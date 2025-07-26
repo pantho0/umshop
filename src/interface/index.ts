@@ -31,7 +31,7 @@ export interface IProductResult {
   title: string;
   parentCategory: IParentCategory;
   subCategory: ISubCategory;
-  variants: Variant[];
+  variants: Variant[] | undefined;
   details: string;
   images: string[];
   createdAt: string;

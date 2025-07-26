@@ -88,7 +88,7 @@ export const getProductBySlug = async (productSlug: string) => {
   return res.data;
 };
 
-export const updateProduct = async (productData: Product) => {
+export const updateProduct = async (productData: IProductResult) => {
   try {
     const res = await nexiosInstance.put<ApiResponse<IProductResult>>(
       `/products/${productData?.slug}`,

@@ -24,7 +24,7 @@ import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useUpdateProduct } from "@/hooks/product.hooks";
 import TipTap from "@/components/UMForm/TipTap";
-import { ApiResponse, IProductResult, Variant } from "@/interface";
+import { IProductResult, Variant } from "@/interface";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -65,7 +65,7 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
   const [selectedParentCategory, setSelectedParentCategory] =
     useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [defaultValue, setDefaultValue] = useState({
+  const [defaultValue, setDefaultValue] = useState<any>({
     title: "",
     parentCategory: "",
     subCategory: "",
@@ -143,13 +143,15 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
             parentCategory: product.parentCategory._id,
             subCategory: product.subCategory._id,
             details: product.details,
-            variants: product.variants.map((variant: Variant) => ({
-              sku: variant.sku,
-              color: variant.color,
-              size: variant.size,
-              price: variant.price,
-              stock: variant.stock,
-            })),
+            variants: product.variants
+              ? product.variants?.map((variant: Variant) => ({
+                  sku: variant.sku,
+                  color: variant.color,
+                  size: variant.size,
+                  price: variant.price,
+                  stock: variant.stock,
+                }))
+              : [],
           });
           setImages(product.images);
           setContent(product.details);
