@@ -4,6 +4,7 @@ import nexiosInstance from "@/app/config/nexios.config";
 import {
   ApiResponse,
   IParentCategory,
+  IProductResult,
   ISubCategory,
   Product,
 } from "@/interface";
@@ -75,4 +76,26 @@ export const uploadSingleImage = async (image: string) => {
     body: JSON.stringify({ image }),
   });
   return res.json();
+};
+
+export const getProductBySlug = async (productSlug: string) => {
+  const res = await nexiosInstance.get<ApiResponse<IProductResult>>(
+    `/products/${productSlug}`,
+    {
+      cache: "no-store",
+    }
+  );
+  return res.data;
+};
+
+export const updateProduct = async (productData: Product) => {
+  try {
+    const res = await nexiosInstance.put<ApiResponse<IProductResult>>(
+      `/products/${productData?.slug}`,
+      productData
+    );
+    return res.data;
+  } catch (error: any) {
+    throw Error(error);
+  }
 };

@@ -18,7 +18,6 @@ interface OptionType {
 
 interface UmSelectProps {
   name: string;
-  defaultValue?: string;
   label: string;
   options?: OptionType[];
   onValueChange?: (value: string) => void;
@@ -27,7 +26,6 @@ interface UmSelectProps {
 
 const UmSelect: React.FC<UmSelectProps> = ({
   name,
-  defaultValue = "",
   label,
   options = [],
   onValueChange,
@@ -41,7 +39,6 @@ const UmSelect: React.FC<UmSelectProps> = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         render={({ field }) => (
           <Select
             value={field.value}

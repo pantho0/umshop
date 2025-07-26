@@ -116,13 +116,17 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
                             <Eye className="text-green-600" />
                           </Button>
                         </Link>
-                        <Button
-                          className="cursor-pointer"
-                          variant="outline"
-                          size="sm"
+                        <Link
+                          href={`/admin-dashboard/products/${product.slug}`}
                         >
-                          <Edit className="text-blue-600" />
-                        </Button>
+                          <Button
+                            className="cursor-pointer"
+                            variant="outline"
+                            size="sm"
+                          >
+                            <Edit className="text-blue-600" />
+                          </Button>
+                        </Link>
                         <Button
                           className="cursor-pointer"
                           variant="destructive"
