@@ -14,10 +14,8 @@ export const confirmOrder = async (orderData: IOrder) => {
         res.data.message || "Order confirmation failed due to validation"
       );
     }
-
     return res.data;
   } catch (error: any) {
-    console.error("API Error:", error.response?.data || error.message);
     throw new Error(
       error.response?.data?.message ||
         error.message ||
@@ -69,6 +67,11 @@ export const statusChanging = async (orderId: string, statusOption: string) => {
         statusOption,
       }
     );
+
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Error fetching orders");
+    }
+
     return res.data;
   } catch (error: any) {
     throw new Error(
@@ -83,12 +86,12 @@ export const cancelOrder = async (orderId: string) => {
       `/orders/${orderId}`
     );
     if (!res.data.success) {
-      throw new Error(res.data.message || "Error fetching data");
+      throw new Error(res.data.message || "Error canceling order");
     }
     return res.data;
   } catch (error: any) {
     throw new Error(
-      error.response?.data?.message || error.message || "Error fetching data"
+      error.response?.data?.message || error.message || "Error canceling order"
     );
   }
 };
