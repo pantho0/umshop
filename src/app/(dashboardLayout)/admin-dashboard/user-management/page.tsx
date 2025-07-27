@@ -181,7 +181,11 @@ const UserManagement = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => console.log(`Change role for ${user.email}`)}
+                  onClick={() =>
+                    router.push(
+                      `/admin-dashboard/change-role?userId=${user._id}`
+                    )
+                  }
                 >
                   Change Role
                 </Button>

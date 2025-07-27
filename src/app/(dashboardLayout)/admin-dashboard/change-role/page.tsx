@@ -1,6 +1,5 @@
 "use client";
 import { useChangeUserRole, useGetSingleUser } from "@/hooks/auth.hook";
-import { dataTagErrorSymbol } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
@@ -40,7 +39,6 @@ const ChangeRole = () => {
       id: id!,
       role: selectedRole,
     };
-    console.log(userRoleInfo);
     changeRole(userRoleInfo, {
       onSuccess: () => {
         toast.success("User Role Updated Successfully", {
