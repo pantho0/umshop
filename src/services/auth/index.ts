@@ -111,7 +111,7 @@ export const changeUserRole = async (userRoleinfo: {
   role: string;
 }) => {
   try {
-    const res = await nexiosInstance.post<ApiResponse<IUser[]>>(
+    const res = await nexiosInstance.put<ApiResponse<IUser[]>>(
       "/users/change-role",
       userRoleinfo
     );

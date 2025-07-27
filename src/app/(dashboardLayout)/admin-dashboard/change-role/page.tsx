@@ -1,5 +1,5 @@
 "use client";
-import { useGetSingleUser } from "@/hooks/auth.hook";
+import { useChangeUserRole, useGetSingleUser } from "@/hooks/auth.hook";
 import { dataTagErrorSymbol } from "@tanstack/react-query";
 import {
   Card,
@@ -18,13 +18,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { IUser } from "@/interface";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const ChangeRole = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("userId");
   const { data: userInfo } = useGetSingleUser(id!);
+  const { mutate: changeRole } = useChangeUserRole();
+  const router = useRouter();
 
   const [selectedRole, setSelectedRole] = useState(userInfo?.role! || "");
 
@@ -33,14 +35,28 @@ const ChangeRole = () => {
   };
 
   const handleUpdateRole = () => {
-    // Implement your role update logic here
-    console.log(
-      "Updating role for user:",
-      userInfo?.email,
-      "to:",
-      selectedRole
-    );
-    // You would typically call an API here to update the user's role
+    const toastId = toast.loading("Changing User Role...");
+    const userRoleInfo = {
+      id: id!,
+      role: selectedRole,
+    };
+    console.log(userRoleInfo);
+    changeRole(userRoleInfo, {
+      onSuccess: () => {
+        toast.success("User Role Updated Successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+        router.push("/admin-dashboard/user-management");
+      },
+      onError: (error: any) => {
+        toast.error(error.message, {
+          id: toastId,
+          duration: 2000,
+        });
+        router.push("/admin-dashboard/user-management");
+      },
+    });
   };
 
   if (!userInfo) {
