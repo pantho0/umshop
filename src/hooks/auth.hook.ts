@@ -1,6 +1,7 @@
 import {
   createUser,
   getAllUser,
+  getSingleUser,
   loginUser,
   upDatePassword,
 } from "./../services/auth/index";
@@ -53,5 +54,12 @@ export const useGetAllUser = () => {
   return useQuery({
     queryKey: ["GET_ALL_USER"],
     queryFn: async () => await getAllUser(),
+  });
+};
+
+export const useGetSingleUser = (id: string) => {
+  return useQuery({
+    queryKey: ["GET_SINGLE_USER", id],
+    queryFn: async () => await getSingleUser(id),
   });
 };

@@ -87,3 +87,21 @@ export const getAllUser = async () => {
     throw new Error(error.message || "Failed to fetch users");
   }
 };
+
+export const getSingleUser = async (id: string) => {
+  try {
+    const res = await nexiosInstance.get<
+      ApiResponse<IUser[] | undefined | any>
+    >(`/users/${id}`);
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Failed to fetch users");
+    }
+    return res.data.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "An error occurred during user creation"
+    );
+  }
+};
