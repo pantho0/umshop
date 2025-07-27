@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { FormProvider } from "react-hook-form";
+import { FieldValues, FormProvider, SubmitHandler } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,7 +24,7 @@ import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useUpdateProduct } from "@/hooks/product.hooks";
 import TipTap from "@/components/UMForm/TipTap";
-import { IProductResult, Variant } from "@/interface";
+import { Variant } from "@/interface";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -74,7 +74,12 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
     variants: [],
   });
   const [loading, setLoading] = useState(false);
-  const { mutate: updateProduct } = useUpdateProduct();
+  const {
+    mutate: updateProduct,
+    isPending,
+    isError,
+    isSuccess,
+  } = useUpdateProduct();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -123,19 +128,6 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
       try {
         const productRes = await getProductBySlug(productId);
         const product = productRes.data;
-
-        const parentCategoriesRes = await getParentCategories();
-        const fetchedParentCategories = parentCategoriesRes?.data || [];
-        setParentCategories(fetchedParentCategories);
-
-        if (product && product.parentCategory && product.parentCategory._id) {
-          setSelectedParentCategory(product.parentCategory._id);
-          const subCategoriesRes = await getSubCategoriesByParent(
-            product.parentCategory._id
-          );
-          const fetchedSubCategories = subCategoriesRes?.data || [];
-          setSubCategories(fetchedSubCategories);
-        }
 
         if (product) {
           setDefaultValue({
@@ -190,13 +182,73 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
     form.setValue("subCategory", "");
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    const productData = { ...values, images, details: content, productId };
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    const toastId = toast.loading("Updating product...", { duration: 2000 });
+    const productData = {
+      ...values,
+      slug: productId,
+      images,
+      details: content,
+    };
+    console.log(productData);
     if (productData) {
       updateProduct(productData as any);
     }
+    if (!isPending && isPending) {
+      toast.success("Product Updated Successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+    if (isError) {
+      toast.error("Error updating product", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
   };
+
+  useEffect(() => {
+    const fetchParentCategories = async () => {
+      try {
+        const response = await getParentCategories();
+
+        if (response?.data) {
+          setParentCategories(response?.data);
+        } else {
+          toast.error(response?.message || "Failed to fetch parent categories");
+        }
+      } catch (error) {
+        console.error("Error fetching parent categories:", error);
+        toast.error("Error fetching parent categories");
+      }
+    };
+    fetchParentCategories();
+  }, []);
+
+  useEffect(() => {
+    if (selectedParentCategory) {
+      const fetchSubCategories = async () => {
+        try {
+          const response = await getSubCategoriesByParent(
+            selectedParentCategory
+          );
+
+          if (response?.data) {
+            setSubCategories(response?.data);
+          } else {
+            toast.error(response?.message || "Failed to fetch subcategories");
+          }
+        } catch (error) {
+          console.error("Error fetching subcategories:", error);
+          toast.error("Error fetching subcategories");
+        }
+      };
+      fetchSubCategories();
+    } else {
+      setSubCategories([]); // Clear subcategories if no parent is selected
+    }
+  }, [selectedParentCategory]);
 
   if (loading) {
     return <p>Loading</p>;

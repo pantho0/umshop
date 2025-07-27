@@ -1,4 +1,4 @@
-import { Product } from "@/interface";
+import { IProductResult, Product } from "@/interface";
 import { addProduct, getProducts, updateProduct } from "@/services/product";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ export const useAddProduct = () => {
 
 export const useUpdateProduct = () => {
   return useMutation({
-    mutationFn: (productData: Product) => updateProduct(productData),
+    mutationFn: (productData: IProductResult) => updateProduct(productData),
     onSuccess: () => {
       toast.success("Product updated successfully");
     },

@@ -20,6 +20,7 @@ interface UmSelectProps {
   name: string;
   label: string;
   options?: OptionType[];
+  defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
 }

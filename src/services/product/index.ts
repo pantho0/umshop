@@ -94,6 +94,9 @@ export const updateProduct = async (productData: IProductResult) => {
       `/products/${productData?.slug}`,
       productData
     );
+    if (!res.data) {
+      throw Error("Error updating product");
+    }
     return res.data;
   } catch (error: any) {
     throw Error(error);
