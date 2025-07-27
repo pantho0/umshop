@@ -122,8 +122,11 @@ const ChangeRole = () => {
               <div className="flex flex-col space-y-1.5">
                 <label htmlFor="role">Select New Role</label>
                 <Select onValueChange={handleRoleChange} value={selectedRole}>
-                  <SelectTrigger id="role">
-                    <SelectValue placeholder="Select a role" />
+                  <SelectTrigger id="role" className="w-full">
+                    <SelectValue
+                      placeholder="Select a role"
+                      className="w-full"
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="user">User</SelectItem>

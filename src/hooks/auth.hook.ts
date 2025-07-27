@@ -1,11 +1,12 @@
 import {
+  changeUserRole,
   createUser,
   getAllUser,
   getSingleUser,
   loginUser,
   upDatePassword,
 } from "./../services/auth/index";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -61,5 +62,19 @@ export const useGetSingleUser = (id: string) => {
   return useQuery({
     queryKey: ["GET_SINGLE_USER", id],
     queryFn: async () => await getSingleUser(id),
+  });
+};
+
+export const useChangeUserRole = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["CHANGE_USER_ROLE"],
+    mutationFn: async (userRoleinfo: { id: string; role: string }) =>
+      await changeUserRole(userRoleinfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+    },
   });
 };

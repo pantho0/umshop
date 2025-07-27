@@ -105,3 +105,21 @@ export const getSingleUser = async (id: string) => {
     );
   }
 };
+
+export const changeUserRole = async (userRoleinfo: {
+  id: string;
+  role: string;
+}) => {
+  try {
+    const res = await nexiosInstance.post<ApiResponse<IUser[]>>(
+      "/users/change-role",
+      userRoleinfo
+    );
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Failed to update user role");
+    }
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to update user role");
+  }
+};
