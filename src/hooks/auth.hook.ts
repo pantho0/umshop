@@ -1,9 +1,10 @@
 import {
   createUser,
+  getAllUser,
   loginUser,
   upDatePassword,
 } from "./../services/auth/index";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -45,5 +46,12 @@ export const useCreateUser = () => {
     onError: (error: Error) => {
       toast.error(error.message);
     },
+  });
+};
+
+export const useGetAllUser = () => {
+  return useQuery({
+    queryKey: ["GET_ALL_USER"],
+    queryFn: async () => await getAllUser(),
   });
 };
