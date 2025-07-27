@@ -70,3 +70,15 @@ export const createUser = async (userData: FieldValues) => {
     );
   }
 };
+
+export const getAllUser = async () => {
+  try {
+    const res = await nexiosInstance.get<ApiResponse<any>>("/users");
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Failed to fetch users");
+    }
+    return res.data.data;
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to fetch users");
+  }
+};
