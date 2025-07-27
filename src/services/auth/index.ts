@@ -1,6 +1,11 @@
 "use server";
 import nexiosInstance from "@/app/config/nexios.config";
-import { ApiResponse, IUpdatePassRes, LoginSuccessResponse } from "@/interface";
+import {
+  ApiResponse,
+  IUpdatePassRes,
+  IUser,
+  LoginSuccessResponse,
+} from "@/interface";
 import { AppInitialProps } from "next/app";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
@@ -73,11 +78,11 @@ export const createUser = async (userData: FieldValues) => {
 
 export const getAllUser = async () => {
   try {
-    const res = await nexiosInstance.get<ApiResponse<any>>("/users");
+    const res = await nexiosInstance.get<ApiResponse<IUser[]>>("/users");
     if (!res.data.success) {
       throw new Error(res.data.message || "Failed to fetch users");
     }
-    return res.data.data;
+    return res.data;
   } catch (error: any) {
     throw new Error(error.message || "Failed to fetch users");
   }

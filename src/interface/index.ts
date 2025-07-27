@@ -160,3 +160,18 @@ export interface IUpdatePassRes {
   accessToken?: string;
   refreshToken?: string;
 }
+
+export interface IUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  passwordChagedAt: string;
+  isBlocked: boolean;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  id: string;
+}
