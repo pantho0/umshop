@@ -21,11 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const UserManagement = () => {
   const { data, isPending, isSuccess } = useGetAllUser();
   const users = data?.data || [];
-
+  const router = useRouter();
   if (isPending) {
     return (
       <div className="container mx-auto py-10">
@@ -116,7 +117,9 @@ const UserManagement = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() =>
-                            console.log(`Change role for ${user.email}`)
+                            router.push(
+                              `/admin-dashboard/change-role?userId=${user._id}`
+                            )
                           }
                         >
                           Change Role
