@@ -10,6 +10,7 @@ import {
   User,
   Package,
   Settings,
+  UserCog,
 } from "lucide-react";
 
 export interface NavItem {
@@ -49,6 +50,11 @@ export const sidebarAdminNavItems: NavSection = {
 
       label: "Profile",
       icon: User,
+    },
+    {
+      href: "/admin-dashboard/user-management",
+      label: "User Management",
+      icon: UserCog,
     },
     {
       href: "/admin-dashboard/addresses",
