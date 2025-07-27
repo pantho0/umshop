@@ -24,7 +24,8 @@ import Image from "next/image";
 import { convertBase64 } from "@/utils/helperFunctions";
 import { useUpdateProduct } from "@/hooks/product.hooks";
 import TipTap from "@/components/UMForm/TipTap";
-import { Variant } from "@/interface";
+import { IProductResult, Variant } from "@/interface";
+import { useRouter } from "next/navigation";
 
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -74,18 +75,13 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
     variants: [],
   });
   const [loading, setLoading] = useState(false);
-  const {
-    mutate: updateProduct,
-    isPending,
-    isError,
-    isSuccess,
-  } = useUpdateProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValue,
   });
-
+  const router = useRouter();
   useEffect(() => {
     if (defaultValue.title) {
       form.reset(defaultValue);
@@ -184,26 +180,27 @@ const ProductUpdate = ({ params }: ProductUpdateProps) => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     const toastId = toast.loading("Updating product...", { duration: 2000 });
-    const productData = {
+    const productData: Partial<IProductResult> = {
       ...values,
       slug: productId,
       images,
       details: content,
     };
-    console.log(productData);
     if (productData) {
-      updateProduct(productData as any);
-    }
-    if (!isPending && isPending) {
-      toast.success("Product Updated Successfully", {
-        id: toastId,
-        duration: 2000,
-      });
-    }
-    if (isError) {
-      toast.error("Error updating product", {
-        id: toastId,
-        duration: 2000,
+      updateProduct(productData as IProductResult, {
+        onSuccess: () => {
+          toast.success("Product Updated Successfully", {
+            id: toastId,
+            duration: 2000,
+          });
+          router.push(`/products/${productId}`);
+        },
+        onError: (err) => {
+          toast.error(err.message || "Error updating product", {
+            id: toastId,
+            duration: 2000,
+          });
+        },
       });
     }
   };

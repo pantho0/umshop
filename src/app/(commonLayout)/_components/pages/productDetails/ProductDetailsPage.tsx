@@ -23,30 +23,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useAppDispatch } from "@/redux/hook";
 import { addToCart } from "@/redux/features/cartSlice";
 import { toast } from "sonner";
-
-// Define the new Product interface based on your provided JSON structure
-interface ProductVariant {
-  sku: string;
-  color: string[];
-  size: string;
-  price: number;
-  stock: number;
-  // images: string[]; // Removed images from variant interface
-}
-
-interface Product {
-  _id: string;
-  title: string;
-  parentCategory: { _id: string; name: string; slug: string };
-  subCategory: { _id: string; name: string; slug: string };
-  variants: ProductVariant[]; // Changed from variant_color and size
-  details: string;
-  images: string[]; // Top-level images will always be used
-  createdAt: string;
-  updatedAt: string;
-  slug: string;
-  __v: number;
-}
+import { IProductResult } from "@/interface";
 
 // Helper for star ratings (re-used)
 const renderStars = (
@@ -74,9 +51,9 @@ const renderStars = (
   );
 };
 
-const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
-  product,
-}) => {
+const ProductDetailsPage: React.FC<{
+  product: IProductResult;
+}> = ({ product }) => {
   const dispatch = useAppDispatch();
 
   // State for selected variant attributes
@@ -93,17 +70,17 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
   const [isLoading, setIsLoading] = useState(true); // Start as true
 
   // Derived state: currently selected variant
-  const selectedVariant = product?.variants.find(
+  const selectedVariant = product?.variants?.find(
     (variant) =>
       variant.size === selectedSize && variant.color.includes(selectedColor)
   );
 
   // Derived state: unique sizes and colors available for this product
   const availableSizes = Array.from(
-    new Set(product?.variants.map((v) => v.size) || [])
+    new Set(product?.variants?.map((v) => v.size) || [])
   );
   const availableColors = Array.from(
-    new Set(product?.variants.flatMap((v) => v.color) || [])
+    new Set(product?.variants?.flatMap((v) => v.color) || [])
   );
 
   // Embla Carousel Callbacks
@@ -124,11 +101,11 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
   useEffect(() => {
     if (product) {
       // Set initial selected size and color to the attributes of the first variant
-      if (product.variants.length > 0) {
-        setSelectedSize(product.variants[0].size);
+      if (product?.variants!.length > 0) {
+        setSelectedSize(product?.variants![0].size);
         // Set initial selected color to the first color of the first variant
-        if (product.variants[0].color.length > 0) {
-          setSelectedColor(product.variants[0].color[0]);
+        if (product.variants![0].color.length > 0) {
+          setSelectedColor(product.variants![0].color[0]);
         }
       }
       setIsLoading(false); // Product data loaded, turn off skeleton
@@ -197,7 +174,7 @@ const ProductDetailsPage: React.FC<{ product: Product | null }> = ({
   // Current price is now from selectedVariant
   const currentPrice = selectedVariant
     ? selectedVariant.price
-    : product?.variants[0]?.price || 0;
+    : product?.variants![0]?.price || 0;
 
   // Dummy data for reviews (only if product is available)
   const reviews = product
