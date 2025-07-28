@@ -114,12 +114,12 @@ const LoginPage: React.FC = () => {
                     Remember for 30 days
                   </label>
                 </div>
-                <a
-                  href="#"
+                <Link
+                  href="/forget-password"
                   className="text-purple-600 hover:underline font-semibold"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               <Button
