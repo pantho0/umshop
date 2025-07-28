@@ -138,3 +138,20 @@ export const changeIsBlockStatus = async (userBlockInfo: { id: string }) => {
     throw new Error(error.message || "Failed to update user block status");
   }
 };
+
+export const deleteUserStatus = async (userBlockInfo: { id: string }) => {
+  try {
+    const res = await nexiosInstance.put<ApiResponse<IUser>>(
+      "/users/delete-user",
+      userBlockInfo
+    );
+    if (!res.data.success) {
+      throw new Error(
+        res.data.message || "Failed to update user delete status"
+      );
+    }
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to update user delete status");
+  }
+};

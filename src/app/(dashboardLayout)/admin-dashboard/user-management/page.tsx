@@ -1,5 +1,9 @@
 "use client";
-import { useChangeIsBlockStatus, useGetAllUser } from "@/hooks/auth.hook";
+import {
+  useChangeIsBlockStatus,
+  useGetAllUser,
+  useUserDeleteStatus,
+} from "@/hooks/auth.hook";
 import {
   Table,
   TableBody,
@@ -22,10 +26,12 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const UserManagement = () => {
   const { data, isPending, isSuccess } = useGetAllUser();
   const { mutate: changeIsBlock } = useChangeIsBlockStatus();
+  const { mutate: deleteUser } = useUserDeleteStatus();
   const users = data?.data || [];
   const router = useRouter();
   if (isPending) {
@@ -102,13 +108,29 @@ const UserManagement = () => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
-                          onClick={() => changeIsBlock({ id: user!._id })}
+                          onClick={() =>
+                            changeIsBlock(
+                              { id: user!._id },
+                              {
+                                onSuccess: () => {
+                                  toast.success("User block status updated");
+                                },
+                              }
+                            )
+                          }
                         >
                           {user.isBlocked ? "Unblock" : "Block"}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
-                            console.log(`Delete user ${user.email}`)
+                            deleteUser(
+                              { id: user._id },
+                              {
+                                onSuccess: () => {
+                                  toast.success("User delete status updated");
+                                },
+                              }
+                            )
                           }
                         >
                           {user.isDeleted ? "Restore" : "Delete"}
@@ -166,14 +188,32 @@ const UserManagement = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => console.log(`Block user ${user.email}`)}
+                  onClick={() =>
+                    changeIsBlock(
+                      { id: user!._id },
+                      {
+                        onSuccess: () => {
+                          toast.success("User block status updated");
+                        },
+                      }
+                    )
+                  }
                 >
                   {user.isBlocked ? "Unblock" : "Block"}
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => console.log(`Delete user ${user.email}`)}
+                  onClick={() =>
+                    deleteUser(
+                      { id: user._id },
+                      {
+                        onSuccess: () => {
+                          toast.success("User delete status updated");
+                        },
+                      }
+                    )
+                  }
                 >
                   {user.isDeleted ? "Restore" : "Delete"}
                 </Button>

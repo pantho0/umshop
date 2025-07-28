@@ -2,6 +2,7 @@ import {
   changeIsBlockStatus,
   changeUserRole,
   createUser,
+  deleteUserStatus,
   getAllUser,
   getSingleUser,
   loginUser,
@@ -86,6 +87,20 @@ export const useChangeIsBlockStatus = () => {
     mutationKey: ["BLOCK_STATUS"],
     mutationFn: async (userBlockInfo: { id: string }) =>
       await changeIsBlockStatus(userBlockInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+    },
+  });
+};
+
+export const useUserDeleteStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["DELETE_STATUS"],
+    mutationFn: async (userBlockInfo: { id: string }) =>
+      await deleteUserStatus(userBlockInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["GET_ALL_USER"],
