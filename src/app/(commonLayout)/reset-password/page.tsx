@@ -13,6 +13,7 @@ import { UMInput } from "@/components/UMForm/UMInput";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 const PasswordResetPage = () => {
   const searchParams = useSearchParams();
@@ -30,8 +31,35 @@ const PasswordResetPage = () => {
     }
   }, [searchParams, setLoading, loading]);
 
-  const handleSubmit: SubmitHandler<FieldValues> = (resetPassInfo) => {
-    console.log(resetPassInfo);
+  const handleSubmit: SubmitHandler<FieldValues> = async (resetPassInfo) => {
+    try {
+      const toastId = toast.loading("Resetting password...");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token as string,
+          },
+          body: JSON.stringify(resetPassInfo),
+        }
+      );
+      const data = await res.json();
+
+      if (res.status === 401) {
+        toast.error("Invalid or expired request", {
+          id: toastId,
+        });
+      }
+      if (data.success) {
+        toast.success("Password reset successfully", {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (loading) {
