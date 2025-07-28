@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./utils/verifyToken";
 import { cookies } from "next/headers";
 
-const authRoutes = ["/login", "/register"];
+const authRoutes = ["/login", "/register", "/forget-password"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

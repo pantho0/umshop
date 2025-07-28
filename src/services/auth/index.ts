@@ -139,11 +139,11 @@ export const changeIsBlockStatus = async (userBlockInfo: { id: string }) => {
   }
 };
 
-export const deleteUserStatus = async (userBlockInfo: { id: string }) => {
+export const deleteUserStatus = async (userDeleteInfo: { id: string }) => {
   try {
     const res = await nexiosInstance.put<ApiResponse<IUser>>(
       "/users/delete-user",
-      userBlockInfo
+      userDeleteInfo
     );
     if (!res.data.success) {
       throw new Error(
@@ -153,5 +153,23 @@ export const deleteUserStatus = async (userBlockInfo: { id: string }) => {
     return res.data;
   } catch (error: any) {
     throw new Error(error.message || "Failed to update user delete status");
+  }
+};
+export const forgetPassword = async (forgetPassInfo: FieldValues) => {
+  try {
+    const res = await nexiosInstance.post<ApiResponse<any>>(
+      "/auth/forget-password",
+      forgetPassInfo
+    );
+    if (!res.data.success) {
+      throw new Error(
+        res.data.message || "Failed to create forget password request to server"
+      );
+    }
+    return res.data;
+  } catch (error: any) {
+    throw new Error(
+      error.message || "Failed to create forget password request to server"
+    );
   }
 };

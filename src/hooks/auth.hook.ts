@@ -3,6 +3,7 @@ import {
   changeUserRole,
   createUser,
   deleteUserStatus,
+  forgetPassword,
   getAllUser,
   getSingleUser,
   loginUser,
@@ -101,6 +102,20 @@ export const useUserDeleteStatus = () => {
     mutationKey: ["DELETE_STATUS"],
     mutationFn: async (userBlockInfo: { id: string }) =>
       await deleteUserStatus(userBlockInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+    },
+  });
+};
+
+export const useForgetPass = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["FORGET_PASSWORD"],
+    mutationFn: async (forgetPassInfo: FieldValues) =>
+      await forgetPassword(forgetPassInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["GET_ALL_USER"],
