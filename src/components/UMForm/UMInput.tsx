@@ -7,6 +7,7 @@ interface UMInputProps {
   placeholder: string;
   label?: React.ReactNode;
   defaultValue?: string;
+  disabled?: boolean;
 }
 
 export const UMInput = ({
@@ -15,6 +16,7 @@ export const UMInput = ({
   placeholder,
   label,
   defaultValue = "",
+  disabled = false,
 }: UMInputProps) => {
   return (
     <>
@@ -37,6 +39,7 @@ export const UMInput = ({
               placeholder={placeholder}
               className="w-full"
               {...field}
+              disabled={disabled}
             />
           </>
         )}

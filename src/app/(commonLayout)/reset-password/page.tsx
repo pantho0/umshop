@@ -10,12 +10,33 @@ import {
 } from "@/components/ui/card";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 const PasswordResetPage = () => {
+  const searchParams = useSearchParams();
+  const [defaultValue, setDefaultValues] = useState({
+    email: "",
+  });
+  const [loading, setLoading] = useState(true);
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
+
+  useEffect(() => {
+    if (email) {
+      setDefaultValues({ email: email });
+      setLoading(false);
+    }
+  }, [searchParams, setLoading, loading]);
+
   const handleSubmit: SubmitHandler<FieldValues> = (resetPassInfo) => {
     console.log(resetPassInfo);
   };
+
+  if (loading) {
+    return <p>Please wait</p>;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -27,13 +48,14 @@ const PasswordResetPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <UMForm onSubmit={handleSubmit}>
+          <UMForm onSubmit={handleSubmit} defaultValues={defaultValue}>
             <div className="grid gap-2">
               <UMInput
                 name="email"
                 label="Your Email"
                 type="email"
                 placeholder="m@example.com"
+                disabled={true}
               />
             </div>
             <div className="grid gap-2">
