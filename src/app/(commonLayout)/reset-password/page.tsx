@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/card";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
 const PasswordResetPage = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [defaultValue, setDefaultValues] = useState({
     email: "",
   });
@@ -56,6 +57,7 @@ const PasswordResetPage = () => {
         toast.success("Password reset successfully", {
           id: toastId,
         });
+        router.push("/login");
       }
     } catch (error) {
       console.log(error);
