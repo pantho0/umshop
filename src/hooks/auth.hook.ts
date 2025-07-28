@@ -1,4 +1,5 @@
 import {
+  changeIsBlockStatus,
   changeUserRole,
   createUser,
   getAllUser,
@@ -71,6 +72,20 @@ export const useChangeUserRole = () => {
     mutationKey: ["CHANGE_USER_ROLE"],
     mutationFn: async (userRoleinfo: { id: string; role: string }) =>
       await changeUserRole(userRoleinfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GET_ALL_USER"],
+      });
+    },
+  });
+};
+
+export const useChangeIsBlockStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["BLOCK_STATUS"],
+    mutationFn: async (userBlockInfo: { id: string }) =>
+      await changeIsBlockStatus(userBlockInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["GET_ALL_USER"],

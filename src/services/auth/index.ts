@@ -123,3 +123,18 @@ export const changeUserRole = async (userRoleinfo: {
     throw new Error(error.message || "Failed to update user role");
   }
 };
+
+export const changeIsBlockStatus = async (userBlockInfo: { id: string }) => {
+  try {
+    const res = await nexiosInstance.put<ApiResponse<IUser>>(
+      "/users/block-user",
+      userBlockInfo
+    );
+    if (!res.data.success) {
+      throw new Error(res.data.message || "Failed to update user block status");
+    }
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to update user block status");
+  }
+};

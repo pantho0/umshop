@@ -1,5 +1,5 @@
 "use client";
-import { useGetAllUser } from "@/hooks/auth.hook";
+import { useChangeIsBlockStatus, useGetAllUser } from "@/hooks/auth.hook";
 import {
   Table,
   TableBody,
@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 
 const UserManagement = () => {
   const { data, isPending, isSuccess } = useGetAllUser();
+  const { mutate: changeIsBlock } = useChangeIsBlockStatus();
   const users = data?.data || [];
   const router = useRouter();
   if (isPending) {
@@ -101,9 +102,7 @@ const UserManagement = () => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
-                          onClick={() =>
-                            console.log(`Block user ${user.email}`)
-                          }
+                          onClick={() => changeIsBlock({ id: user!._id })}
                         >
                           {user.isBlocked ? "Unblock" : "Block"}
                         </DropdownMenuItem>
