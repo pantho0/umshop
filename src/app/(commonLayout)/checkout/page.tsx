@@ -81,9 +81,60 @@ const CheckoutPage: React.FC = () => {
 
   const estimatedTotal = subtotal + shippingCost;
 
-  const handleSubmitOrder = async (data: FieldValues) => {
+  // const handleSubmitOrder = async (data: FieldValues) => {
+  //   const orderId = generateUUID();
+  //   const toastId = toast.loading("Confirming your order");
+  //   const orderData = {
+  //     ...data,
+  //     paymentMethod,
+  //     orderId: orderId,
+  //     status: "Pending",
+  //     orderedItems: cartItems,
+  //     grandTotal: estimatedTotal,
+  //   } as IOrder;
+  //   if (paymentMethod === "cash_on_delivery") {
+  //     handleConfirmOrder(orderData, {
+  //       onSuccess: () => {
+  //         toast.success("Order Confirmed", { id: toastId, duration: 2000 });
+  //         dispatch(clearCart());
+  //       },
+  //       onError: (err) => {
+  //         toast.error(err.message, { id: toastId, duration: 2000 });
+  //       },
+  //     });
+  //   } else if (paymentMethod === "stripe") {
+  //     try {
+  //       const response = await fetch("/api/checkout_sessions", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           items: cartItems.map((item) => ({
+  //             id: item.id,
+  //             name: item.name,
+  //             price: item.price,
+  //             quantity: item.quantity,
+  //             image: item.image,
+  //           })),
+  //           orderData,
+  //         }),
+  //       });
+  //       const { url } = await response.json();
+  //       // Redirect to Stripe Checkout
+  //       router.push(url);
+  //     } catch (error) {
+  //       console.error("Error redirecting to checkout:", error);
+  //     }
+  //   }
+  // };
+
+const handleSubmitOrder = async (data: FieldValues) => {
+  const toastId = toast.loading("Processing your order");
+
+  if (paymentMethod === "cash_on_delivery") {
+    // Handle cash on delivery as before
     const orderId = generateUUID();
-    const toastId = toast.loading("Confirming your order");
     const orderData = {
       ...data,
       paymentMethod,
@@ -92,43 +143,69 @@ const CheckoutPage: React.FC = () => {
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
     } as IOrder;
-    if (paymentMethod === "cash_on_delivery") {
-      handleConfirmOrder(orderData, {
-        onSuccess: () => {
-          toast.success("Order Confirmed", { id: toastId, duration: 2000 });
-          dispatch(clearCart());
+    
+    handleConfirmOrder(orderData, {
+      onSuccess: () => {
+        toast.success("Order Confirmed", { id: toastId, duration: 2000 });
+        dispatch(clearCart());
+      },
+      onError: (err) => {
+        toast.error(err.message, { id: toastId, duration: 2000 });
+      },
+    });
+  } else if (paymentMethod === "stripe") {
+    try {
+      // Create complete order data
+      const orderId = `UMSHP-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
+      const orderData = {
+        ...data,
+        paymentMethod,
+        orderId,
+        status: "Pending",
+        orderedItems: cartItems,
+        grandTotal: estimatedTotal,
+      } as IOrder;
+      
+      // Save order data for later (in Redux or localStorage)
+      // Option 1: Save in Redux
+      // dispatch(savePendingOrder(orderData)); // You need to create this action
+      
+      // Option 2: Save in localStorage as fallback
+      localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
+      
+      // Create checkout session
+      const response = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        onError: (err) => {
-          toast.error(err.message, { id: toastId, duration: 2000 });
-        },
+        body: JSON.stringify({
+          items: cartItems.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+          })),
+          orderData: orderData,
+        }),
       });
-    } else if (paymentMethod === "stripe") {
-      try {
-        const response = await fetch("/api/checkout_sessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            items: cartItems.map((item) => ({
-              id: item.id,
-              name: item.name,
-              price: item.price,
-              quantity: item.quantity,
-              image: item.image,
-            })),
-          }),
-        });
-        const { url } = await response.json();
-        // Redirect to Stripe Checkout
-        router.push(url);
-       
-      } catch (error) {
-        console.error("Error redirecting to checkout:", error);
+      
+      toast.dismiss(toastId);
+      const { url, error } = await response.json();
+      
+      if (error) {
+        toast.error(error, { id: toastId });
+        return;
       }
+      
+      router.push(url);
+    } catch (error) {
+      toast.error("Error processing payment", { id: toastId });
+      console.error("Error redirecting to checkout:", error);
     }
-  };
-
+  }
+};
   const districts = allDistict();
   const upazilla = upazilasOf(selectedDistrict);
 

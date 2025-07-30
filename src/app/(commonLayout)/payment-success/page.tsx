@@ -1,23 +1,79 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import {
-  CheckCircle2,
-  Truck,
-  Clock,
-  CreditCard,
-  Copy,
-  ChevronRight,
-  Star,
-  ShoppingCart,
-} from "lucide-react";
-import Products from "../../../../public/product/product.json"; // Re-use ProductType
+import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { useAppDispatch } from "@/redux/hook";
+import { useSearchParams } from "next/navigation";
+import { clearCart } from "@/redux/features/cartSlice";
 
 const PaymentSuccessPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const sessionId = searchParams.get("session_id");
+    const orderId = searchParams.get("order_id");
+    const savedOrderData = localStorage.getItem(`order_${orderId}`);
+
+    if (savedOrderData && sessionId && orderId) {
+      const parsedOrder = JSON.parse(savedOrderData);
+      const verifyAndCreateOrder = async () => {
+        try {
+          const response = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              session_id: sessionId,
+              orderData: parsedOrder,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            setOrderDetails(data);
+            dispatch(clearCart());
+            localStorage.removeItem(`order_${orderId}`);
+          } else {
+            setError(data.message || "Payment verification failed");
+          }
+        } catch (err) {
+          setError("Failed to process your order. Please contact support.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      verifyAndCreateOrder();
+    } else {
+      setError("Order information not found or session is invalid.");
+      setLoading(false);
+    }
+  }, [dispatch, searchParams]);
+
+  if (loading) {
+    return <div className="text-center p-8">Finalizing your order...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center p-8 text-red-500">
+        <h1>Error</h1>
+        <p>{error}</p>
+        <Link href="/products">
+          <Button>Go to Products</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center bg-gray-100">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-md bg-white rounded-lg border border-gray-200 p-6 md:p-8 text-center shadow-lg">
