@@ -6,7 +6,7 @@ import {
   IUser,
   LoginSuccessResponse,
 } from "@/interface";
-import { AppInitialProps } from "next/app";
+
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 

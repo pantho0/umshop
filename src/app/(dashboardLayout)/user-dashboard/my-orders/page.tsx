@@ -27,12 +27,7 @@ function useMediaQuery(query: string) {
 
 const MyOrders = () => {
   const user = useAppSelector(selectUser);
-  const {
-    data: myOrdersData,
-    isPending,
-  } = useGetMyOrders(user?.email!);
-
-
+  const { data: myOrdersData, isPending } = useGetMyOrders(user!.email);
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 

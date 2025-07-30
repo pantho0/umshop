@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 
 const ProductsTable = ({ products }: { products: any }) => {
   const [mounted, isMounted] = useState(false);
+  console.log(mounted);
   useEffect(() => {
     isMounted(true);
   }, [products]);

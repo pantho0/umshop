@@ -49,8 +49,8 @@ const ProductListingPage = async ({
   let meta;
   try {
     const productsResponse = await getProducts(searchParams);
-    const rawProductsData = productsResponse?.data.result || [];
-    meta = productsResponse?.data.meta || {};
+    const rawProductsData = productsResponse?.data!.result || [];
+    meta = productsResponse?.data!.meta || {};
 
     const [parentCategoriesData, subCategoriesData] = await Promise.all([
       getParentCategories(),

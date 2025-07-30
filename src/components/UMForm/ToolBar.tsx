@@ -28,6 +28,8 @@ interface ToolbarOptionsProps {
 const Toolbar: React.FC<ToolbarOptionsProps> = ({ editor, content }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
+  console.log(content);
+
   const handleImageUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!editor || !event.target.files?.length) return;

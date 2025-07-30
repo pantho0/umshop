@@ -1,8 +1,7 @@
-import { FC } from "react";
-import SettingsPage from "../../_components/Settings/SettingsPage";
-interface ISettingsProps {}
 
-const Settings: FC<ISettingsProps> = (props) => {
+import SettingsPage from "../../_components/Settings/SettingsPage";
+
+const Settings = () => {
   return <SettingsPage />;
 };
 export default Settings;

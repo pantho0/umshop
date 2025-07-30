@@ -103,7 +103,7 @@ const ShoppingCartPage: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {cartItems.map((item, idx) => (
+                  {cartItems.map((item) => (
                     <TableRow
                       key={item.customId}
                       className="border-b border-gray-200 last:border-b-0"

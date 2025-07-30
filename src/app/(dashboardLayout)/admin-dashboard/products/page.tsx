@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -8,19 +7,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { useGetProduct } from "@/hooks/product.hooks";
 import { ProductSkeleton } from "./_components/ProductSkeleton";
-import { Edit, Eye, Trash2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import ProductsTable from "./_components/ProductsTable";

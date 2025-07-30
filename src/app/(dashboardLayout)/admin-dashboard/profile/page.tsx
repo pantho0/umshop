@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Image, Lock, Mail, ShoppingCart, Star } from "lucide-react";
+import { Image, Lock, Mail, ShoppingCart } from "lucide-react";
 
 export interface IUserProfile {
   name: string;
@@ -88,7 +88,9 @@ const ProfilePage: React.FC = () => {
             <CardTitle className="text-2xl">120</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-gray-500">Orders successfully delivered</p>
+            <p className="text-xs text-gray-500">
+              Orders successfully delivered
+            </p>
           </CardContent>
         </Card>
 

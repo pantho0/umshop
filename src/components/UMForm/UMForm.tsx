@@ -18,7 +18,7 @@ interface UMFormProps extends IFormConfig {
 }
 
 const UMForm = ({ children, onSubmit, defaultValues }: UMFormProps) => {
-  let formConfig: IFormConfig = {};
+  const formConfig: IFormConfig = {};
 
   if (!!defaultValues) {
     formConfig["defaultValues"] = defaultValues;

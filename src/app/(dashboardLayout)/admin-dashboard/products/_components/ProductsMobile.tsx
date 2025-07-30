@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 export const ProductsMobile = ({ products }: { products: any }) => {
   const [mounted, isMounted] = useState(false);
+  console.log(mounted);
   useEffect(() => {
     isMounted(true);
   }, [products]);

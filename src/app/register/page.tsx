@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";

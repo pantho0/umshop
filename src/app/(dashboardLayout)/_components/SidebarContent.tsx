@@ -84,7 +84,7 @@ export function SidebarContent() {
               </Avatar>
               <div>
                 <p className="font-semibold text-white">
-                  {user?.firstName! + " " + user?.lastName}
+                  {user!.firstName + " " + user!.lastName}
                 </p>
                 <p className="text-xs text-gray-400">{user?.email}</p>
               </div>

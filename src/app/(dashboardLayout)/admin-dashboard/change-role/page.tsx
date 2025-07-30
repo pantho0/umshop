@@ -27,7 +27,7 @@ const ChangeRole = () => {
   const { mutate: changeRole } = useChangeUserRole();
   const router = useRouter();
 
-  const [selectedRole, setSelectedRole] = useState(userInfo?.role! || "");
+  const [selectedRole, setSelectedRole] = useState(userInfo.role! || "");
 
   const handleRoleChange = (value: string) => {
     setSelectedRole(value);

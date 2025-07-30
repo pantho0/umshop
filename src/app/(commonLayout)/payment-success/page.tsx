@@ -12,6 +12,7 @@ const PaymentSuccessPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const [orderDetails, setOrderDetails] = useState(null);
+  console.log(orderDetails);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -44,8 +45,14 @@ const PaymentSuccessPage: React.FC = () => {
           } else {
             setError(data.message || "Payment verification failed");
           }
-        } catch (err) {
-          setError("Failed to process your order. Please contact support.");
+        } catch (err: any) {
+          setError(
+            `${
+              err
+                ? err.message
+                : "Failed to process your order. Please contact support."
+            }`
+          );
         } finally {
           setLoading(false);
         }
