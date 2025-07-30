@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import { clearCart } from "@/redux/features/cartSlice";
 import { generateUUID } from "@/utils/uuidGenerator";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 // Define a type for a cart item (re-used for order summary display)
 interface CartItem {
@@ -69,6 +70,7 @@ const CheckoutPage: React.FC = () => {
   const cartItems: CartItem[] = useAppSelector((state) => state.persisted.cart);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const calculateSubtotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -79,7 +81,7 @@ const CheckoutPage: React.FC = () => {
 
   const estimatedTotal = subtotal + shippingCost;
 
-  const handleSubmitOrder = (data: FieldValues) => {
+  const handleSubmitOrder = async (data: FieldValues) => {
     const orderId = generateUUID();
     const toastId = toast.loading("Confirming your order");
     const orderData = {
@@ -90,15 +92,41 @@ const CheckoutPage: React.FC = () => {
       orderedItems: cartItems,
       grandTotal: estimatedTotal,
     } as IOrder;
-    handleConfirmOrder(orderData, {
-      onSuccess: () => {
-        toast.success("Order Confirmed", { id: toastId, duration: 2000 });
-        dispatch(clearCart());
-      },
-      onError: (err) => {
-        toast.error(err.message, { id: toastId, duration: 2000 });
-      },
-    });
+    if (paymentMethod === "cash_on_delivery") {
+      handleConfirmOrder(orderData, {
+        onSuccess: () => {
+          toast.success("Order Confirmed", { id: toastId, duration: 2000 });
+          dispatch(clearCart());
+        },
+        onError: (err) => {
+          toast.error(err.message, { id: toastId, duration: 2000 });
+        },
+      });
+    } else if (paymentMethod === "stripe") {
+      try {
+        const response = await fetch("/api/checkout_sessions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: cartItems.map((item) => ({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              image: item.image,
+            })),
+          }),
+        });
+        const { url } = await response.json();
+        // Redirect to Stripe Checkout
+        router.push(url);
+       
+      } catch (error) {
+        console.error("Error redirecting to checkout:", error);
+      }
+    }
   };
 
   const districts = allDistict();
@@ -242,9 +270,9 @@ const CheckoutPage: React.FC = () => {
                         </label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="credit_card" id="credit_card" />
+                        <RadioGroupItem value="stripe" id="stripe" />
                         <label
-                          htmlFor="credit_card"
+                          htmlFor="stripe"
                           className="text-gray-700 font-medium flex items-center"
                         >
                           Credit or debit card
@@ -265,7 +293,7 @@ const CheckoutPage: React.FC = () => {
                           />
                         </label>
                       </div>
-                      {paymentMethod === "credit_card" && (
+                      {/* {paymentMethod === "credit_card" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
                           <div className="md:col-span-2">
                             <label htmlFor="cardNumber" className="sr-only">
@@ -319,7 +347,7 @@ const CheckoutPage: React.FC = () => {
                             />
                           </div>
                         </div>
-                      )}
+                      )} */}
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="paypal" id="paypal" />
                         <label
