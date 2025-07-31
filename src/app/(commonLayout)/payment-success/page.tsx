@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";

@@ -115,7 +115,11 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                 </Link>
               ) : (
                 <Link
-                  href="/dashboard/orders"
+                  href={`${
+                    user.role === "admin"
+                      ? "/admin-dashboard/profile"
+                      : "/user-dashboard/profile"
+                  }`}
                   className="hover:text-white transition-colors duration-200"
                 >
                   <User className="h-5 w-5" />
