@@ -14,6 +14,7 @@ import {
   sidebarUserNavItems,
 } from "./config/SidebarItems";
 import { useEffect, useState } from "react";
+import { serverLogout } from "@/services/auth";
 
 interface NavItemProps {
   href: string;
@@ -53,20 +54,30 @@ export function SidebarContent() {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const [mounted, setMounted] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logOut());
-    router.push("/");
-    document.cookie =
-      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie =
-      "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  };
 
+    try {
+      await serverLogout();
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
+        console.log("Logout redirect initiated by server action.");
+      } else {
+        console.error("Error during server-side logout:", error);
+      }
+    }
+  };
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    router.push("/");
+  }, [user]);
+
   return (
     <>
       {mounted && (
@@ -84,7 +95,7 @@ export function SidebarContent() {
               </Avatar>
               <div>
                 <p className="font-semibold text-white">
-                  {user!.firstName + " " + user!.lastName}
+                  {user?.firstName + " " + user?.lastName}
                 </p>
                 <p className="text-xs text-gray-400">{user?.email}</p>
               </div>

@@ -78,7 +78,13 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
 
-            <UMForm onSubmit={onSubmit}>
+            <UMForm
+              onSubmit={onSubmit}
+              defaultValues={{
+                email: "admin@umshop.com",
+                password: "Admin@123",
+              }}
+            >
               <div className="space-y-2 mb-4">
                 <div className="space-y-1">
                   <UMInput

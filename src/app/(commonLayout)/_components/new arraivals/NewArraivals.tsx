@@ -8,7 +8,6 @@ const NewArraivals: React.FC = async () => {
     ApiResponse<IProductResult[] | any>
   >("/products?limit=7&sortBy=-createdAt");
   const products = data.data!.result;
-  console.log(products);
 
   return (
     <section className="container mx-auto px-4 py-8 md:py-10 max-w-7xl">
