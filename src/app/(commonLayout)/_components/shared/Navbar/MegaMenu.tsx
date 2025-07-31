@@ -138,10 +138,7 @@ const MegaMenu: React.FC = () => {
         >
           {" "}
           {/* Control open state */}
-          <DropdownMenuTrigger
-            asChild
-            onMouseEnter={() => setIsDesktopMenuOpen(true)}
-          >
+          <DropdownMenuTrigger asChild>
             <button className="flex items-center px-4 py-2 bg-purple-700 hover:bg-purple-800 rounded-md shadow-md transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 text-white">
               <Menu className="mr-2 h-5 w-5" />
               Categories

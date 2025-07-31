@@ -56,12 +56,16 @@ export function SidebarContent() {
   const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
+  const [clickedLogout, setClickedLogut] = useState(false);
 
   const handleLogout = async () => {
-    dispatch(logOut());
-
+    setClickedLogut(true);
     try {
       await serverLogout();
+      document.cookie =
+        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      document.cookie =
+        "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
     } catch (error) {
       if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
         console.log("Logout redirect initiated by server action.");
@@ -69,19 +73,52 @@ export function SidebarContent() {
         console.error("Error during server-side logout:", error);
       }
     }
+    dispatch(logOut());
   };
+
+  useEffect(() => {
+    if (clickedLogout === true) {
+      router.push("/");
+      router.refresh();
+    }
+  }, [clickedLogout]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    router.push("/");
-  }, [user]);
 
   return (
     <>
       {mounted && (
         <div className="flex h-full flex-col p-4 text-gray-300 md:mt-8">
+          {clickedLogout && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg bg-white/50">
+              <div className="flex flex-col items-center text-white">
+                <svg
+                  className="animate-spin h-8 w-8 text-gray-800"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <p className="mt-3 text-lg text-blue-500">Logging out...</p>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-6">
             {/* User Profile */}
             <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30">

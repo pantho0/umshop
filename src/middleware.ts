@@ -26,15 +26,18 @@ export async function middleware(request: NextRequest) {
 
   let decodedToken = null;
 
-  decodedToken = verifyToken(accessToken) as any;
-
-  const role = decodedToken.role;
-
-  if (role === "admin" && pathname.match(/^\/admin-dashboard/)) {
-    return NextResponse.next();
+  try {
+    decodedToken = verifyToken(accessToken) as any;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (role === "user" && pathname.match(/^\/user-dashboard/)) {
+  const role = decodedToken.role;
+  if (role === "admin" && pathname.startsWith("/admin-dashboard")) {
+    return NextResponse.next();
+  }
+  if (role === "user" && pathname.startsWith("/user-dashboard")) {
     return NextResponse.next();
   }
 

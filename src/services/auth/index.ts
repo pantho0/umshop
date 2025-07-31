@@ -8,7 +8,6 @@ import {
 } from "@/interface";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 
 export const loginUser = async (credentials: FieldValues) => {
@@ -176,20 +175,9 @@ export const forgetPassword = async (forgetPassInfo: FieldValues) => {
 };
 
 export async function serverLogout() {
-  // Clear the HttpOnly cookies by setting their expiration to a past date
-  // Make sure the name, path, and domain match how your cookies were originally set.
   (await cookies()).set("accessToken", "", { expires: new Date(0), path: "/" });
   (await cookies()).set("refreshToken", "", {
     expires: new Date(0),
     path: "/",
   });
-
-  // Optional: Invalidate session on your backend if applicable
-  // For example, if you have a database session store.
-  // await fetch('YOUR_BACKEND_LOGOUT_API', { method: 'POST' });
-
-  // After clearing cookies, you can redirect directly from the server action
-  // This is very powerful as it ensures the server's view of the session is gone
-  // before the client ever sees the new page.
-  redirect("/");
 }

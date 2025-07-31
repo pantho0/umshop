@@ -14,7 +14,7 @@ export interface IUserState {
 
 interface IAuthState {
   user: null | IUserState;
-  token: string;
+  token: string | null;
 }
 
 const initialState: IAuthState = {
@@ -33,7 +33,7 @@ const authSlice = createSlice({
     },
     logOut: (state) => {
       state.user = null;
-      state.token = "";
+      state.token = null;
     },
   },
 });

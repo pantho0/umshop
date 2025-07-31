@@ -37,6 +37,10 @@ const LoginPage: React.FC = () => {
       if (!user) {
         toast.error("Incorrect email or password");
       }
+      if (data?.data?.accessToken && data?.data?.refreshToken) {
+        document.cookie = `accessToken=${data.data.accessToken}; path=/`;
+        document.cookie = `refreshToken=${data.data.refreshToken}; path=/`;
+      }
       dispatch(setUser({ user: user, token: data?.data?.accessToken }));
 
       if (params.get("redirect")) {
@@ -78,13 +82,7 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
 
-            <UMForm
-              onSubmit={onSubmit}
-              defaultValues={{
-                email: "admin@umshop.com",
-                password: "Admin@123",
-              }}
-            >
+            <UMForm onSubmit={onSubmit}>
               <div className="space-y-2 mb-4">
                 <div className="space-y-1">
                   <UMInput
