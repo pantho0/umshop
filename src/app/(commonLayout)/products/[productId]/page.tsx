@@ -2,13 +2,16 @@ import nexiosInstance from "@/app/config/nexios.config";
 import ContainerLayout from "../../_components/layouts/ContainerLayout";
 import ProductDetailsPage from "../../_components/pages/productDetails/ProductDetailsPage";
 import { ApiResponse, IProductResult } from "@/interface";
+import { Metadata } from "next";
 
 type ProductPageProps = {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 };
 
-export async function generateMetadata({ params }: ProductPageProps) {
-  const { productId } = params;
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { productId } = await params;
   try {
     const res = await nexiosInstance.get<ApiResponse<IProductResult>>(
       `/products/${productId}`,
@@ -33,7 +36,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 // Dynamic page function with correct props shape
 const ProductPage = async ({ params }: ProductPageProps) => {
-  const { productId } = params;
+  const { productId } = await params;
 
   const res = await nexiosInstance.get<ApiResponse<IProductResult>>(
     `/products/${productId}`,

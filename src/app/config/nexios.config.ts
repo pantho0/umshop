@@ -1,4 +1,5 @@
 import { Nexios } from "nexios-http";
+
 import { cookies } from "next/headers";
 
 const nexiosInstance = new Nexios({
@@ -8,15 +9,23 @@ const nexiosInstance = new Nexios({
     Accept: "application/json",
   },
   credentials: "include",
-  timeout: 10000,
 });
 
+async function getCookieData() {
+  const cookieData = (await cookies()).get("accessToken")?.value;
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(cookieData);
+    }, 1000)
+  );
+}
+
 nexiosInstance.interceptors.request.use(async (config) => {
-  const accessToken = (await cookies()).get("accessToken")?.value;
+  const accessToken = await getCookieData();
   if (accessToken) {
     config.headers = {
       ...config.headers,
-      Authorization: accessToken,
+      Authorization: accessToken as string,
     };
   }
   return config;

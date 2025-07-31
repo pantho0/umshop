@@ -28,14 +28,15 @@ export interface MegaMenuFetchedCategory extends IParentCategory {
 export const createLink = async () => {
   try {
     const parentCategoriesData = await getParentCategories();
-    const parentCategories: IParentCategory[] = parentCategoriesData.data;
+    const parentCategories: IParentCategory[] | undefined =
+      parentCategoriesData.data;
 
     const subCategoriesData = await getSubCategories();
-    const subCategories: ISubCategory[] = subCategoriesData.data;
+    const subCategories: ISubCategory[] | undefined = subCategoriesData.data;
 
-    const categoriesWithSub: MegaMenuFetchedCategory[] = parentCategories.map(
+    const categoriesWithSub: MegaMenuFetchedCategory[] = parentCategories!.map(
       (parentCat) => {
-        const subCatsForParent = subCategories.filter(
+        const subCatsForParent = subCategories!.filter(
           (sub) => sub.parentCategory.toString() === parentCat._id.toString()
         );
         return {

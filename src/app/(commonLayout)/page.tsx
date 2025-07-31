@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = 'force-dynamic'
 import Banner from "./_components/Banner";
 import BannerBottom from "./_components/BannerBottom";
 import ContainerLayout from "./_components/layouts/ContainerLayout";

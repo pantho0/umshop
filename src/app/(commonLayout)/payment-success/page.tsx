@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { useSearchParams } from "next/navigation";
 import { clearCart } from "@/redux/features/cartSlice";
 
-const PaymentSuccessPage: React.FC = () => {
+const PaymentSuccessContent: React.FC = () => {
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const [orderDetails, setOrderDetails] = useState(null);
@@ -98,6 +98,14 @@ const PaymentSuccessPage: React.FC = () => {
         </Link>
       </div>
     </div>
+  );
+};
+
+const PaymentSuccessPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading payment details...</div>}>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 };
 

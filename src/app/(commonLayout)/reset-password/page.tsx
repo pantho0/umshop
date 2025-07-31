@@ -11,11 +11,11 @@ import {
 import UMForm from "@/components/UMForm/UMForm";
 import { UMInput } from "@/components/UMForm/UMInput";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
-const PasswordResetPage = () => {
+const PasswordResetContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [defaultValue, setDefaultValues] = useState({
@@ -103,6 +103,14 @@ const PasswordResetPage = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+const PasswordResetPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading reset password form...</div>}>
+      <PasswordResetContent />
+    </Suspense>
   );
 };
 

@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Star } from "lucide-react";
-import { Product, IProductResult } from "@/interface";
+import { IProductResult } from "@/interface";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -157,11 +157,11 @@ export const NewArraivalsClient = ({
                     ${product.variants?.[0].price.toFixed(2)}
                   </span>
                   {/* Example of a flash sale price (optional) */}
-                  {index % 2 === 0 && ( // Apply flash sale to every other product for demo
+                  {/* {index % 2 === 0 && ( // Apply flash sale to every other product for demo
                     <span className="text-sm text-gray-500 line-through ">
-                      ${(product.variants?.[0].price * 1.2).toFixed(2)}
-                    </span>
-                  )}
+                      ${(product.variants.[0].price! * 1.2).toFixed(2)}
+                    </span> 
+                  )} */}
                 </div>
               </div>
             </div>

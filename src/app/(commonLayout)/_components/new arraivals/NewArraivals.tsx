@@ -1,13 +1,14 @@
 import React from "react";
 import nexiosInstance from "@/app/config/nexios.config";
 import { NewArraivalsClient } from "./_components/NewArraivalsClient";
-import { ApiResponse, Product } from "@/interface";
+import { ApiResponse, IProductResult } from "@/interface";
 
 const NewArraivals: React.FC = async () => {
-  const { data } = await nexiosInstance.get<ApiResponse<Product>>(
-    "/products?limit=7&sortBy=-createdAt"
-  );
-  const products = data.data?.result;
+  const { data } = await nexiosInstance.get<
+    ApiResponse<IProductResult[] | any>
+  >("/products?limit=7&sortBy=-createdAt");
+  const products = data.data!.result;
+  console.log(products);
 
   return (
     <section className="container mx-auto px-4 py-8 md:py-10 max-w-7xl">
@@ -15,7 +16,7 @@ const NewArraivals: React.FC = async () => {
         New arrivals
       </h2>
 
-      <NewArraivalsClient products={products} />
+      <NewArraivalsClient products={products!} />
     </section>
   );
 };

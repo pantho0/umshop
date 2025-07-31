@@ -70,9 +70,9 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
           // Simulate badges and prices
           const hasDiscount = index === 0; // First product has discount
           const isNew = index === 3; // Fourth product is 'New'
-          const oldPrice = hasDiscount
-            ? (product.variants?.[0].price / 0.79).toFixed(2)
-            : null; // Simulate -21% discount
+          // const oldPrice = hasDiscount
+          //   ? (product.variants?.[0].price / 0.79).toFixed(2)
+          //   : null; // Simulate -21% discount
           const displayPrice = product.variants?.[0].price.toFixed(2);
           // Use deterministic values based on product title
           // const rating = getRating(product.title);
@@ -124,11 +124,11 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
                     <span className="text-sm font-bold text-gray-900">
                       ${displayPrice}
                     </span>
-                    {oldPrice && (
+                    {/* {oldPrice && (
                       <span className="text-sm text-gray-500 line-through">
                         ${oldPrice}
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </Link>

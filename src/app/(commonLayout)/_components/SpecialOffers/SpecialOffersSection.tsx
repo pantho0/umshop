@@ -108,9 +108,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   );
 };
 
-const SpecialOffersSection: React.FC<{ products: IProductResult[] }> = ({
-  products,
-}) => {
+const SpecialOffersSection: React.FC<{
+  products: IProductResult[] | undefined;
+}> = ({ products }) => {
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + 12); // Set target 12 days from now
 
@@ -143,8 +143,10 @@ const SpecialOffersSection: React.FC<{ products: IProductResult[] }> = ({
         <CarouselContent className="-ml-4">
           {" "}
           {/* Adjust margin for gap */}
-          {products.slice(0, 8).map((product, index) => {
-            const oldPrice = (product.variants?.[0].price * 1.2).toFixed(2); // Simulate 20% higher old price
+          {products!.slice(0, 8).map((product, index) => {
+            // const oldPrice = (
+            //   (product.variants?.[0].price as any) * 1.2
+            // ).toFixed(2); // Simulate 20% higher old price
             // Generate consistent available count based on product title
             const availableCount = (simpleHash(product.title) % 100) + 1; // 1-100 available
 
@@ -188,7 +190,7 @@ const SpecialOffersSection: React.FC<{ products: IProductResult[] }> = ({
                           ${product.variants?.[0].price.toFixed(2)}
                         </span>
                         <span className="text-sm text-gray-500 line-through">
-                          ${oldPrice}
+                          {/* ${oldPrice} */}
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 mt-2">
