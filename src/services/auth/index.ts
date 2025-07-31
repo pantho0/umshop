@@ -7,7 +7,7 @@ import {
   LoginSuccessResponse,
 } from "@/interface";
 
-import { cookies } from "next/headers";
+import { clearAuthCookies, setAuthCookies } from "@/app/actions";
 import { FieldValues } from "react-hook-form";
 
 export const loginUser = async (credentials: FieldValues) => {
@@ -18,8 +18,7 @@ export const loginUser = async (credentials: FieldValues) => {
     if (!data.success) {
       throw new Error(data.message || "Login failed");
     }
-    (await cookies()).set("accessToken", data.data.accessToken);
-    (await cookies()).set("refreshToken", data.data.refreshToken);
+    await setAuthCookies(data.data.accessToken, data.data.refreshToken);
     return data;
   } catch (error: any) {
     console.error("Login error:", error);
@@ -42,8 +41,7 @@ export const upDatePassword = async (updatedCredentials: FieldValues) => {
         data.errorSources?.[0].messsage || "Password update failed"
       );
     }
-    (await cookies()).delete("accessToken");
-    (await cookies()).delete("refreshToken");
+    await clearAuthCookies();
     return data;
   } catch (error: any) {
     console.error("Password update error:", error);
@@ -175,9 +173,5 @@ export const forgetPassword = async (forgetPassInfo: FieldValues) => {
 };
 
 export async function serverLogout() {
-  (await cookies()).set("accessToken", "", { expires: new Date(0), path: "/" });
-  (await cookies()).set("refreshToken", "", {
-    expires: new Date(0),
-    path: "/",
-  });
+  await clearAuthCookies();
 }

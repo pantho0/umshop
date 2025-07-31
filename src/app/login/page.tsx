@@ -16,17 +16,26 @@ import { useAppDispatch } from "@/redux/hook";
 import { verifyToken } from "@/utils/verifyToken";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useLogin } from "@/hooks/auth.hook";
-import { toast } from "sonner";
+
 import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
-  const { mutate: handleLogin, data, isPending, isSuccess } = useLogin();
+  const {
+    mutate: handleLogin,
+    data,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useLogin();
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setLoginError(null); // Clear previous errors
     handleLogin(data);
   };
 
@@ -35,11 +44,8 @@ const LoginPage: React.FC = () => {
     if (!isPending && isSuccess) {
       const user = verifyToken(data?.data?.accessToken);
       if (!user) {
-        toast.error("Incorrect email or password");
-      }
-      if (data?.data?.accessToken && data?.data?.refreshToken) {
-        document.cookie = `accessToken=${data.data.accessToken}; path=/`;
-        document.cookie = `refreshToken=${data.data.refreshToken}; path=/`;
+        setLoginError("Incorrect email or password");
+        return;
       }
       dispatch(setUser({ user: user, token: data?.data?.accessToken }));
 
@@ -49,8 +55,10 @@ const LoginPage: React.FC = () => {
       } else {
         router.push("/");
       }
+    } else if (isError) {
+      setLoginError(error?.message || "An unexpected error occurred.");
     }
-  }, [isPending, isSuccess]);
+  }, [isPending, isSuccess, isError, error]);
 
   return (
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
@@ -126,6 +134,11 @@ const LoginPage: React.FC = () => {
                 </Link>
               </div>
 
+              {loginError && (
+                <p className="text-red-500 text-sm mb-4 text-center">
+                  {loginError}
+                </p>
+              )}
               <Button
                 type="submit"
                 className="w-full bg-red-500 text-white cursor-pointer py-2.5 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md"

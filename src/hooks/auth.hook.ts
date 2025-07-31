@@ -22,7 +22,7 @@ export const useLogin = () => {
       toast.success("Login Success");
     },
     onError: (error: Error) => {
-      toast.error(error.message);
+      toast.error(error.message || "Invalid Email or Password");
     },
   });
 };
