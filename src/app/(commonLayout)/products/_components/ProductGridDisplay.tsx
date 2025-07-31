@@ -109,7 +109,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
         {isLoading
           ? // Render skeletons when loading
             [...Array(8)].map((_, i) => renderProductCardSkeleton(i))
@@ -160,7 +160,7 @@ export const ProductGridDisplay: React.FC<ProductGridDisplayProps> = ({
                     {/* Product Info */}
                     <div className="p-4 flex flex-col flex-grow">
                       {renderStars(product._id)}
-                      <h3 className="text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
+                      <h3 className="text-base font-semibold text-gray-800 mt-2 mb-2 leading-tight">
                         {product.title}
                       </h3>
                       <div className="flex items-baseline space-x-2 mt-auto">

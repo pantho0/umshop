@@ -140,10 +140,11 @@
 table {
   border-collapse: revert;
 }
-ol,
+
+
 ul,
-li {
-  list-style: revert;
+ol {
+  list-style: none;
 }
 
 h1,
