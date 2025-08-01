@@ -313,7 +313,7 @@ const MegaMenu: React.FC = () => {
                                       onClick={() =>
                                         setIsMobileMenuOpen(!isMobileMenuOpen)
                                       } // Close sheet on subcategory click
-                                      href={`/products?sub_category=${subItem.slug}`}
+                                      href={`/products?subCategory=${subItem.slug}`}
                                       className="hover:text-purple-600 transition-colors duration-150"
                                     >
                                       {subItem.name}
