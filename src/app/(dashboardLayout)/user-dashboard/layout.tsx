@@ -1,14 +1,17 @@
+"use client";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarContent } from "../_components/SidebarContent";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Navbar from "@/app/(commonLayout)/_components/shared/Navbar/Navbar";
+import { useState } from "react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
     <div className="h-screen flex flex-col">
       {/* Fixed Navbar */}
@@ -23,7 +26,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Mobile Sidebar Toggle */}
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button
               variant="ghost"
@@ -40,7 +43,7 @@ export default function DashboardLayout({
             style={{ "--tw-translate-y": "0" } as React.CSSProperties}
           >
             <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 hover:scrollbar-thumb-gray-500">
-              <SidebarContent />
+              <SidebarContent onLinkClick={() => setIsSheetOpen(false)} />
             </div>
           </SheetContent>
         </Sheet>

@@ -23,40 +23,76 @@ interface NavItemProps {
   badge?: string;
 }
 
-const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
-  const pathname = usePathname();
-  const isActive = pathname === href;
+// const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
+//   const pathname = usePathname();
+//   const isActive = pathname === href;
 
-  return (
-    <Button
-      asChild
-      variant={isActive ? "secondary" : "ghost"}
-      className={`w-full justify-start rounded-lg transition-colors ${
-        isActive
-          ? "bg-gray-700 text-white hover:bg-gray-600"
-          : "text-gray-300 hover:bg-gray-700 hover:text-white"
-      }`}
-    >
-      <Link href={href}>
-        <Icon className="mr-3 h-5 w-5" />
-        <span className="flex-grow text-left">{label}</span>
-        {badge && (
-          <Badge className="ml-auto bg-red-500 text-white hover:bg-red-600">
-            {badge}
-          </Badge>
-        )}
-      </Link>
-    </Button>
-  );
-};
+//   return (
+//     <Button
+//       asChild
+//       variant={isActive ? "secondary" : "ghost"}
+//       className={`w-full justify-start rounded-lg transition-colors ${
+//         isActive
+//           ? "bg-gray-700 text-white hover:bg-gray-600"
+//           : "text-gray-300 hover:bg-gray-700 hover:text-white"
+//       }`}
+//     >
+//       <Link href={href}>
+//         <Icon className="mr-3 h-5 w-5" />
+//         <span className="flex-grow text-left">{label}</span>
+//         {badge && (
+//           <Badge className="ml-auto bg-red-500 text-white hover:bg-red-600">
+//             {badge}
+//           </Badge>
+//         )}
+//       </Link>
+//     </Button>
+//   );
+// };
 
-export function SidebarContent() {
+export function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
   const [clickedLogout, setClickedLogut] = useState(false);
+
+  const handleClick = () => {
+    if (onLinkClick) onLinkClick();
+  };
+
+  const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
+    const pathname = usePathname();
+    const isActive = pathname === href;
+
+    const handleClick = () => {
+      if (onLinkClick) onLinkClick();
+    };
+
+    return (
+      <Button
+        asChild
+        variant={isActive ? "secondary" : "ghost"}
+        className={`w-full justify-start rounded-lg transition-colors ${
+          isActive
+            ? "bg-gray-700 text-white hover:bg-gray-600"
+            : "text-gray-300 hover:bg-gray-700 hover:text-white"
+        }`}
+        onClick={handleClick}
+      >
+        <Link href={href}>
+          <Icon className="mr-3 h-5 w-5" />
+          <span className="flex-grow text-left">{label}</span>
+          {badge && (
+            <Badge className="ml-auto bg-red-500 text-white hover:bg-red-600">
+              {badge}
+            </Badge>
+          )}
+        </Link>
+      </Button>
+    );
+  };
 
   const handleLogout = async () => {
     setClickedLogut(true);
