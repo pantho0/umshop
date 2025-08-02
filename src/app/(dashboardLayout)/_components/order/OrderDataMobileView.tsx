@@ -23,7 +23,7 @@ import StatusUpdate from "./StatusUpdate";
 
 export const OrderDataMobileView = ({ ordersData }: IOrder[] | any) => {
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-4 mt-10">
       {ordersData?.map((order: IOrder) => {
         const orderDate = new Date(order.createdAt as Date).toLocaleDateString(
           "en-US",

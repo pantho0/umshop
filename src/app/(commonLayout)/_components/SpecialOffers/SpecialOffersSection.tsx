@@ -142,7 +142,7 @@ const SpecialOffersSection: React.FC<{
         <CarouselContent className="-ml-4">
           {" "}
           {/* Adjust margin for gap */}
-          {products!.slice(0, 8).map((product, index) => {
+          {products!.slice(0, 10).map((product, index) => {
             // const oldPrice = (
             //   (product.variants?.[0].price as any) * 1.2
             // ).toFixed(2); // Simulate 20% higher old price

@@ -174,17 +174,6 @@ const LoginPage: React.FC = () => {
                 />
                 Facebook
               </Button>
-              <Button
-                variant="outline"
-                className="flex items-center border-gray-300 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md"
-              >
-                <img
-                  src="https://www.apple.com/favicon.ico"
-                  alt="Apple"
-                  className="h-5 w-5 mr-2"
-                />
-                Apple
-              </Button>
             </div>
           </div>
 

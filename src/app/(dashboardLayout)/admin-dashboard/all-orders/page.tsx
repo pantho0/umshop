@@ -6,6 +6,7 @@ import { useGetAllOrders } from "@/hooks/order.hook";
 import { IOrder } from "@/interface"; // Assuming IOrder is correctly defined here
 import OrderDataTable from "../../_components/order/OrderDataTable";
 import { OrderDataMobileView } from "../../_components/order/OrderDataMobileView";
+import { Separator } from "@/components/ui/separator";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -45,9 +46,11 @@ const OrdersPage = () => {
 
   return (
     <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 font-inter">
-      <h1 className="text-4xl font-extrabold mb-8 text-center md:text-left text-gray-900">
+      <h1 className="text-2xl font-semibold mb-8 text-center md:text-left text-gray-900">
         Your Orders
       </h1>
+
+      <Separator />
 
       {ordersData?.length === 0 ? (
         // Display a message if no orders are found.
@@ -56,7 +59,7 @@ const OrdersPage = () => {
         </div>
       ) : isDesktop ? (
         // --- Desktop (Medium and Large Screens): Shadcn Table (Manual Rendering) ---
-        <div className="w-full">
+        <div className="w-full mt-6">
           <div className="rounded-md border shadow-sm">
             <OrderDataTable ordersData={ordersData} />
           </div>

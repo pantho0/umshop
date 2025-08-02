@@ -50,7 +50,7 @@ export default function DashboardLayout({
 
         {/* Main Content - Only this area should scroll */}
         <main className="flex-1 ml-0 md:ml-72 bg-white dark:bg-gray-900 overflow-y-auto">
-          <div className="min-h-[calc(100vh-4rem)]">
+          <div className="">
             <div className="p-4 sm:p-6">{children}</div>
           </div>
         </main>

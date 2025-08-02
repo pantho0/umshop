@@ -7,6 +7,7 @@ import OrderDataTable from "../../_components/order/OrderDataTable";
 import { OrderDataMobileView } from "../../_components/order/OrderDataMobileView";
 import { useAppSelector } from "@/redux/hook";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { Separator } from "@/components/ui/separator";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -46,17 +47,17 @@ const MyOrders = () => {
 
   return (
     <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 font-inter">
-      <h1 className="text-4xl font-extrabold mb-8 text-center md:text-left text-gray-900">
+      <h1 className="text-2xl font-semibold mb-8 text-center md:text-left text-gray-900">
         My Orders
       </h1>
-
+      <Separator />
       {ordersData?.length === 0 ? (
-        <div className="flex justify-center items-center py-20 bg-white rounded-lg shadow-md border border-gray-200">
+        <div className="flex justify-center items-center py-20 bg-white rounded-lg shadow-md border border-gray-200 mt-10">
           <p className="text-xl text-gray-600 font-medium">No orders found.</p>
         </div>
       ) : isDesktop ? (
         <div className="w-full">
-          <div className="rounded-md border shadow-sm">
+          <div className="rounded-md border shadow-sm mt-10">
             <OrderDataTable ordersData={ordersData} />
           </div>
         </div>

@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import ProductsTable from "./_components/ProductsTable";
 import { ProductsMobile } from "./_components/ProductsMobile";
+import { Separator } from "@/components/ui/separator";
 
 export interface searchParamsObjec {
   parentCategory?: string;
@@ -60,6 +61,7 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Products</h2>
+      <Separator />
       {isPending ? (
         <ProductSkeleton />
       ) : isError ? (
@@ -68,10 +70,10 @@ const ProductsPage = ({ searchParams }: producPageProps) => {
         </div>
       ) : (
         <>
-          <div className="hidden md:block">
+          <div className="hidden md:block mt-6">
             <ProductsTable products={products} />
           </div>
-          <div className="md:hidden">
+          <div className="md:hidden mt-6">
             <ProductsMobile products={products} />
           </div>
 
