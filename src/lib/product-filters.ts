@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export const slugifyString = (str: string): string => {
   return str
     .toLowerCase()

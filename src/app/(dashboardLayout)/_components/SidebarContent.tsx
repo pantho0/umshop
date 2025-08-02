@@ -58,10 +58,6 @@ export function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
   const [mounted, setMounted] = useState(false);
   const [clickedLogout, setClickedLogut] = useState(false);
 
-  const handleClick = () => {
-    if (onLinkClick) onLinkClick();
-  };
-
   const NavItem = ({ href, label, icon: Icon, badge }: NavItemProps) => {
     const pathname = usePathname();
     const isActive = pathname === href;

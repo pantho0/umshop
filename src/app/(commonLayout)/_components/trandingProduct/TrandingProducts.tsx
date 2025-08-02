@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import { Star, ChevronRight, EyeIcon } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
 import { IProductResult } from "@/interface";
 import Link from "next/link";
 

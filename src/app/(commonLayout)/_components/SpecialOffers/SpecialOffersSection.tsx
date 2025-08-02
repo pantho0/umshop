@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState, useEffect } from "react";
-import { Star, ChevronRight, EyeIcon } from "lucide-react";
+import { Star, ChevronRight } from "lucide-react";
 
 // Import Shadcn UI Carousel components
 import {
