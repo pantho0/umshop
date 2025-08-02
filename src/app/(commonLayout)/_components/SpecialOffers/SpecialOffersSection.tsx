@@ -116,8 +116,8 @@ const SpecialOffersSection: React.FC<{
   return (
     <section className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 md:mb-8">
-        <div className="flex  items-center">
-          <h2 className="text-lg md:text-4xl font-semibold text-gray-900 mr-4">
+        <div className="flex flex-col  md:flex-row items-center">
+          <h2 className="text-3xl text-center mb-2 md:text-4xl font-semibold text-gray-900 mr-4">
             Special offers for you
           </h2>
           <CountdownTimer targetDate={targetDate} />
@@ -179,9 +179,9 @@ const SpecialOffersSection: React.FC<{
                     </div>
 
                     {/* Product Info */}
-                    <div className="p-4 flex flex-col flex-grow">
+                    <div className="p-1 md:p-4 flex flex-col flex-grow">
                       {renderStars(product.title)}
-                      <h3 className="text-lg font-semibold text-gray-800 mt-2 mb-2 leading-tight">
+                      <h3 className="text-[12px] md:text-lg font-semibold text-gray-800 mt-2 mb-2 leading-tight">
                         {product.title}
                       </h3>
                       <div className="flex items-baseline space-x-2 mt-auto">
@@ -200,13 +200,13 @@ const SpecialOffersSection: React.FC<{
                   </Link>
 
                   {/*view product button */}
-                  <div className="p-4 border-t border-gray-100 flex justify-end">
+                  {/* <div className="p-4 border-t border-gray-100 flex justify-end">
                     <Link href={`/products/${product.slug}`}>
                       <button className="p-2 bg-gray-100 cursor-pointer rounded-full hover:bg-purple-100 text-gray-600 hover:text-purple-700 transition-colors duration-200 shadow-sm">
                         <EyeIcon className="h-5 w-5" />
                       </button>
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
               </CarouselItem>
             );

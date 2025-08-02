@@ -2,6 +2,7 @@
 "use client";
 import React from "react";
 import { Instagram, Facebook, Youtube, Send, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NewsletterSection: React.FC = () => {
   // Dummy data for recent posts/videos
@@ -35,7 +36,7 @@ const NewsletterSection: React.FC = () => {
       <div className="container mx-auto px-4 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         {/* Left Section: Newsletter Sign-up */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-3">
+          <h2 className="text-xl md:text-3xl font-semibold text-gray-900 mb-3">
             Sign up to our newsletter
           </h2>
           <p className="text-gray-600 text-base mb-6">
@@ -43,22 +44,23 @@ const NewsletterSection: React.FC = () => {
           </p>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3 mb-6"
+            className="flex flex-col sm:flex-row items-center gap-3 mb-6"
           >
             <input
               type="email"
               placeholder="Your email"
-              className="flex-grow p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+              className="flex-grow p-3 w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
               required
             />
-            <button
+            <Button
               type="submit"
-              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md"
+              size={"lg"}
+              className=" bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md"
             >
               Subscribe
-            </button>
+            </Button>
           </form>
-          <div className="flex space-x-3">
+          <div className="flex justify-center md:justify-start space-x-3">
             <a
               href="#"
               className="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-200 text-gray-700"
@@ -105,7 +107,7 @@ const NewsletterSection: React.FC = () => {
               />
               <div className="flex-grow">
                 <p className="text-xs text-gray-500 mb-1">{post.time}</p>
-                <h3 className="text-base font-semibold text-gray-800 leading-tight">
+                <h3 className="text-xs md:text-sm font-semibold text-gray-800 leading-tight">
                   {post.title}
                 </h3>
               </div>
