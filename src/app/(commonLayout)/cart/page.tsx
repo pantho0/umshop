@@ -88,13 +88,13 @@ const ShoppingCartPage: React.FC = () => {
                     <TableHead className="w-[40%] text-gray-600 font-semibold">
                       Product
                     </TableHead>
-                    <TableHead className="w-[15%] text-gray-600 font-semibold">
+                    <TableHead className="w-[15%] text-right text-gray-600 font-semibold">
                       Unit Price
                     </TableHead>
-                    <TableHead className="w-[20%] text-gray-600 font-semibold">
+                    <TableHead className="w-[20%] text-right text-gray-600 font-semibold">
                       Quantity
                     </TableHead>
-                    <TableHead className="w-[15%] text-gray-600 font-semibold">
+                    <TableHead className="w-[15%] text-right text-gray-600 font-semibold">
                       Total
                     </TableHead>
                     <TableHead className="w-[10%] text-gray-600 font-semibold text-right">
@@ -119,7 +119,7 @@ const ShoppingCartPage: React.FC = () => {
                             className="w-20 h-20 object-contain rounded-md mr-4"
                           />
                           <div>
-                            <h3 className="font-semibold text-gray-900">
+                            <h3 className="text-sm md:text-sm font-semibold  text-ellipsis whitespace-nowrap text-gray-900">
                               {item.name}
                             </h3>
                             <p className="text-sm text-gray-600">
@@ -135,7 +135,7 @@ const ShoppingCartPage: React.FC = () => {
                       {/* Unit Price */}
                       <TableCell className="py-4 px-4">
                         <div className="flex flex-col">
-                          <span className="font-semibold text-gray-900">
+                          <span className="font-semibold text-sm text-right text-gray-900">
                             ${item.price.toFixed(2)}
                           </span>
                           {item.oldPrice && (
@@ -148,35 +148,43 @@ const ShoppingCartPage: React.FC = () => {
 
                       {/* Quantity */}
                       <TableCell className="py-4 px-4">
-                        <div className="flex items-center border border-gray-300 rounded-md overflow-hidden w-fit">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() =>
-                              handleQuantityChange(item.customId!, "decrement")
-                            }
-                            className="h-8 w-8 rounded-none"
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <span className="flex items-center justify-center w-8 text-sm font-semibold text-gray-800 border-x border-gray-300">
-                            {item.quantity}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() =>
-                              handleQuantityChange(item.customId!, "increment")
-                            }
-                            className="h-8 w-8 rounded-none"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
+                        <div className="flex justify-end">
+                          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden w-fit">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.customId!,
+                                  "decrement"
+                                )
+                              }
+                              className="h-8 w-8 rounded-none"
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                            <span className="flex items-center justify-center w-8 text-sm font-semibold text-gray-800 border-x border-gray-300">
+                              {item.quantity}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.customId!,
+                                  "increment"
+                                )
+                              }
+                              className="h-8 w-8 rounded-none"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </TableCell>
 
                       {/* Total */}
-                      <TableCell className="py-4 px-4 font-semibold text-gray-900">
+                      <TableCell className="py-4 px-4 text-right font-semibold text-gray-900">
                         ${(item.price * item.quantity).toFixed(2)}
                       </TableCell>
 

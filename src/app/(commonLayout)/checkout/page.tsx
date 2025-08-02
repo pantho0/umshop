@@ -71,6 +71,9 @@ const CheckoutPage: React.FC = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [disalePayBtn, setDisablePayBtn] = useState(
+    cartItems.length === 0 || false
+  );
 
   const calculateSubtotal = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -129,83 +132,83 @@ const CheckoutPage: React.FC = () => {
   //   }
   // };
 
-const handleSubmitOrder = async (data: FieldValues) => {
-  const toastId = toast.loading("Processing your order");
+  const handleSubmitOrder = async (data: FieldValues) => {
+    const toastId = toast.loading("Processing your order");
+    setDisablePayBtn(true);
 
-  if (paymentMethod === "cash_on_delivery") {
-    // Handle cash on delivery as before
-    const orderId = generateUUID();
-    const orderData = {
-      ...data,
-      paymentMethod,
-      orderId: orderId,
-      status: "Pending",
-      orderedItems: cartItems,
-      grandTotal: estimatedTotal,
-    } as IOrder;
-    
-    handleConfirmOrder(orderData, {
-      onSuccess: () => {
-        toast.success("Order Confirmed", { id: toastId, duration: 2000 });
-        dispatch(clearCart());
-      },
-      onError: (err) => {
-        toast.error(err.message, { id: toastId, duration: 2000 });
-      },
-    });
-  } else if (paymentMethod === "stripe") {
-    try {
-      // Create complete order data
-      const orderId = `UMSHP-${Math.random().toString(36).substring(2, 12).toUpperCase()}`;
+    if (paymentMethod === "cash_on_delivery") {
+      // Handle cash on delivery as before
+      const orderId = generateUUID();
       const orderData = {
         ...data,
         paymentMethod,
-        orderId,
+        orderId: orderId,
         status: "Pending",
         orderedItems: cartItems,
         grandTotal: estimatedTotal,
       } as IOrder;
-      
-      // Save order data for later (in Redux or localStorage)
-      // Option 1: Save in Redux
-      // dispatch(savePendingOrder(orderData)); // You need to create this action
-      
-      // Option 2: Save in localStorage as fallback
-      localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
-      
-      // Create checkout session
-      const response = await fetch("/api/checkout_sessions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+
+      handleConfirmOrder(orderData, {
+        onSuccess: () => {
+          toast.success("Order Confirmed", { id: toastId, duration: 2000 });
+          dispatch(clearCart());
+          router.push("/cod-payment-success");
         },
-        body: JSON.stringify({
-          items: cartItems.map((item) => ({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-          })),
-          orderData: orderData,
-        }),
+        onError: (err) => {
+          toast.error(err.message, { id: toastId, duration: 2000 });
+        },
       });
-      
-      toast.dismiss(toastId);
-      const { url, error } = await response.json();
-      
-      if (error) {
-        toast.error(error, { id: toastId });
-        return;
+    } else if (paymentMethod === "stripe") {
+      try {
+        // Create complete order data
+        const orderId = `UMSHP-${Math.random()
+          .toString(36)
+          .substring(2, 12)
+          .toUpperCase()}`;
+        const orderData = {
+          ...data,
+          paymentMethod,
+          orderId,
+          status: "Pending",
+          orderedItems: cartItems,
+          grandTotal: estimatedTotal,
+        } as IOrder;
+
+        localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
+        // Create checkout session
+        const response = await fetch("/api/checkout_sessions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: cartItems.map((item) => ({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              image: item.image,
+            })),
+            orderData: orderData,
+          }),
+        });
+
+        toast.dismiss(toastId);
+        const { url, error } = await response.json();
+
+        if (error) {
+          toast.error(error, { id: toastId });
+          return;
+        }
+
+        router.push(url);
+      } catch (error) {
+        toast.error("Error processing payment", { id: toastId });
+        console.error("Error redirecting to checkout:", error);
+        setDisablePayBtn(false);
       }
-      
-      router.push(url);
-    } catch (error) {
-      toast.error("Error processing payment", { id: toastId });
-      console.error("Error redirecting to checkout:", error);
     }
-  }
-};
+  };
   const districts = allDistict();
   const upazilla = upazilasOf(selectedDistrict);
 
@@ -370,62 +373,8 @@ const handleSubmitOrder = async (data: FieldValues) => {
                           />
                         </label>
                       </div>
-                      {/* {paymentMethod === "credit_card" && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
-                          <div className="md:col-span-2">
-                            <label htmlFor="cardNumber" className="sr-only">
-                              Card number
-                            </label>
-                            <Input
-                              id="cardNumber"
-                              placeholder="Card number"
-                              value={cardDetails.cardNumber}
-                              onChange={(e) =>
-                                setCardDetails({
-                                  ...cardDetails,
-                                  cardNumber: e.target.value,
-                                })
-                              }
-                              required={paymentMethod === "credit_card"}
-                            />
-                          </div>
-                          <div>
-                            <label htmlFor="expiry" className="sr-only">
-                              MM/YY
-                            </label>
-                            <Input
-                              id="expiry"
-                              placeholder="MM/YY"
-                              value={cardDetails.expiry}
-                              onChange={(e) =>
-                                setCardDetails({
-                                  ...cardDetails,
-                                  expiry: e.target.value,
-                                })
-                              }
-                              required={paymentMethod === "credit_card"}
-                            />
-                          </div>
-                          <div>
-                            <label htmlFor="cvc" className="sr-only">
-                              CVC
-                            </label>
-                            <Input
-                              id="cvc"
-                              placeholder="CVC"
-                              value={cardDetails.cvc}
-                              onChange={(e) =>
-                                setCardDetails({
-                                  ...cardDetails,
-                                  cvc: e.target.value,
-                                })
-                              }
-                              required={paymentMethod === "credit_card"}
-                            />
-                          </div>
-                        </div>
-                      )} */}
-                      <div className="flex items-center space-x-2">
+
+                      {/* <div className="flex items-center space-x-2">
                         <RadioGroupItem value="paypal" id="paypal" />
                         <label
                           htmlFor="paypal"
@@ -442,17 +391,26 @@ const handleSubmitOrder = async (data: FieldValues) => {
                         >
                           Google Pay
                         </label>
-                      </div>
+                      </div> */}
                     </RadioGroup>
 
-                    <Button
-                      type="submit"
-                      className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
-                    >
-                      {paymentMethod === "cash_on_delivery"
-                        ? "Confirm Order"
-                        : `Pay ${estimatedTotal.toFixed(2)}`}
-                    </Button>
+                    {paymentMethod === "cash_on_delivery" ? (
+                      <Button
+                        type="submit"
+                        disabled={disalePayBtn}
+                        className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
+                      >
+                        Pay via cash on delivery
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled={disalePayBtn}
+                        type="submit"
+                        className="w-full bg-red-500 text-white font-semibold py-3 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center mt-6"
+                      >
+                        Pay ${estimatedTotal.toFixed(2)}
+                      </Button>
+                    )}
                   </div>
                 </UMForm>
               </div>

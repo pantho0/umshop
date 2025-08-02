@@ -111,7 +111,7 @@ const PaymentSuccessContent: React.FC = () => {
   }
 
   return (
-    <div className="font-inter antialiased min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="font-inter antialiased min-h-screen flex items-center justify-center bg-gray-100 px-6">
       <div className="container mx-auto px-4 py-8 md:py-12 max-w-md bg-white rounded-lg border border-gray-200 p-6 md:p-8 text-center shadow-lg">
         <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-6" />
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
