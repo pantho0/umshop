@@ -141,23 +141,9 @@ table {
   border-collapse: revert;
 }
 
-
 ul,
 ol {
   list-style: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-pre,
-p {
-  font-size: revert;
-  font-weight: revert;
-  /* margin: revert; */
 }
 
 /* TipTap Editor Styles */

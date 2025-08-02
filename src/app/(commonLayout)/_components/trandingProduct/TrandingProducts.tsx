@@ -31,7 +31,7 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
     const reviewCount = getReviewCount(title);
 
     return (
-      <div className="flex items-center text-sm text-gray-500">
+      <div className="flex items-center text-[9px] text-gray-500">
         <div className="flex mr-1" aria-label={`${rating} out of 5 stars`}>
           {[1, 2, 3, 4, 5].map((i) => (
             <Star
@@ -65,7 +65,7 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-10">
         {products.slice(0, 8).map((product, index) => {
           // Simulate badges and prices
           const hasDiscount = index === 0; // First product has discount
@@ -97,7 +97,7 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
 
               {/* Product Image */}
               <Link href={`/products/${product.slug}`}>
-                <div className="relative w-full h-48  flex items-center justify-center overflow-hidden">
+                <div className="relative w-full h-24 md:h-48  flex items-center justify-center overflow-hidden">
                   <img
                     src={
                       product.images[0] ||
@@ -117,7 +117,7 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
                 {/* Product Info */}
                 <div className="p-4 flex flex-col flex-grow">
                   {renderStars(product.title)}
-                  <h3 className="text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
+                  <h3 className="text-[12px]  md:text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
                     {product.title}
                   </h3>
                   <div className="flex items-baseline space-x-2 mt-auto">
@@ -134,13 +134,13 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
               </Link>
 
               {/* view product button */}
-              <div className="p-4 border-t border-gray-100 flex justify-end">
+              {/* <div className="p-4 border-t border-gray-100 flex justify-end">
                 <Link href={`/products/${product.slug}`}>
                   <button className="p-2 bg-gray-100 cursor-pointer rounded-full hover:bg-purple-100 text-gray-600 hover:text-purple-700 transition-colors duration-200 shadow-sm">
                     <EyeIcon className="h-5 w-5" />
                   </button>
                 </Link>
-              </div>
+              </div> */}
             </div>
           );
         })}

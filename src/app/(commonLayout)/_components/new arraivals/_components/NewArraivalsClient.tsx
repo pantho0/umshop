@@ -142,7 +142,7 @@ export const NewArraivalsClient = ({
                 }}
               />
               <div className="flex-grow">
-                <h4 className="text-[8px] md:text-sm font-semibold md:text-gray-800 mb-1 leading-tight">
+                <h4 className="text-[12px] md:text-sm font-semibold md:text-gray-800 mb-1 leading-tight">
                   {product.title}
                 </h4>
                 <div className="flex items-center text-gray-500 mb-2 text-[9px] md:text-sm">

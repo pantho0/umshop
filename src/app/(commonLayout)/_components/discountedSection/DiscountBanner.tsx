@@ -24,7 +24,7 @@ const DiscountBanner: React.FC = () => {
                      rounded-t-lg rounded-b-none
                      "
         >
-          <h3 className="text-5xl md:text-6xl font-extrabold text-gray-800 leading-none">
+          <h3 className="text-5xl  md:text-7xl font-extrabold text-gray-800 leading-none">
             20<span className="text-3xl md:text-4xl align-super">%</span>
             <span className="block text-xl md:text-2xl font-semibold mt-1">
               OFF
