@@ -238,25 +238,25 @@ const ProductDetailsPage: React.FC<{
 
   return (
     <div className="font-inter antialiased min-h-screen">
-      <div className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+      <div className="container mx-auto px-2 py-8 md:py-12 max-w-7xl">
         {/* Tabs for General Info, Product Details, Reviews */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 md:w-fit md:inline-flex bg-gray-100 rounded-md p-1 mb-6">
+          <TabsList className="grid w-full h-auto grid-cols-3 md:w-fit md:inline-flex bg-gray-100 rounded-md p-1 mb-6">
             <TabsTrigger
               value="general-info"
-              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
+              className="data-[state=active]:bg-green-300 data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
             >
               General Info
             </TabsTrigger>
             <TabsTrigger
               value="product-details"
-              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
+              className="data-[state=active]:bg-green-300 data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
             >
               Product details
             </TabsTrigger>
             <TabsTrigger
               value="reviews"
-              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
+              className="data-[state=active]:bg-green-300 data-[state=active]:text-gray-900 rounded-md px-4 py-2 transition-colors duration-200"
             >
               Reviews ({reviewStats.totalReviews})
             </TabsTrigger>
@@ -392,7 +392,7 @@ const ProductDetailsPage: React.FC<{
                 {/* Right Column: Product Details */}
                 <div className="lg:w-1/2">
                   {/* Product Title & Model */}
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">
                     {product!.title}
                   </h1>
                   <div className="flex justify-between items-center mb-4">
@@ -402,7 +402,9 @@ const ProductDetailsPage: React.FC<{
 
                   {/* Size Variants */}
                   <div className="mb-4">
-                    <p className="text-gray-700 font-semibold mb-2">Size</p>
+                    <p className="text-gray-700 text-sm md:text-base font-semibold mb-2">
+                      Size
+                    </p>
                     <div className="flex flex-wrap gap-2">
                       {availableSizes.map((size: string) => (
                         <Button
@@ -413,8 +415,8 @@ const ProductDetailsPage: React.FC<{
                           onClick={() => setSelectedSize(size)}
                           className={`rounded-md ${
                             selectedSize === size
-                              ? "bg-purple-600 text-white hover:bg-purple-700"
-                              : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                              ? "bg-purple-600 text-white text-xs hover:bg-purple-700"
+                              : "border-gray-300 text-gray-700 text-xs hover:bg-gray-100"
                           }`}
                         >
                           {size}
@@ -425,7 +427,9 @@ const ProductDetailsPage: React.FC<{
 
                   {/* Color Variants */}
                   <div className="mb-6">
-                    <p className="text-gray-700 font-semibold mb-2">Color: </p>
+                    <p className="text-gray-700 font-semibold text-sm md:text-base mb-2">
+                      Color:{" "}
+                    </p>
                     <div className="flex flex-wrap gap-2">
                       {availableColors.map((color: string) => (
                         <Button
@@ -436,8 +440,8 @@ const ProductDetailsPage: React.FC<{
                           onClick={() => setSelectedColor(color)}
                           className={`rounded-md ${
                             selectedColor === color
-                              ? "bg-purple-600 text-white hover:bg-purple-700"
-                              : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                              ? "bg-purple-600 text-white text-xs hover:bg-purple-700"
+                              : "border-gray-300 text-gray-700 text-xs hover:bg-gray-100"
                           }`}
                         >
                           {color}
@@ -448,10 +452,10 @@ const ProductDetailsPage: React.FC<{
 
                   {/* Price and Add to Cart */}
                   <div className="flex flex-col items-start gap-4 md:flex-row md:items-center justify-between mb-6">
-                    <span className="text-3xl font-bold text-gray-900">
+                    <span className="text-[22px] md:text-3xl font-bold text-gray-900">
                       ${currentPrice.toFixed(2)}
                     </span>
-                    <div className="flex items-center space-x-3 md:px-0">
+                    <div className="flex flex-wrap justify-center space-y-3 md:space-y-0 items-center space-x-3 md:px-0">
                       <div className="flex border border-gray-300 rounded-md overflow-hidden">
                         <Button
                           variant="ghost"
@@ -473,18 +477,19 @@ const ProductDetailsPage: React.FC<{
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
-                      <Button
-                        onClick={addToCartHandler}
-                        className="px-6 py-2 bg-red-500 text-white font-semibold cursor-pointer rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center"
-                      >
-                        <ShoppingCart className="h-5 w-5 mr-2" /> Add to cart
-                      </Button>
+
                       <Button
                         variant="outline"
                         size="icon"
                         className="rounded-md border-gray-300 text-gray-600 hover:bg-gray-100"
                       >
                         <Heart className="h-5 w-5" />
+                      </Button>
+                      <Button
+                        onClick={addToCartHandler}
+                        className="px-6 py-2 w-full md:w-auto bg-red-500 text-white font-semibold cursor-pointer rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center"
+                      >
+                        <ShoppingCart className="h-5 w-5 mr-2" /> Add to cart
                       </Button>
                     </div>
                   </div>
