@@ -96,9 +96,9 @@ export const NewArraivalsClient = ({
               <h3 className="text-3xl md:text-4xl font-semibold leading-tight mb-2">
                 {featuredProduct.title}
               </h3>
-              <p className="text-lg md:text-xl text-gray-200 mb-4">
+              {/* <p className="text-lg md:text-xl text-gray-200 mb-4">
                 {featuredProduct.details.split(".")[0]}.
-              </p>
+              </p> */}
               <button className="px-6 py-3 bg-red-500 text-white text-base font-semibold rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center">
                 From ${featuredProduct?.variants?.[0]?.price.toFixed(2)}
                 <svg
@@ -122,12 +122,12 @@ export const NewArraivalsClient = ({
       )}
 
       {/* Product Grid (Right Columns - spans 2 columns on large screens) */}
-      <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-3">
+      <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-2 gap-4 md:gap-3">
         {gridProducts?.map((product, index) => (
           <Link key={index} href={`/products/${product.slug}`}>
             <div
               key={index}
-              className="bg-white rounded-lg shadow-sm  overflow-hidden flex items-center p-4 transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
+              className="bg-white rounded-lg shadow-sm  overflow-hidden  flex flex-col md:flex-row items-center p-4 transition-transform duration-200 hover:scale-[1.02] cursor-pointer"
             >
               <img
                 src={
@@ -142,10 +142,10 @@ export const NewArraivalsClient = ({
                 }}
               />
               <div className="flex-grow">
-                <h4 className="text-sm font-semibold text-gray-800 mb-1 leading-tight">
+                <h4 className="text-[8px] md:text-sm font-semibold md:text-gray-800 mb-1 leading-tight">
                   {product.title}
                 </h4>
-                <div className="flex items-center text-gray-500 mb-2 text-sm">
+                <div className="flex items-center text-gray-500 mb-2 text-[9px] md:text-sm">
                   {renderStars(product._id)}
                   <span className="ml-2">
                     {/* Deterministic review count based on product ID */}(
