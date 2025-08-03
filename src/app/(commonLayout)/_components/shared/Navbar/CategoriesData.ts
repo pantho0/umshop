@@ -37,7 +37,7 @@ export const createLink = async () => {
     const categoriesWithSub: MegaMenuFetchedCategory[] = parentCategories!.map(
       (parentCat) => {
         const subCatsForParent = subCategories!.filter(
-          (sub) => sub.parentCategory.toString() === parentCat._id.toString()
+          (sub) => sub.parentCategory!.toString() === parentCat._id.toString()
         );
         return {
           ...parentCat,

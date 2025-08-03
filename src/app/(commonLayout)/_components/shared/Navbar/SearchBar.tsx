@@ -34,7 +34,7 @@ const SearchBar = () => {
     if (!isPending && isSuccess && data && searchTerm) {
       setSearchResult(data?.data?.result);
     }
-  }, [isPending, isSuccess, data, searchTerm]);
+  }, [isPending, isSuccess, data, searchTerm, handleSearch]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
@@ -91,7 +91,9 @@ const SearchBar = () => {
         {!isPending && searchResult.length === 0 && searchTerm && (
           <div className="absolute left-0 right-0 mt-2 bg-gray-200 backdrop-blur-md border border-gray-200 shadow-lg rounded-md max-h-80 overflow-y-auto z-50 p-3">
             <div className="w-full block">
-              <p className="text-sm text-black">No products found with your searched criteria</p>
+              <p className="text-sm text-black">
+                No products found with your searched criteria
+              </p>
             </div>
           </div>
         )}

@@ -9,7 +9,7 @@ import {
   Code,
   Heading1,
   Heading2,
-  Image,
+  Image as LucideImg,
   Italic,
   List,
   ListOrdered,
@@ -223,7 +223,7 @@ const Toolbar: React.FC<ToolbarOptionsProps> = ({ editor, content }) => {
           <Quote className="w-5 h-5" />
         </button>
         <button onClick={addImage} className={"text-sky-400"}>
-          <Image className="w-5 h-5" />
+          <LucideImg className="w-5 h-5" />
         </button>
         <button
           onClick={(e) => {

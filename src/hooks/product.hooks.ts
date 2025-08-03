@@ -1,11 +1,11 @@
-import { ApiResponse, IProductResult, Product } from "@/interface";
+import { IProductResult, Product } from "@/interface";
 import {
   addProduct,
   getProducts,
   searchProduct,
   updateProduct,
 } from "@/services/product";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const useGetProduct = () => {

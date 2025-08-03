@@ -273,7 +273,7 @@ const ShoppingCartPage: React.FC = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() =>
-                          handleQuantityChange(item.id, "decrement")
+                          handleQuantityChange(item.customId!, "decrement")
                         }
                         className="h-8 w-8 rounded-none"
                       >
@@ -286,7 +286,7 @@ const ShoppingCartPage: React.FC = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() =>
-                          handleQuantityChange(item.id, "increment")
+                          handleQuantityChange(item.customId!, "increment")
                         }
                         className="h-8 w-8 rounded-none"
                       >

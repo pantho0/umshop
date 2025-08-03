@@ -30,7 +30,7 @@ const PasswordResetContent = () => {
       setDefaultValues({ email: email });
       setLoading(false);
     }
-  }, [searchParams, setLoading, loading]);
+  }, [searchParams, setLoading, loading, email]);
 
   const handleSubmit: SubmitHandler<FieldValues> = async (resetPassInfo) => {
     try {
