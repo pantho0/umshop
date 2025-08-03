@@ -1,6 +1,11 @@
-import { IProductResult, Product } from "@/interface";
-import { addProduct, getProducts, updateProduct } from "@/services/product";
-import { useMutation } from "@tanstack/react-query";
+import { ApiResponse, IProductResult, Product } from "@/interface";
+import {
+  addProduct,
+  getProducts,
+  searchProduct,
+  updateProduct,
+} from "@/services/product";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const useGetProduct = () => {
@@ -26,5 +31,12 @@ export const useAddProduct = () => {
 export const useUpdateProduct = () => {
   return useMutation({
     mutationFn: (productData: IProductResult) => updateProduct(productData),
+  });
+};
+
+export const useSearchProduct = (searchTerm: string) => {
+  return useMutation({
+    mutationKey: ["searchProduct", searchTerm],
+    mutationFn: () => searchProduct(searchTerm),
   });
 };

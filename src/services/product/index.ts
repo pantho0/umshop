@@ -169,3 +169,19 @@ export const updateProduct = async (productData: IProductResult) => {
     );
   }
 };
+
+export const searchProduct = async (searchTerm: string) => {
+  try {
+    const res = await nexiosInstance.get<ApiResponse<IProductResult[] | any>>(
+      `/products?searchTerm=${searchTerm}`
+    );
+    if (!res.data.success) {
+      throw Error(res.data.message || "Error searching product");
+    }
+    return res.data;
+  } catch (error: any) {
+    throw Error(
+      error.response?.data?.message || error.message || "Error search product"
+    );
+  }
+};

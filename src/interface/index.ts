@@ -1,23 +1,24 @@
 export interface IParentCategory {
   _id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   slug: string;
-  __v: number;
+  __v?: number;
 }
 
 export interface ISubCategory {
   _id: string;
   name: string;
-  parentCategory: string;
-  createdAt: string;
-  updatedAt: string;
+  parentCategory?: string;
+  createdAt?: string;
+  updatedAt?: string;
   slug: string;
-  __v: number;
+  __v?: number;
 }
 
 export interface Variant {
+  _id?: string;
   sku: string;
   color: string[];
   size: string;
