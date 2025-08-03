@@ -41,7 +41,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="flex flex-grow mx-8 max-w-xl relative">
+    <div className=" md:flex flex-grow mx-8 max-w-xl relative">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="relative">
           <Input
@@ -78,6 +78,14 @@ const SearchBar = () => {
           <div className="absolute left-0 right-0 mt-2 bg-gray-200 backdrop-blur-md border border-gray-200 shadow-lg rounded-md max-h-80 overflow-y-auto z-50 p-3">
             <div className="w-full block">
               <p className="text-sm text-black">Searching...</p>
+            </div>
+          </div>
+        )}
+
+        {!isPending && searchResult.length === 0 && searchTerm && (
+          <div className="absolute left-0 right-0 mt-2 bg-gray-200 backdrop-blur-md border border-gray-200 shadow-lg rounded-md max-h-80 overflow-y-auto z-50 p-3">
+            <div className="w-full block">
+              <p className="text-sm text-black">No products found with your searched criteria</p>
             </div>
           </div>
         )}
