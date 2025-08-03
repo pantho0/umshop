@@ -13,6 +13,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Image as LucideImg, Lock, Mail, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 
 export interface IUserProfile {
   name: string;
@@ -47,24 +48,36 @@ const ProfilePage: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <Separator />
-          <Button
-            variant="outline"
-            className="w-full flex items-center justify-start text-lg py-6"
-          >
-            <Lock className="mr-3 h-5 w-5" /> Change Password
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full flex items-center justify-start text-lg py-6"
-          >
-            <LucideImg className="mr-3 h-5 w-5" /> Change Avatar
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full flex items-center justify-start text-lg py-6"
-          >
-            <ShoppingCart className="mr-3 h-5 w-5" /> View All Orders
-          </Button>
+          <div>
+            <Link href="/admin-dashboard/settings">
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-start text-lg py-6 cursor-pointer"
+              >
+                <Lock className="mr-3 h-5 w-5" /> Change Password
+              </Button>
+            </Link>
+          </div>
+          <div>
+            <Link href="/admin-dashboard/orders">
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-start text-lg py-6 cursor-pointer"
+              >
+                <LucideImg className="mr-3 h-5 w-5" /> Change Avatar
+              </Button>
+            </Link>
+          </div>
+          <div>
+            <Link href="/admin-dashboard/orders">
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-start text-lg py-6 cursor-pointer"
+              >
+                <ShoppingCart className="mr-3 h-5 w-5" /> View All Orders
+              </Button>
+            </Link>
+          </div>
         </CardContent>
       </Card>
 

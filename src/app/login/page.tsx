@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
     <div className="font-inter antialiased min-h-screen flex items-center justify-center p-4">
       <div className=" rounded-lg flex flex-col lg:flex-row w-full md:items-center max-w-4xl overflow-hidden">
         {/* Left Section: Login Form */}
-        <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-between">
+        <div className="lg:w-3/4 p-8 md:p-12 flex flex-col justify-between">
           <div>
             <div className="mb-8">
               <div className="flex items-center justify-center">
