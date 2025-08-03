@@ -41,7 +41,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="hidden md:flex flex-grow mx-8 max-w-xl relative">
+    <div className="flex flex-grow mx-8 max-w-xl relative">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="relative">
           <Input

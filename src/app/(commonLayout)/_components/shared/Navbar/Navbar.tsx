@@ -1,18 +1,16 @@
 // components/Navbar.tsx
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MegaMenu from "./MegaMenu";
 import Logo from "../../../../../../public/assets/umshop.jpg";
-import { Heart, User, Percent, LogIn, Search } from "lucide-react";
+import { Heart, User, Percent, LogIn, Search, X } from "lucide-react";
 import SearchBar from "./SearchBar";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
-
 import CartDrawer from "./cartDrawer";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import { selectUser } from "@/redux/features/auth/authSlice";
-import { useState, useEffect } from "react";
 
 interface NavbarProps {
   className?: string;
@@ -21,10 +19,12 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
   const user = useAppSelector(selectUser);
   const [mounted, setMounted] = useState(false);
+  const [showMobileSearchBar, setShowMobileSearchBar] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
   return (
     <nav
       className={`bg-gray-800 text-white shadow-md z-50 relative ${className}`}
@@ -46,7 +46,6 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
             >
               <Heart className="h-5 w-5" />
             </a>
-
             <CartDrawer />
             {mounted &&
               (!user ? (
@@ -71,10 +70,11 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
           </div>
         </div>
       </div>
+
       <ContainerLayout>
         {/* Main Navbar */}
-        <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4 max-w-7xl">
-          {/* Logo */}
+        <div className="container mx-auto flex items-center justify-between px-2 py-3 md:py-4 max-w-7xl">
+          {/* Logo and MegaMenu */}
           <div className="flex items-center gap-2">
             <Link href="/">
               <Image
@@ -85,18 +85,19 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                 className="rounded"
               />
             </Link>
-            {/* Mega Menu Integration */}
+            {/* Mega Menu for desktop */}
             <div className="hidden md:block">
               <MegaMenu />
             </div>
           </div>
 
-          {/* Search Bar */}
-          <SearchBar />
+          {/* Desktop SearchBar */}
+          <div className="hidden md:block flex-1">
+            <SearchBar />
+          </div>
 
           {/* Mobile menu */}
-          <div className="flex items-center space-x-4 md:hidden">
-            <Search className="h-6 w-6 text-white" />
+          <div className="flex items-center space-x-1 md:hidden">
             <Heart className="h-6 w-6 text-white" />
             <CartDrawer />
             {mounted &&
@@ -120,11 +121,22 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                 </Link>
               ))}
 
+            {!showMobileSearchBar ? (
+              <Search
+                className="h-6 w-6 text-white cursor-pointer"
+                onClick={() => setShowMobileSearchBar(true)}
+              />
+            ) : (
+              <X
+                className="h-6 w-6 text-white cursor-pointer"
+                onClick={() => setShowMobileSearchBar(false)}
+              />
+            )}
             {/* Mobile Mega Menu */}
-            <MegaMenu />
+            {!showMobileSearchBar && <MegaMenu />}
           </div>
 
-          {/* Other Nav Links */}
+          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-6 ml-auto">
             <a
               href="#"
@@ -159,6 +171,13 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
           </div>
         </div>
       </ContainerLayout>
+
+      {/* Mobile SearchBar shown below navbar */}
+      {showMobileSearchBar && (
+        <div className="md:hidden bg-gray-800 px-4 pb-3">
+          <SearchBar />
+        </div>
+      )}
     </nav>
   );
 };
