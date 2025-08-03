@@ -13,12 +13,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCreateUser } from "@/hooks/auth.hook";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const RegisterPage: React.FC = () => {
   const { mutate: handleCreateUser, isPending, isSuccess } = useCreateUser();
   const router = useRouter();
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    handleCreateUser(data);
+    const toastId = toast.loading("Creating User");
+    handleCreateUser(data, {
+      onSuccess: () => {
+        toast.success("User created successfully", { id: toastId });
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || "Something went wrong", { id: toastId });
+      },
+    });
   };
 
   useEffect(() => {

@@ -39,12 +39,6 @@ export const useCreateUser = () => {
   return useMutation({
     mutationKey: ["CREATE_USER"],
     mutationFn: async (userData: FieldValues) => await createUser(userData),
-    onSuccess: () => {
-      toast.success("User created successfully");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
   });
 };
 
