@@ -17,14 +17,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { IOrder } from "@/interface";
+import { IOrderResult } from "@/interface";
 
 import StatusUpdate from "./StatusUpdate";
 
-export const OrderDataMobileView = ({ ordersData }: IOrder[] | any) => {
+export const OrderDataMobileView = ({ ordersData }: IOrderResult[] | any) => {
   return (
     <div className="grid grid-cols-1 gap-4 mt-10">
-      {ordersData?.map((order: IOrder) => {
+      {ordersData?.map((order: IOrderResult) => {
         const orderDate = new Date(order.createdAt as Date).toLocaleDateString(
           "en-US",
           {

@@ -146,7 +146,7 @@ const CheckoutPage: React.FC = () => {
         status: "Pending",
         orderedItems: cartItems,
         grandTotal: estimatedTotal,
-      } as IOrder;
+      } as any;
 
       handleConfirmOrder(orderData, {
         onSuccess: () => {
@@ -172,7 +172,7 @@ const CheckoutPage: React.FC = () => {
           status: "Pending",
           orderedItems: cartItems,
           grandTotal: estimatedTotal,
-        } as IOrder;
+        } as any;
 
         localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
         // Create checkout session

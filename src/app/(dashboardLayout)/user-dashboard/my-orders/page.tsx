@@ -58,7 +58,7 @@ const MyOrders = () => {
       ) : isDesktop ? (
         <div className="w-full">
           <div className="rounded-md border shadow-sm mt-10">
-            <OrderDataTable ordersData={ordersData} />
+            <OrderDataTable ordersData={ordersData} isLoading={isPending} />
           </div>
         </div>
       ) : (
