@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/useDebounce.hook";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,13 +12,13 @@ const SearchBar = () => {
   //    const { mutate: handleSearch, data, isPending, isSuccess } = useSearchPost();
   const [searchResult, setSearchResult] = useState([]);
 
-  const searchTerm = watch("search");
+  const searchTerm = useDebounce(watch("search"));
 
-  //    useEffect(() => {
-  //      if (searchTerm) {
-  //        handleSearch(searchTerm);
-  //      }
-  //    }, [searchTerm]);
+  useEffect(() => {
+    if (searchTerm) {
+      console.log(searchTerm);
+    }
+  }, [searchTerm]);
 
   //    useEffect(() => {
   //      if (!searchTerm) {
