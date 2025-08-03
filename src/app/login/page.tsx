@@ -18,6 +18,7 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { useLogin } from "@/hooks/auth.hook";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -35,8 +36,18 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Login in progress...");
     setLoginError(null); // Clear previous errors
-    handleLogin(data);
+    handleLogin(data, {
+      onSuccess: () => {
+        toast.success("Login Success", { id: toastId });
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || "Invalid Email or Password", {
+          id: toastId,
+        });
+      },
+    });
   };
 
   useEffect(() => {

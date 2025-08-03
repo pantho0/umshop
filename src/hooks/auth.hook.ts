@@ -18,12 +18,6 @@ export const useLogin = () => {
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (credentials: FieldValues) =>
       await loginUser(credentials),
-    onSuccess: () => {
-      toast.success("Login Success");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Invalid Email or Password");
-    },
   });
 };
 
