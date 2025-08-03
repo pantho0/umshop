@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const SearchBar = () => {
-  const { handleSubmit, watch, register } = useForm();
+  const { handleSubmit, watch, register, setValue } = useForm();
   const [searchResult, setSearchResult] = useState([]);
 
   const searchTerm = useDebounce(watch("search"));
@@ -57,7 +57,13 @@ const SearchBar = () => {
           <div className="absolute left-0 right-0 mt-2 bg-gray-200 backdrop-blur-md border border-gray-200 shadow-lg rounded-md max-h-80 overflow-y-auto z-50 p-3">
             {searchResult.map((product: IProductResult, idx) => (
               <div key={product._id || idx}>
-                <Link href={`/products/${product.slug}`}>
+                <Link
+                  href={`/products/${product.slug}`}
+                  onClick={() => {
+                    setSearchResult([]);
+                    setValue("search", "");
+                  }}
+                >
                   <div className="flex items-center gap-3 p-2 text-black hover:bg-primary hover:text-white cursor-pointer rounded-md transition-all">
                     <img
                       src={product.images[0]}
