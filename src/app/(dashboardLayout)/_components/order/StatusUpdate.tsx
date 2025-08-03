@@ -9,13 +9,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useUpdateOrderStatus } from "@/hooks/order.hook";
-import { IOrder } from "@/interface";
+import { IOrder, IOrderResult } from "@/interface";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hook";
 import Image from "next/image";
 import { toast } from "sonner";
 
-const StatusUpdate = ({ order }: { order: IOrder }) => {
+const StatusUpdate = ({ order }: { order: IOrderResult }) => {
   const { mutate: updateStatus } = useUpdateOrderStatus();
   const user = useAppSelector(selectUser);
   const role = user?.role;

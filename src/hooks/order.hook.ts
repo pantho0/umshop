@@ -23,10 +23,10 @@ export const useConfirmOrder = () => {
   });
 };
 
-export const useGetAllOrders = () => {
+export const useGetAllOrders = (query: Record<string, unknown>) => {
   return useQuery({
-    queryKey: ["ALL_ORDERS"],
-    queryFn: async () => await getAllOrders(),
+    queryKey: ["ALL_ORDERS", query],
+    queryFn: async () => await getAllOrders(query),
   });
 };
 

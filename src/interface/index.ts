@@ -125,6 +125,23 @@ export interface LoginSuccessResponse {
 }
 
 export interface IOrder {
+  meta: Meta;
+  data: IOrderResult[];
+}
+
+export interface OrderedItem {
+  id: string;
+  sku: string;
+  name: string;
+  price: number;
+  image: string[];
+  color: string;
+  model: string;
+  quantity: number;
+  _id: string;
+}
+
+export interface IOrderResult {
   _id?: string;
   orderId: string;
   fullName: string;
@@ -137,16 +154,7 @@ export interface IOrder {
   status: "Pending" | "Completed" | "Cancelled";
   grandTotal: number;
   createdAt?: Date;
-  orderedItems: Array<{
-    id: string;
-    sku: string;
-    name: string;
-    price: number;
-    image: string;
-    color: string;
-    model: string;
-    quantity: number;
-  }>;
+  orderedItems: OrderedItem[];
   __v?: number;
 }
 

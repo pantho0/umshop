@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useGetAllOrders } from "@/hooks/order.hook";
 
-import { IOrder } from "@/interface"; // Assuming IOrder is correctly defined here
+import { IOrder, IOrderResult } from "@/interface"; // Assuming IOrder is correctly defined here
 import OrderDataTable from "../../_components/order/OrderDataTable";
 import { OrderDataMobileView } from "../../_components/order/OrderDataMobileView";
 import { Separator } from "@/components/ui/separator";
@@ -29,7 +29,7 @@ function useMediaQuery(query: string) {
 
 const OrdersPage = () => {
   // Fetch order data using your custom hook
-  const { data, isLoading } = useGetAllOrders();
+  const { data, isLoading } = useGetAllOrders({});
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -42,7 +42,9 @@ const OrdersPage = () => {
   }
 
   // Ensure orders data is an array, defaulting to an empty array if null/undefined.
-  const ordersData: IOrder[] | any = data?.data;
+  const ordersData: IOrderResult[] | any = data?.data?.data;
+
+  console.log(ordersData);
 
   return (
     <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 font-inter">

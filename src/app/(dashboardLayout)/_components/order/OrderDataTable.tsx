@@ -19,15 +19,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { IOrder } from "@/interface";
+import { IOrder, IOrderResult } from "@/interface";
 import { MoreHorizontal } from "lucide-react";
 
 import StatusUpdate from "./StatusUpdate";
 import { useCancelOrder } from "@/hooks/order.hook";
 
-const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {
+const OrderDataTable = ({ ordersData }: { ordersData: IOrderResult[] }) => {
   const { mutate: cancelOrder } = useCancelOrder();
-
   const handleCancelOrder = (orderId: string) => {
     cancelOrder(orderId);
   };
@@ -60,7 +59,7 @@ const OrderDataTable = ({ ordersData }: { ordersData: IOrder[] | any }) => {
       </TableHeader>
       <TableBody>
         {ordersData?.length ? (
-          ordersData?.map((order: IOrder) => {
+          ordersData?.map((order: IOrderResult) => {
             const orderDate = new Date(
               order.createdAt as Date
             ).toLocaleDateString("en-US", {

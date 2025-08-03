@@ -24,10 +24,10 @@ export const confirmOrder = async (orderData: IOrder) => {
   }
 };
 
-export const getAllOrders = async () => {
+export const getAllOrders = async (query?: Record<string, unknown>) => {
   try {
-    const res = await nexiosInstance.get<ApiResponse<IOrder>>("/orders", {
-      cache: "no-store",
+    const res = await nexiosInstance.get<ApiResponse<IOrder>>(`/orders`, {
+      params: query,
     });
     if (!res.data.success) {
       throw new Error(res.data.message || "Error fetching orders");
