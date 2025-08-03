@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { IOrderResult, Meta } from "@/interface";
+import { IOrderResult } from "@/interface";
 import { MoreHorizontal, Loader2 } from "lucide-react";
 
 import StatusUpdate from "./StatusUpdate";
@@ -120,7 +120,9 @@ const OrderDataTable = ({
               return (
                 <TableRow
                   key={order._id}
-                  className={`border-b transition-colors hover:bg-muted/50 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+                  className={`border-b transition-colors hover:bg-muted/50 ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  }`}
                 >
                   <TableCell className="p-4 align-middle font-medium">
                     {order.orderId}

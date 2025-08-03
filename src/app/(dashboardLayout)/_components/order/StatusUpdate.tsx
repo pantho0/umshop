@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useUpdateOrderStatus } from "@/hooks/order.hook";
-import { IOrder, IOrderResult } from "@/interface";
+import { IOrderResult } from "@/interface";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hook";
 import Image from "next/image";

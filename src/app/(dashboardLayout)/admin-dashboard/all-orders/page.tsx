@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useGetAllOrders } from "@/hooks/order.hook";
 import { IOrderResult, Meta } from "@/interface"; // Assuming IOrder is correctly defined here
 import OrderDataTable from "../../_components/order/OrderDataTable";
