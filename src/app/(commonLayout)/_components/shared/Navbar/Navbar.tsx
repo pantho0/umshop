@@ -3,7 +3,8 @@
 import React from "react";
 import MegaMenu from "./MegaMenu";
 import Logo from "../../../../../../public/assets/umshop.jpg";
-import { Search, Heart, User, Percent, LogIn } from "lucide-react";
+import { Heart, User, Percent, LogIn, Search } from "lucide-react";
+import SearchBar from "./SearchBar";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
 
@@ -91,14 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
           </div>
 
           {/* Search Bar */}
-          <div className="hidden md:flex flex-grow mx-8 max-w-xl relative">
-            <input
-              type="text"
-              placeholder="Search the products"
-              className="w-full py-2 pl-4 pr-10 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          </div>
+          <SearchBar />
 
           {/* Mobile menu */}
           <div className="flex items-center space-x-4 md:hidden">
