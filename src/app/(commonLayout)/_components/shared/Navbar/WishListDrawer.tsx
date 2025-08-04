@@ -9,10 +9,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Heart, ShoppingCart, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Heart, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { removeFromCart, getCartItems } from "@/redux/features/cartSlice";
 import Link from "next/link";
 import { IWishlist, removeFromWishlist } from "@/redux/features/wishListSlice";
 

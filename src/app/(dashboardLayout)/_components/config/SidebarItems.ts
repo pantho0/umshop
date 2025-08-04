@@ -33,13 +33,11 @@ export const sidebarAdminNavItems: NavSection = {
     },
     {
       href: "/admin-dashboard/add-product",
-
       label: "Add Product",
       icon: PackagePlus,
     },
     {
       href: "/admin-dashboard/products",
-
       label: "Products",
       icon: ShoppingBasket,
     },
@@ -47,7 +45,6 @@ export const sidebarAdminNavItems: NavSection = {
   account: [
     {
       href: "/admin-dashboard/profile",
-
       label: "Profile",
       icon: User,
     },
@@ -55,16 +52,6 @@ export const sidebarAdminNavItems: NavSection = {
       href: "/admin-dashboard/user-management",
       label: "User Management",
       icon: UserCog,
-    },
-    {
-      href: "/admin-dashboard/addresses",
-      label: "Addresses",
-      icon: MapPin,
-    },
-    {
-      href: "/admin-dashboard/notifications",
-      label: "Notifications",
-      icon: Bell,
     },
     {
       href: "/admin-dashboard/settings",
@@ -94,16 +81,6 @@ export const sidebarUserNavItems: NavSection = {
       icon: Package,
     },
     {
-      href: "/user-dashboard/wishlist",
-      label: "Wishlist",
-      icon: Heart,
-    },
-    {
-      href: "/user-dashboard/payment",
-      label: "Payment Methods",
-      icon: CreditCard,
-    },
-    {
       href: "/user-dashboard/reviews",
       label: "My Reviews",
       icon: LayoutDashboard,
@@ -114,16 +91,6 @@ export const sidebarUserNavItems: NavSection = {
       href: "/user-dashboard/profile",
       label: "Profile",
       icon: User,
-    },
-    {
-      href: "/user-dashboard/addresses",
-      label: "Addresses",
-      icon: MapPin,
-    },
-    {
-      href: "/user-dashboard/notifications",
-      label: "Notifications",
-      icon: Bell,
     },
     {
       href: "/user-dashboard/settings",

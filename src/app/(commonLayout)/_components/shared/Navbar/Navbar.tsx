@@ -1,9 +1,8 @@
-// components/Navbar.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import MegaMenu from "./MegaMenu";
 import Logo from "../../../../../../public/assets/umshop.jpg";
-import { Heart, User, Percent, LogIn, Search, X } from "lucide-react";
+import { User, Percent, LogIn, Search, X } from "lucide-react";
 import SearchBar from "./SearchBar";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import Image from "next/image";
