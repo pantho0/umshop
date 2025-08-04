@@ -24,6 +24,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { addToCart } from "@/redux/features/cartSlice";
 import { toast } from "sonner";
 import { IProductResult } from "@/interface";
+import { addToWishlist } from "@/redux/features/wishListSlice";
 
 // Helper for star ratings (re-used)
 const renderStars = (
@@ -161,6 +162,17 @@ const ProductDetailsPage: React.FC<{
     };
     dispatch(addToCart(cartItem));
     toast.success("Product added to cart");
+  };
+
+  const handleAddWishlist = () => {
+    const wishList = {
+      id: product!._id,
+      name: product!.title,
+      slug: product!.slug,
+      image: product!.images[0], // Always use the first top-level product image
+    };
+    dispatch(addToWishlist(wishList));
+    toast.success("Product added to wishlist");
   };
 
   const handleQuantityChange = (type: "increment" | "decrement") => {
@@ -479,6 +491,7 @@ const ProductDetailsPage: React.FC<{
                       </div>
 
                       <Button
+                        onClick={handleAddWishlist}
                         variant="outline"
                         size="icon"
                         className="rounded-md border-gray-300 text-gray-600 hover:bg-gray-100"
