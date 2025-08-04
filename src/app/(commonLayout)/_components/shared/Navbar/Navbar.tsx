@@ -10,10 +10,7 @@ import Image from "next/image";
 import CartDrawer from "./cartDrawer";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
-import {
-  selectCurrentToken,
-  selectUser,
-} from "@/redux/features/auth/authSlice";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
 
 interface NavbarProps {

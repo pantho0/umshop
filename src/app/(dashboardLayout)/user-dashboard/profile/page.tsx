@@ -12,7 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Image, Lock, Mail, ShoppingCart, Star } from "lucide-react";
+import {
+  Image as LucideIMG,
+  Lock,
+  Mail,
+  ShoppingCart,
+  Star,
+} from "lucide-react";
 import Link from "next/link";
 
 export interface IUserProfile {
@@ -62,7 +68,7 @@ const ProfilePage: React.FC = () => {
                 variant="outline"
                 className="w-full flex items-center justify-start text-lg py-6 mb-4 cursor-pointer"
               >
-                <Image className="mr-3 h-5 w-5" /> Change Avatar
+                <LucideIMG className="mr-3 h-5 w-5" /> Change Avatar
               </Button>
             </Link>
             <Link href="/user-dashboard/settings">
