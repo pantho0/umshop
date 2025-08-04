@@ -1,10 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IWishlist {
+export interface IWishlist {
   id: string;
+  customId?: string;
   name: string;
-  slug: string;
   image: string;
+  color: string;
+  model: string;
+  price: number;
+  oldPrice?: number;
+  slug: string;
 }
 
 const initialState: IWishlist[] = [];
@@ -22,9 +27,12 @@ const wishlistSlice = createSlice({
   initialState,
   reducers: {
     addToWishlist: (state, action: PayloadAction<IWishlist>) => {
-      const customId = Math.random().toString(36).toLowerCase().substring(2);
-      const newItem = { ...action.payload, customId };
-      state.push(newItem);
+      const existingItem = state.find((item) => item.id === action.payload.id);
+      if (!existingItem) {
+        const customId = action.payload.customId || Math.random().toString(36).toLowerCase().substring(2);
+        const newItem = { ...action.payload, customId };
+        state.push(newItem);
+      }
     },
     removeFromWishlist: (state, action: PayloadAction<string>) => {
       return state.filter((item) => item.id !== action.payload);

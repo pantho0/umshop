@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
+import WishListDrawer from "./WishListDrawer";
 
 interface NavbarProps {
   className?: string;
@@ -43,12 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                 Super Sale 20%
               </span>
             </span>
-            <a
-              href="#"
-              className="hover:text-white transition-colors duration-200"
-            >
-              <Heart className="h-5 w-5" />
-            </a>
+            <WishListDrawer />
             <CartDrawer />
             {mounted &&
               (!user ? (
