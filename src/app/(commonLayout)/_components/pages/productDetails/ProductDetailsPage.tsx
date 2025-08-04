@@ -20,8 +20,9 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { addToCart } from "@/redux/features/cartSlice";
+import { getWishlistItems } from "@/redux/features/wishListSlice";
 import { toast } from "sonner";
 import { IProductResult } from "@/interface";
 import { addToWishlist } from "@/redux/features/wishListSlice";
@@ -56,6 +57,7 @@ const ProductDetailsPage: React.FC<{
   product: IProductResult;
 }> = ({ product }) => {
   const dispatch = useAppDispatch();
+  const wishlistItems = useAppSelector(getWishlistItems);
 
   // State for selected variant attributes
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -171,8 +173,15 @@ const ProductDetailsPage: React.FC<{
       slug: product!.slug,
       image: product!.images[0], // Always use the first top-level product image
     };
-    dispatch(addToWishlist(wishList));
-    toast.success("Product added to wishlist");
+    const isAlreadyInWishlist = wishlistItems.some(
+      (item) => item.id === wishList.id
+    );
+    if (isAlreadyInWishlist) {
+      toast.info("Product is already in your wishlist.");
+    } else {
+      dispatch(addToWishlist(wishList));
+      toast.success("Product added to wishlist!");
+    }
   };
 
   const handleQuantityChange = (type: "increment" | "decrement") => {

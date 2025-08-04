@@ -2,13 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IWishlist {
   id: string;
-  customId?: string;
   name: string;
   image: string;
-  color: string;
-  model: string;
-  price: number;
-  oldPrice?: number;
+
   slug: string;
 }
 
@@ -29,9 +25,7 @@ const wishlistSlice = createSlice({
     addToWishlist: (state, action: PayloadAction<IWishlist>) => {
       const existingItem = state.find((item) => item.id === action.payload.id);
       if (!existingItem) {
-        const customId = action.payload.customId || Math.random().toString(36).toLowerCase().substring(2);
-        const newItem = { ...action.payload, customId };
-        state.push(newItem);
+        state.push(action.payload);
       }
     },
     removeFromWishlist: (state, action: PayloadAction<string>) => {

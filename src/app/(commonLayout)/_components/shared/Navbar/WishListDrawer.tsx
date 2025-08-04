@@ -5,7 +5,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -36,7 +35,7 @@ const WishListDrawer: React.FC = () => {
 
   const WishListTrigger = () => (
     <button
-      className="relative p-2 rounded-full hover:bg-gray-700 transition-colors duration-200"
+      className="relative p-1 rounded-full hover:bg-gray-700 transition-colors cursor-pointer"
       onClick={() => setIsDrawerOpen(!isDrawerOpen)}
     >
       <Heart className="h-5 w-5 text-white" />
@@ -79,7 +78,11 @@ const WishListDrawer: React.FC = () => {
         ) : (
           <div className="flex-grow overflow-y-auto py-4 space-y-3">
             {persistedWishList.map((item) => (
-              <Link key={item.id} href={`/products/${item.slug}`} onClick={() => setIsDrawerOpen(false)}>
+              <Link
+                key={item.id}
+                href={`/products/${item.slug}`}
+                onClick={() => setIsDrawerOpen(false)}
+              >
                 <div className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 cursor-default">
                   <div className="flex items-center flex-grow">
                     <img

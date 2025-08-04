@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
       {/* Top Bar */}
       <div className="bg-gray-900 py-2 text-sm text-gray-300 hidden md:block">
         <div className="container mx-auto flex justify-end items-center px-4 max-w-7xl">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1">
             <span className="flex items-center">
               <Percent className="h-4 w-4 mr-1 text-red-400" />
               Only this month:{" "}
@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
                       ? "/admin-dashboard/profile"
                       : "/user-dashboard/profile"
                   }`}
-                  className="hover:text-white transition-colors duration-200"
+                  className="hover:bg-gray-700 p-1 rounded-full transition-colors duration-200"
                 >
                   <User className="h-5 w-5" />
                 </Link>
@@ -96,8 +96,8 @@ const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
           </div>
 
           {/* Mobile menu */}
-          <div className="flex items-center space-x-1 md:hidden">
-            <Heart className="h-6 w-6 text-white" />
+          <div className="flex items-center space-x-0 md:hidden">
+            <WishListDrawer />
             <CartDrawer />
             {mounted &&
               (!user ? (
