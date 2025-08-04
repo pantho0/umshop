@@ -1,12 +1,8 @@
 import { LucideIcon, PackagePlus, ShoppingBasket } from "lucide-react";
 import {
-  Bell,
-  CreditCard,
   FileText,
-  Heart,
   HelpCircle,
   LayoutDashboard,
-  MapPin,
   User,
   Package,
   Settings,
