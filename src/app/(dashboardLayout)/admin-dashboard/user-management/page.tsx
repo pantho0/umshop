@@ -183,7 +183,9 @@ const UserManagement = () => {
       {/* Desktop View */}
       <div className="hidden md:block">
         <Table>
-          <TableHeader>
+          <TableHeader
+            className={`border-b transition-colors ${"bg-gray-200"}`}
+          >
             <TableRow>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
@@ -194,8 +196,13 @@ const UserManagement = () => {
           </TableHeader>
           <TableBody>
             {users && users.length > 0 ? (
-              users.map((user) => (
-                <TableRow key={user._id}>
+              users.map((user, index) => (
+                <TableRow
+                  key={user._id}
+                  className={`border-b transition-colors hover:bg-muted/50 ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  }`}
+                >
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>

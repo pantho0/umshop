@@ -40,27 +40,24 @@ const OrderDataTable = ({
   return (
     <>
       <Table>
-        <TableHeader className="bg-gray-50">
+        <TableHeader className={`border-b transition-colors ${"bg-gray-200"}`}>
           <TableRow>
-            <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-left text-xs font-medium text-black uppercase tracking-wider">
               Order ID
             </TableHead>
-            <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Customer Name
-            </TableHead>
-            <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-left text-xs font-medium text-black uppercase tracking-wider">
               Customer Email
             </TableHead>
-            <TableHead className="h-12 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-right text-xs font-medium text-black uppercase tracking-wider">
               Amount
             </TableHead>
-            <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-left text-xs font-medium text-black uppercase tracking-wider">
               Status
             </TableHead>
-            <TableHead className="h-12 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-left text-xs font-medium text-black uppercase tracking-wider">
               Order Date
             </TableHead>
-            <TableHead className="h-12 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <TableHead className="h-12 px-4 text-right text-xs font-medium text-black uppercase tracking-wider">
               Actions
             </TableHead>
           </TableRow>
@@ -127,9 +124,7 @@ const OrderDataTable = ({
                   <TableCell className="p-4 align-middle font-medium">
                     {order.orderId}
                   </TableCell>
-                  <TableCell className="p-4 align-middle">
-                    {order.fullName}
-                  </TableCell>
+
                   <TableCell className="p-4 align-middle">
                     {order.email}
                   </TableCell>
