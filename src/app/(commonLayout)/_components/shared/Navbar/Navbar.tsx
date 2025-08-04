@@ -10,14 +10,20 @@ import Image from "next/image";
 import CartDrawer from "./cartDrawer";
 import Link from "next/link";
 import { useAppSelector } from "@/redux/hook";
-import { selectUser } from "@/redux/features/auth/authSlice";
+import {
+  selectCurrentToken,
+  selectUser,
+} from "@/redux/features/auth/authSlice";
+import { verifyToken } from "@/utils/verifyToken";
 
 interface NavbarProps {
   className?: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ className = "" }) => {
-  const user = useAppSelector(selectUser);
+  const token = useAppSelector(selectCurrentToken);
+  const user: any = verifyToken(token as string);
+
   const [mounted, setMounted] = useState(false);
   const [showMobileSearchBar, setShowMobileSearchBar] = useState(false);
 
