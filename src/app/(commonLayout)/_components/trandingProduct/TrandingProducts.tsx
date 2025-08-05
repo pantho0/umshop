@@ -1,13 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Star, ChevronRight } from "lucide-react";
 import { IProductResult } from "@/interface";
 import Link from "next/link";
+import TrendingProductsSkeleton from "./TrandingProductsSkeleton";
 
 const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
   products,
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  const isLoading = !isMounted || !products || products.length === 0;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Simple deterministic hash function
   const simpleHash = (str: string) => {
     let hash = 0;
@@ -65,86 +74,81 @@ const TrandingProducts: React.FC<{ products: IProductResult[] }> = ({
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-10">
-        {products.slice(0, 8).map((product, index) => {
-          // Simulate badges and prices
-          const hasDiscount = index === 0; // First product has discount
-          const isNew = index === 3; // Fourth product is 'New'
-          // const oldPrice = hasDiscount
-          //   ? (product.variants?.[0].price / 0.79).toFixed(2)
-          //   : null; // Simulate -21% discount
-          const displayPrice = product.variants?.[0].price.toFixed(2);
-          // Use deterministic values based on product title
-          // const rating = getRating(product.title);
-          // const reviewCount = getReviewCount(product.title);
+      {isLoading ? (
+        <TrendingProductsSkeleton />
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-10">
+          {products.slice(0, 8).map((product, index) => {
+            // Simulate badges and prices
+            const hasDiscount = index === 0; // First product has discount
+            const isNew = index === 3; // Fourth product is 'New'
+            // const oldPrice = hasDiscount
+            //   ? (product.variants?.[0].price / 0.79).toFixed(2)
+            //   : null; // Simulate -21% discount
+            const displayPrice = product.variants?.[0].price.toFixed(2);
+            // Use deterministic values based on product title
+            // const rating = getRating(product.title);
+            // const reviewCount = getReviewCount(product.title);
 
-          return (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col transition-transform duration-200 hover:scale-[1.02] relative group"
-            >
-              {/* Badges */}
-              {hasDiscount && (
-                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
-                  -21%
-                </span>
-              )}
-              {isNew && (
-                <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
-                  New
-                </span>
-              )}
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col transition-transform duration-200 hover:scale-[1.02] relative group"
+              >
+                {/* Badges */}
+                {hasDiscount && (
+                  <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+                    -21%
+                  </span>
+                )}
+                {isNew && (
+                  <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+                    New
+                  </span>
+                )}
 
-              {/* Product Image */}
-              <Link href={`/products/${product.slug}`}>
-                <div className="relative w-full h-24 md:h-48  flex items-center justify-center overflow-hidden">
-                  <img
-                    src={
-                      product.images[0] ||
-                      `https://placehold.co/150x150/E0E0E0/333333?text=Product+${index}`
-                    }
-                    alt={product.title}
-                    className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-300 group-hover:scale-105"
-                    onError={(
-                      e: React.SyntheticEvent<HTMLImageElement, Event>
-                    ) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = `https://placehold.co/150x150/E0E0E0/333333?text=Image+Error`;
-                    }}
-                  />
-                </div>
+                {/* Product Image */}
+                <Link href={`/products/${product.slug}`}>
+                  <div className="relative w-full h-24 md:h-48  flex items-center justify-center overflow-hidden">
+                    <img
+                      src={
+                        product.images[0] ||
+                        `https://placehold.co/150x150/E0E0E0/333333?text=Product+${index}`
+                      }
+                      alt={product.title}
+                      className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-300 group-hover:scale-105"
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://placehold.co/150x150/E0E0E0/333333?text=Image+Error`;
+                      }}
+                    />
+                  </div>
 
-                {/* Product Info */}
-                <div className="p-4 flex flex-col flex-grow">
-                  {renderStars(product.title)}
-                  <h3 className="text-[12px]  md:text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
-                    {product.title}
-                  </h3>
-                  <div className="flex items-baseline space-x-2 mt-auto">
-                    <span className="text-sm font-bold text-gray-900">
-                      ${displayPrice}
-                    </span>
-                    {/* {oldPrice && (
+                  {/* Product Info */}
+                  <div className="p-4 flex flex-col flex-grow">
+                    {renderStars(product.title)}
+                    <h3 className="text-[12px]  md:text-sm font-semibold text-gray-800 mt-2 mb-2 leading-tight">
+                      {product.title}
+                    </h3>
+                    <div className="flex items-baseline space-x-2 mt-auto">
+                      <span className="text-sm font-bold text-gray-900">
+                        ${displayPrice}
+                      </span>
+                      {/* {oldPrice && (
                       <span className="text-sm text-gray-500 line-through">
                         ${oldPrice}
                       </span>
                     )} */}
+                    </div>
                   </div>
-                </div>
-              </Link>
-
-              {/* view product button */}
-              {/* <div className="p-4 border-t border-gray-100 flex justify-end">
-                <Link href={`/products/${product.slug}`}>
-                  <button className="p-2 bg-gray-100 cursor-pointer rounded-full hover:bg-purple-100 text-gray-600 hover:text-purple-700 transition-colors duration-200 shadow-sm">
-                    <EyeIcon className="h-5 w-5" />
-                  </button>
                 </Link>
-              </div> */}
-            </div>
-          );
-        })}
-      </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 };

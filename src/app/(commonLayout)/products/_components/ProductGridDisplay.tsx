@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProductGridDisplayProps } from "@/interface";
-import renderProductCardSkeleton from "@/components/ui/Product/renderProductCardSkeleton";
+
 import { useState } from "react";
 import {
   Pagination,
@@ -22,6 +22,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import renderProductCardSkeleton from "@/components/ui/Product/renderProductCardSkeleton";
 
 // Simple deterministic hash function
 const simpleHash = (str: string) => {
