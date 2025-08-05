@@ -16,12 +16,22 @@ interface UMFormProps extends IFormConfig {
   onSubmit: SubmitHandler<any>;
 }
 
-const UMForm = ({ children, onSubmit, defaultValues }: UMFormProps) => {
+const UMForm = ({
+  children,
+  onSubmit,
+  defaultValues,
+  resolver,
+}: UMFormProps) => {
   const formConfig: IFormConfig = {};
 
   if (!!defaultValues) {
     formConfig["defaultValues"] = defaultValues;
   }
+
+  if (!!resolver) {
+    formConfig["resolver"] = resolver;
+  }
+
   const methods = useForm(formConfig);
   const handleSubmit = methods.handleSubmit;
 

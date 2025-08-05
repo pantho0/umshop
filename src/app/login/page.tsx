@@ -19,10 +19,11 @@ import { useLogin } from "@/hooks/auth.hook";
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchema } from "@/schemas/login.schema";
 
 const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const {
@@ -37,7 +38,6 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Login in progress...");
-    setLoginError(null); // Clear previous errors
     handleLogin(data, {
       onSuccess: () => {
         toast.success("Login Success", { id: toastId });
@@ -54,20 +54,16 @@ const LoginPage: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     if (!isPending && isSuccess) {
       const user = verifyToken(data?.data?.accessToken);
-      if (!user) {
-        setLoginError("Incorrect email or password");
-        return;
-      }
+
       dispatch(setUser({ user: user, token: data?.data?.accessToken }));
 
       if (params.get("redirect")) {
-        console.log(params.get("redirect"));
         router.push(params.get("redirect") as any);
       } else {
         router.push("/");
       }
     } else if (isError) {
-      setLoginError(error?.message || "An unexpected error occurred.");
+      toast.error(error?.message || "An unexpected error occurred.");
     }
   }, [isPending, isSuccess, isError, error]);
 
@@ -101,7 +97,7 @@ const LoginPage: React.FC = () => {
               </p>
             </div>
 
-            <UMForm onSubmit={onSubmit}>
+            <UMForm onSubmit={onSubmit} resolver={zodResolver(LoginSchema)}>
               <div className="space-y-2 mb-4">
                 <div className="space-y-1">
                   <UMInput
@@ -144,12 +140,6 @@ const LoginPage: React.FC = () => {
                   Forgot password?
                 </Link>
               </div>
-
-              {loginError && (
-                <p className="text-red-500 text-sm mb-4 text-center">
-                  {loginError}
-                </p>
-              )}
               <Button
                 type="submit"
                 className="w-full bg-red-500 text-white cursor-pointer py-2.5 rounded-md hover:bg-red-600 transition-colors duration-200 shadow-md"

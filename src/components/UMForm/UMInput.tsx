@@ -1,4 +1,4 @@
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
 interface UMInputProps {
@@ -18,6 +18,10 @@ export const UMInput = ({
   defaultValue = "",
   disabled = false,
 }: UMInputProps) => {
+  const {
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <>
       <Controller
@@ -41,6 +45,11 @@ export const UMInput = ({
               {...field}
               disabled={disabled}
             />
+            {errors[name] && (
+              <p className="text-red-500 text-sm">
+                {errors[name].message as string}
+              </p>
+            )}
           </>
         )}
       />
