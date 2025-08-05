@@ -15,8 +15,7 @@ const HomePage = async () => {
 
   try {
     const response = await nexiosInstance.get<ApiResponse<Product>>(
-      "/products?limit=7&sortBy=-createdAt",
-      { cache: "force-cache" }
+      "/products?limit=7&sortBy=createdAt"
     );
 
     if (response?.data?.data && Array.isArray(response?.data?.data?.result)) {
