@@ -14,6 +14,8 @@ import Link from "next/link";
 import { useCreateUser } from "@/hooks/auth.hook";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createUserValidationSchema } from "@/schemas/register.schema";
 
 const RegisterPage: React.FC = () => {
   const { mutate: handleCreateUser, isPending, isSuccess } = useCreateUser();
@@ -66,7 +68,10 @@ const RegisterPage: React.FC = () => {
               </p>
             </div>
 
-            <UMForm onSubmit={onSubmit}>
+            <UMForm
+              onSubmit={onSubmit}
+              resolver={zodResolver(createUserValidationSchema)}
+            >
               <div className="space-y-2 mb-4">
                 <div className="space-y-1">
                   <UMInput

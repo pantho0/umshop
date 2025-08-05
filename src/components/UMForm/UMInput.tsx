@@ -1,3 +1,4 @@
+"use client";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 
@@ -21,6 +22,8 @@ export const UMInput = ({
   const {
     formState: { errors },
   } = useFormContext();
+
+  console.log(errors);
 
   return (
     <>
