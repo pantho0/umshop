@@ -42,9 +42,9 @@ export const UMInput = ({
             <Input
               id={name}
               type={type}
-              required
               placeholder={placeholder}
               className="w-full"
+              required
               {...field}
               disabled={disabled}
             />

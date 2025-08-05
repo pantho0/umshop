@@ -33,7 +33,10 @@ const UmSelect: React.FC<UmSelectProps> = ({
   onValueChange,
   disabled = false,
 }) => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <FormItem>
@@ -78,6 +81,9 @@ const UmSelect: React.FC<UmSelectProps> = ({
           </Select>
         )}
       />
+      {errors[name] && (
+        <p className="text-red-500 text-sm">{errors[name].message as string}</p>
+      )}
       <FormMessage />
     </FormItem>
   );

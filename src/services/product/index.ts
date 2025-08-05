@@ -43,6 +43,7 @@ export const addProduct = async (productData: Product) => {
 
     return res.data;
   } catch (error: any) {
+    console.log(error);
     throw new Error(
       error.response?.data?.message || error.message || "Error fetching data"
     );
@@ -126,6 +127,7 @@ export const uploadSingleImage = async (image: string) => {
       },
       body: JSON.stringify({ image }),
     });
+
     return res.json();
   } catch (error: any) {
     throw new Error(

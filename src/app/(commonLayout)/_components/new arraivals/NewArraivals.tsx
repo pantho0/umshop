@@ -6,7 +6,9 @@ import { ApiResponse, IProductResult } from "@/interface";
 const NewArraivals: React.FC = async () => {
   const { data } = await nexiosInstance.get<
     ApiResponse<IProductResult[] | any>
-  >("/products?limit=7&sortBy=createdAt");
+  >("/products?limit=7&sortBy=createdAt", {
+    cache: "force-cache",
+  });
   const products = data.data!.result;
 
   return (

@@ -91,18 +91,22 @@ export default function AddProduct() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const toastId = toast.loading("Please wait! Uploading Image");
     const file = e.target.files?.[0];
     if (!file) return;
     try {
       const image = await convertBase64(file);
       const res = await uploadSingleImage(image as string);
       setImages((prev) => [...prev, res]);
-      toast.success("Image uploaded successfully");
+      toast.success("Image uploaded successfully", {
+        id: toastId,
+      });
       // Clear the file input after upload
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Error uploading image");
+      toast.error("Error uploading image", {
+        id: toastId,
+      });
     }
   };
 
@@ -177,8 +181,8 @@ export default function AddProduct() {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     const productData = { ...values, images, details: content };
+
     if (productData) {
       addProduct(productData as any);
       setImages([]);
