@@ -103,8 +103,8 @@ export default function AddProduct() {
       });
       // Clear the file input after upload
       if (fileInputRef.current) fileInputRef.current.value = "";
-    } catch (error) {
-      toast.error("Error uploading image", {
+    } catch (error: any) {
+      toast.error(error.message, {
         id: toastId,
       });
     }

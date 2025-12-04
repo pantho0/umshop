@@ -23,8 +23,6 @@ export const UMInput = ({
     formState: { errors },
   } = useFormContext();
 
-  console.log(errors);
-
   return (
     <>
       <Controller
