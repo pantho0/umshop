@@ -59,6 +59,10 @@ This project leverages modern frontend technologies and integrated tools to deli
 
 ---
 
+<p align="center">
+    <img src="https://img.shields.io/badge/SETUP%20REQUIRED-Create%20.env.local%20from%20example.env.local-red?style=for-the-badge&labelColor=black"/>
+</p>
+
 ## 🛠️ Project Setup
 
 ### Prerequisites
